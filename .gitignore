@@ -3,3 +3,5 @@ Thumbs.db
 *.log
 node_modules/
 .netlify/
+scripts/files-manifest.json
+scripts/publish-manifest.json
