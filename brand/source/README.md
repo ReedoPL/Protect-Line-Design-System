@@ -7,4 +7,4 @@ Optional long-form brand documents. Agents should prefer the distilled `brand/vo
 - Colours: official brand palette (Navy #0C073D, Hot Pink #F20779, secondary blues/pinks)
 - Figma: [PL-Website-Rebuild-2026](https://www.figma.com/design/PGlZNtaCk9EpQ1tP9KF79I/PL-Website-Rebuild-2026)
 
-Replace placeholder assets in `assets/` with official brand files when available.
+- Logos and Hugo: official PNGs in `assets/logos/` and `assets/hugo/`

@@ -1,27 +1,45 @@
 # Assets
 
-Brand assets for the Protect Line design system.
+Official Protect Line brand assets for the design system.
 
-## Included (placeholder)
+## Logos (`assets/logos/`)
 
-| File | Description | Status |
-|------|-------------|--------|
-| `logo-white-pink.svg` | Logo for dark/navy backgrounds | Placeholder — replace with official asset |
-| `logo-navy.svg` | Logo for light backgrounds | Placeholder — replace with official asset |
-| `hugo.svg` | Hugo mascot (hot pink heart) | Placeholder — replace with official asset |
+| Canonical path | Source file | When to use |
+|----------------|-------------|-------------|
+| `primary-logo-white-pink.png` | Primary-Logo-White-&-Pink.png | Nav, footer, dark/navy backgrounds |
+| `primary-logo-navy-pink.png` | Primary-Logo-Navy-&-Pink.png | Light/fair-blue backgrounds |
+| `primary-logo-white.png` | Primary-Logo-White.png | Single-colour white on dark |
 
-## Required from brand team `[REQUIRES SOURCE]`
+Also included: brandmarks, circle logos, and cobrand variants (original filenames preserved).
 
-- Official Protect Line primary logo (SVG + PNG, clear-space guidelines)
-- Hugo mascot vector (official artwork)
-- Hand-drawn pink underline stroke (for `.pl-underline-accent`)
-- Lora Bold-Italic font file (if not using Google Fonts)
+## Hugo (`assets/hugo/`)
 
-## Figma source
+Full Hugo mascot library (PNG). Canonical shortcuts:
 
-Logos component set: `Logos` (`13653:1968`) in [PL-Website-Rebuild-2026](https://www.figma.com/design/PGlZNtaCk9EpQ1tP9KF79I/PL-Website-Rebuild-2026).
+| Path | When to use |
+|------|-------------|
+| `hugo-heart.png` | Small card icons, inline accents |
+| `hugo-waving.png` | Friendly hero or slide accents |
 
-Export via Figma when MCP rate limits allow, then replace placeholders in this folder.
+Browse the folder for poses (thinking, celebrating, umbrella, etc.). Use Hugo sparingly — not on every component.
+
+## Still `[REQUIRES SOURCE]`
+
+- Hand-drawn pink underline stroke (for `.pl-underline-accent` in CSS — currently a flat bar)
+- Lora Bold-Italic font file (Google Fonts used in specimens)
+
+## Usage in specimens
+
+```html
+<!-- Header / footer on navy -->
+<img src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+
+<!-- Light background -->
+<img src="../assets/logos/primary-logo-navy-pink.png" alt="Protect Line" width="191" height="43">
+
+<!-- Hugo accent -->
+<img src="../assets/hugo/hugo-heart.png" alt="" width="48" height="48">
+```
 
 ## Fonts
 

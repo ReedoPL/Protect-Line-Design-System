@@ -7,10 +7,12 @@
   <link rel="stylesheet" href="../colors_and_type.css">
   <link rel="stylesheet" href="../components/components.css">
   <style>
-    body { padding: var(--spacing-xhg); max-width: 800px; }
-    .logo-row { display: flex; gap: var(--spacing-xhg); align-items: center; flex-wrap: wrap; margin-bottom: var(--spacing-xhg); }
+    body { padding: var(--spacing-xhg); max-width: 900px; }
+    .logo-row { display: flex; gap: var(--spacing-xhg); align-items: center; flex-wrap: wrap; margin-bottom: var(--spacing-lg); }
     .logo-dark { background: var(--color-navy); padding: var(--spacing-lg); border-radius: var(--radius-md); }
-    .hugo { width: 64px; height: 64px; }
+    .logo-light { background: var(--color-fair-blue); padding: var(--spacing-lg); border-radius: var(--radius-md); }
+    .hugo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--spacing-md); margin-top: var(--spacing-md); }
+    .hugo-grid img { width: 100%; height: auto; }
     .purpose { font-family: var(--font-accent); font-size: var(--font-size-h2); font-weight: var(--font-weight-bold); font-style: italic; text-align: center; padding: var(--spacing-xhg); background: var(--color-fair-pink); border-radius: var(--radius-md); margin: var(--spacing-xhg) 0; }
   </style>
 </head>
@@ -19,19 +21,35 @@
 
   <div class="purpose">Investing in Our People to Protect Yours</div>
 
-  <h2 class="pl-h3">Logo</h2>
+  <h2 class="pl-h3">Primary logos</h2>
+  <p class="pl-body">Use official PNGs from <code>assets/logos/</code>. Canonical web paths use kebab-case filenames.</p>
   <div class="logo-row">
     <div class="logo-dark">
-      <img src="../assets/logo-white-pink.svg" alt="Protect Line logo — white and pink on navy" width="191" height="43">
+      <img src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line logo — white and pink on navy" width="191" height="43">
     </div>
-    <div>
-      <img src="../assets/logo-navy.svg" alt="Protect Line logo — navy on white" width="191" height="43">
+    <div class="logo-light">
+      <img src="../assets/logos/primary-logo-navy-pink.png" alt="Protect Line logo — navy and pink on light" width="191" height="43">
+    </div>
+    <div class="logo-dark">
+      <img src="../assets/logos/primary-logo-white.png" alt="Protect Line logo — white on navy" width="191" height="43">
     </div>
   </div>
 
+  <h2 class="pl-h3">Brandmarks</h2>
+  <div class="logo-row">
+    <img src="../assets/logos/Brandmark-Pink.png" alt="Protect Line brandmark — pink" width="64" height="64">
+    <img src="../assets/logos/Brandmark-White.png" alt="Protect Line brandmark — white" width="64" height="64" style="background:var(--color-navy);padding:var(--spacing-sm);border-radius:var(--radius-sm)">
+    <img src="../assets/logos/Brandmark-Navy.png" alt="Protect Line brandmark — navy" width="64" height="64">
+  </div>
+
   <h2 class="pl-h3">Hugo (mascot)</h2>
-  <p class="pl-body">Hot pink heart character. Use sparingly for warmth and personality.</p>
-  <img src="../assets/hugo.svg" alt="Hugo — Protect Line mascot" class="hugo">
+  <p class="pl-body">Hot pink heart character. Use sparingly for warmth and personality. Full library in <code>assets/hugo/</code>.</p>
+  <div class="hugo-grid">
+    <img src="../assets/hugo/hugo-heart.png" alt="Hugo heart">
+    <img src="../assets/hugo/hugo-waving.png" alt="Hugo waving">
+    <img src="../assets/hugo/Hugo-Heart-Hands-Smiling-1000.png" alt="Hugo heart hands smiling">
+    <img src="../assets/hugo/Hugo-Thinking-1000.png" alt="Hugo thinking">
+  </div>
 
   <h2 class="pl-h3">Voice</h2>
   <p class="pl-body">We are: <strong>Friendly, Trustworthy, Warm, Professional, Passionate</strong></p>

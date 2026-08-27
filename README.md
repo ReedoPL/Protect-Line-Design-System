@@ -76,7 +76,7 @@ This repo is a **curated subset** — not a dump of the 49-page Figma file. Toke
 
 ## Assets
 
-Placeholder logos and Hugo SVGs are in [`assets/`](assets/). Replace with official brand files when available — see [`assets/README.md`](assets/README.md).
+Official logos and Hugo PNGs are in [`assets/logos/`](assets/logos/) and [`assets/hugo/`](assets/hugo/). See [`assets/README.md`](assets/README.md) for canonical paths and usage.
 
 ## Contributing
 
