@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — Protect Line</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <link rel="stylesheet" href="components.css">
+  <style>body{padding:var(--spacing-xhg)}</style>
+</head>
+<body>
+  <h1 class="pl-h2">FAQ accordion</h1>
+  <div class="pl-accordion">
+    <div class="pl-accordion__item is-open">
+      <button class="pl-accordion__question" onclick="this.parentElement.classList.toggle('is-open')">How much cover do I need? <span>−</span></button>
+      <div class="pl-accordion__answer">It depends on your mortgage, dependants, and lifestyle. Our advisers can help you work out the right amount during a free, no-obligation chat.</div>
+    </div>
+    <div class="pl-accordion__item">
+      <button class="pl-accordion__question" onclick="this.parentElement.classList.toggle('is-open')">How long does it take to get covered? <span>+</span></button>
+      <div class="pl-accordion__answer">Most applications are completed within 30 minutes over the phone. We'll guide you through every step.</div>
+    </div>
+    <div class="pl-accordion__item">
+      <button class="pl-accordion__question" onclick="this.parentElement.classList.toggle('is-open')">What is a beneficiary? <span>+</span></button>
+      <div class="pl-accordion__answer">The person who gets the money from an insurance policy if you pass away during the term.</div>
+    </div>
+  </div>
+</body>
+</html>

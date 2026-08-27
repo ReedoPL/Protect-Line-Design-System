@@ -1,0 +1,37 @@
+---
+description: Protect Line UI rules — read DESIGN.md before generating HTML/CSS/JSX
+globs: "**/*.{html,css,jsx,tsx,vue,svelte,astro}"
+alwaysApply: false
+---
+
+# Protect Line UI generation
+
+Before generating any visual component or page:
+
+1. Read `DESIGN.md` at the project root
+2. Use **only** CSS variables from `colors_and_type.css`
+3. Reuse patterns from `components/` and `kit/index.html`
+4. Follow `brand/voice.md` for copy tone
+
+## Token rules
+
+- Colours: `var(--color-*)` only — never hardcode hex
+- Spacing: `var(--spacing-*)` only — do not invent values
+- Fonts: `var(--font-primary)`, `var(--font-accent)` — never Inter/Roboto
+- Radius: `var(--radius-pill)` for buttons/nav, `var(--radius-lg)` for cards
+
+## Component rules
+
+- Primary button: `.pl-btn-primary` (pink pill, white bold text)
+- Secondary button: `.pl-btn-secondary` (navy outline pill)
+- Links: `.pl-link` (pink, bold, underlined)
+- Section headings: `.pl-section-heading` (white on navy block, all caps)
+- Body: left-aligned, sentence case, 16px Poppins Regular
+
+## Do not
+
+- Add Tailwind, Bootstrap, or other CSS frameworks unless explicitly asked
+- Use Title Case headings
+- Use Arial for creative headings
+- Add card shadows or glassmorphism
+- Fear-monger in copy

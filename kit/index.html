@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protect Line — life insurance made simple</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <link rel="stylesheet" href="../components/components.css">
+</head>
+<body>
+  <!-- Header -->
+  <div style="padding: var(--spacing-md) var(--container-padding); background: var(--color-fair-blue);">
+    <header class="pl-header" id="site-header">
+      <a href="#" class="pl-header__logo" aria-label="Protect Line home">
+        <img src="../assets/logo-white-pink.svg" alt="Protect Line" width="191" height="43">
+      </a>
+      <nav>
+        <ul class="pl-header__nav">
+          <li><a href="#insurance">Insurance ▾</a></li>
+          <li><a href="#about">About ▾</a></li>
+          <li><a href="#resources">Resources ▾</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="#quote" class="pl-btn pl-btn-primary pl-header__cta">Get a quote</a>
+      <button class="pl-header__menu-toggle" aria-label="Open menu" onclick="document.getElementById('site-header').classList.toggle('is-open')">☰</button>
+    </header>
+  </div>
+
+  <!-- Hero -->
+  <section class="pl-hero pl-hero--navy" id="quote">
+    <p class="pl-hero__eyebrow">Life insurance</p>
+    <h1 class="pl-hero__title">Protect what matters most</h1>
+    <p class="pl-hero__subtitle">We make life insurance simple, friendly, and affordable. Chat with our team today — no jargon, no pressure, just honest advice over a cuppa.</p>
+    <div class="pl-hero__actions">
+      <a href="#" class="pl-btn pl-btn-primary">Get a free quote</a>
+      <a href="#how-it-works" class="pl-btn pl-btn-secondary-light">How it works</a>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="pl-section pl-section--fair-blue" id="insurance">
+    <div class="pl-container">
+      <div style="text-align:center;margin-bottom:var(--spacing-xhg)">
+        <span class="pl-section-heading">Why choose us</span>
+      </div>
+      <div class="pl-grid-3">
+        <div class="pl-card-product">
+          <img src="../assets/hugo.svg" alt="" width="48" height="48" style="margin-bottom:var(--spacing-sm)">
+          <h3 class="pl-card-product__title">Friendly expert advice</h3>
+          <p class="pl-card-product__text">Our UK-based team talks to you like a friend, not a salesperson. We'll help you find the right cover at the right price.</p>
+        </div>
+        <div class="pl-card-product">
+          <span class="pl-tag">Popular</span>
+          <h3 class="pl-card-product__title">Cover from £5/month</h3>
+          <p class="pl-card-product__text">Life insurance doesn't have to break the bank. We'll find a policy that fits your budget and your needs.</p>
+        </div>
+        <div class="pl-card-product">
+          <h3 class="pl-card-product__title">Quick and easy</h3>
+          <p class="pl-card-product__text">Most applications take less than 30 minutes over the phone. No forms, no faff — just a straightforward chat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content block -->
+  <section class="pl-section" id="how-it-works">
+    <div class="pl-container">
+      <div class="pl-card-content">
+        <div class="pl-card-content__image" style="background:var(--color-light-blue);display:flex;align-items:center;justify-content:center;color:var(--color-dark-blue-400)">[Family image]</div>
+        <div>
+          <p class="pl-subheading-caps">How it works</p>
+          <h2 class="pl-h2">Three simple steps to peace of mind</h2>
+          <p class="pl-body">Life insurance, when you strip away the jargon, is all about protecting what matters most. It's a promise to keep your loved ones safe, no matter what.</p>
+          <ol class="pl-body" style="padding-left:var(--spacing-lg)">
+            <li>Give us a call or request a quote online</li>
+            <li>Chat with a friendly adviser about your needs</li>
+            <li>Get covered — often on the same day</li>
+          </ol>
+          <a href="#" class="pl-btn pl-btn-primary" style="margin-top:var(--spacing-md)">Get started</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section class="pl-section pl-section--fair-blue">
+    <div class="pl-container">
+      <div class="pl-testimonial">
+        <p class="pl-testimonial__quote">"Brilliant service from start to finish. They made everything so easy to understand — I finally feel like my family is protected."</p>
+        <div class="pl-testimonial__author">Sarah M.</div>
+        <div class="pl-testimonial__role">★★★★★ Trustpilot</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pl-section" id="resources">
+    <div class="pl-container">
+      <div style="text-align:center;margin-bottom:var(--spacing-xhg)">
+        <span class="pl-section-heading">Common questions</span>
+      </div>
+      <div class="pl-accordion">
+        <div class="pl-accordion__item is-open">
+          <button class="pl-accordion__question" onclick="this.parentElement.classList.toggle('is-open')">How much cover do I need? <span>−</span></button>
+          <div class="pl-accordion__answer">It depends on your mortgage, dependants, and lifestyle. Our advisers will help you work out the right amount during a free, no-obligation chat.</div>
+        </div>
+        <div class="pl-accordion__item">
+          <button class="pl-accordion__question" onclick="this.parentElement.classList.toggle('is-open')">What is a beneficiary? <span>+</span></button>
+          <div class="pl-accordion__answer">The person who gets the money from an insurance policy if you pass away during the term. Usually a partner, child, or other dependant.</div>
+        </div>
+        <div class="pl-accordion__item">
+          <button class="pl-accordion__question" onclick="this.parentElement.classList.toggle('is-open')">How long does it take to get covered? <span>+</span></button>
+          <div class="pl-accordion__answer">Most applications are completed within 30 minutes over the phone. We'll guide you through every step.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <section class="pl-section pl-section--navy" style="text-align:center">
+    <div class="pl-container">
+      <h2 class="pl-h2" style="color:var(--color-white);margin-bottom:var(--spacing-md)">Ready to protect what matters?</h2>
+      <p class="pl-body" style="color:var(--color-light-pink);margin-bottom:var(--spacing-xhg);max-width:480px;margin-left:auto;margin-right:auto">Give us a call for a free, no-obligation chat. No jargon, no pressure.</p>
+      <a href="#" class="pl-btn pl-btn-primary">Get a free quote</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="pl-footer" id="contact">
+    <div class="pl-footer__grid">
+      <div class="pl-footer__column">
+        <img src="../assets/logo-white-pink.svg" alt="Protect Line" width="160" height="36" style="margin-bottom:var(--spacing-md)">
+        <p style="font-size:var(--font-size-small);margin:0;opacity:0.8">Investing in Our People to Protect Yours</p>
+      </div>
+      <div class="pl-footer__column">
+        <h4>Insurance</h4>
+        <ul>
+          <li><a href="#">Life insurance</a></li>
+          <li><a href="#">Critical illness</a></li>
+          <li><a href="#">Income protection</a></li>
+        </ul>
+      </div>
+      <div class="pl-footer__column">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="pl-footer__column">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Guides</a></li>
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="pl-footer__bottom">
+      <span>© 2026 Protect Line. All rights reserved.</span>
+      <span>
+        <a href="#" style="color:var(--color-text-on-dark);margin-right:var(--spacing-md)">Privacy policy</a>
+        <a href="#" style="color:var(--color-text-on-dark)">Terms of use</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>

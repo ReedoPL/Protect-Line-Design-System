@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protect Line — spacing preview</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { padding: var(--spacing-xhg); }
+    .row { display: flex; align-items: center; gap: var(--spacing-md); margin-bottom: var(--spacing-md); }
+    .bar { background: var(--color-hot-pink); height: 24px; border-radius: 4px; }
+    .label { width: 140px; font-size: var(--font-size-small); font-family: monospace; flex-shrink: 0; }
+    .value { width: 48px; font-size: var(--font-size-caption); color: var(--color-dark-blue-400); }
+  </style>
+</head>
+<body>
+  <h1 class="pl-h1">Spacing scale</h1>
+  <p class="pl-body" style="margin-bottom:var(--spacing-xhg)">Design System Foundations naming. Use tokens only — do not invent values.</p>
+
+  <div class="row"><span class="label">--spacing-xxsm</span><div class="bar" style="width:4px"></div><span class="value">4px</span></div>
+  <div class="row"><span class="label">--spacing-xsm</span><div class="bar" style="width:8px"></div><span class="value">8px</span></div>
+  <div class="row"><span class="label">--spacing-sm</span><div class="bar" style="width:12px"></div><span class="value">12px</span></div>
+  <div class="row"><span class="label">--spacing-md</span><div class="bar" style="width:16px"></div><span class="value">16px</span></div>
+  <div class="row"><span class="label">--spacing-lg</span><div class="bar" style="width:24px"></div><span class="value">24px</span></div>
+  <div class="row"><span class="label">--spacing-xlg</span><div class="bar" style="width:32px"></div><span class="value">32px</span></div>
+  <div class="row"><span class="label">--spacing-hg</span><div class="bar" style="width:40px"></div><span class="value">40px</span></div>
+  <div class="row"><span class="label">--spacing-xhg</span><div class="bar" style="width:48px"></div><span class="value">48px</span></div>
+  <div class="row"><span class="label">--spacing-xxlg</span><div class="bar" style="width:64px"></div><span class="value">64px</span></div>
+  <div class="row"><span class="label">--spacing-xxhg</span><div class="bar" style="width:80px"></div><span class="value">80px</span></div>
+  <div class="row"><span class="label">--spacing-xxxhg</span><div class="bar" style="width:96px"></div><span class="value">96px</span></div>
+  <div class="row"><span class="label">--spacing-enorm</span><div class="bar" style="width:128px"></div><span class="value">128px</span></div>
+</body>
+</html>

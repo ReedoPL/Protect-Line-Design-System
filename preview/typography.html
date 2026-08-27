@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protect Line — typography preview</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { padding: var(--spacing-xhg); max-width: 800px; }
+    .specimen { margin-bottom: var(--spacing-xhg); padding-bottom: var(--spacing-xhg); border-bottom: 1px solid var(--color-light-blue); }
+    .label { font-size: var(--font-size-caption); color: var(--color-dark-blue-400); text-transform: uppercase; letter-spacing: var(--letter-spacing-wide); margin-bottom: var(--spacing-xsm); }
+    .on-navy { background: var(--color-navy); color: var(--color-white); padding: var(--spacing-lg); border-radius: var(--radius-md); }
+  </style>
+</head>
+<body>
+  <h1 class="pl-h1">Typography</h1>
+
+  <div class="specimen">
+    <div class="label">Display / Hero</div>
+    <p class="pl-display">Protect what matters most</p>
+  </div>
+
+  <div class="specimen">
+    <div class="label">H1 — Main heading</div>
+    <p class="pl-h1">Life insurance made simple</p>
+  </div>
+
+  <div class="specimen">
+    <div class="label">Top subheading — ALL CAPS, tracked</div>
+    <p class="pl-subheading-caps">Life insurance</p>
+  </div>
+
+  <div class="specimen">
+    <div class="label">Section heading — white on navy block</div>
+    <span class="pl-section-heading">Why choose us</span>
+  </div>
+
+  <div class="specimen">
+    <div class="label">Body — sentence case, left-aligned</div>
+    <p class="pl-body">We talk to our customers like they're our friends and family. Life insurance, when you strip away the jargon, is all about protecting what matters most.</p>
+  </div>
+
+  <div class="specimen">
+    <div class="label">Quote — Lora Bold-Italic</div>
+    <p class="pl-quote">"A safety net, giving you peace of mind so you can focus on enjoying life's precious moments."</p>
+  </div>
+
+  <div class="specimen">
+    <div class="label">Mixed heading — Poppins + Lora</div>
+    <p class="pl-mixed-heading pl-h2"><span class="pl-mixed-sans">Protect</span> <span class="pl-mixed-serif">your future</span></p>
+  </div>
+
+  <div class="specimen on-navy">
+    <div class="label" style="color:var(--color-light-pink)">Highlighter on navy</div>
+    <p class="pl-body" style="color:var(--color-white)">We believe in <span class="pl-highlighter">protecting</span> what matters most.</p>
+  </div>
+
+  <div class="specimen">
+    <div class="label">Hand-drawn underline</div>
+    <p class="pl-h2"><span class="pl-underline-accent">Investing</span> in our people to protect yours</p>
+  </div>
+
+  <div class="specimen">
+    <div class="label">Button text</div>
+    <a href="#" class="pl-btn pl-btn-primary">Get a quote</a>
+  </div>
+
+  <div class="specimen">
+    <div class="label">Link text</div>
+    <p class="pl-body">Learn more about our <a href="#" class="pl-link">life insurance options</a>.</p>
+  </div>
+</body>
+</html>

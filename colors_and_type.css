@@ -1,0 +1,255 @@
+/**
+ * Protect Line design tokens
+ * Source of truth for Claude Design, Cursor, and all HTML specimens.
+ * Do not invent colours outside this file.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,700&family=Poppins:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+:root {
+  /* ── Brand primaries ── */
+  --color-navy: #0c073d;
+  --color-white: #ffffff;
+  --color-hot-pink: #f20779;
+
+  /* ── Secondary blues (backgrounds / sections only) ── */
+  --color-mid-blue: #a3c8f5;
+  --color-light-blue: #cfdbf2;
+  --color-fair-blue: #ecf1fa;
+
+  /* ── Secondary pinks ── */
+  --color-mid-pink: #ff61b1;
+  --color-light-pink: #fdb3df;
+  --color-fair-pink: #fce6f2;
+
+  /* ── Figma Dark Blue ramp (optional primitives) ── */
+  --color-dark-blue-50: #f4f3f9;
+  --color-dark-blue-100: #e8e7f3;
+  --color-dark-blue-200: #c5c3e0;
+  --color-dark-blue-300: #9f9ccb;
+  --color-dark-blue-400: #6b67a8;
+  --color-dark-blue-500: #3a337d;
+  --color-dark-blue-600: #2a2368;
+  --color-dark-blue-700: #18124d;
+  --color-dark-blue-800: #0c073d;
+  --color-dark-blue-900: #08052e;
+
+  /* ── Figma Pink ramp (optional primitives) ── */
+  --color-pink-50: #fce6f2;
+  --color-pink-100: #fdb3df;
+  --color-pink-200: #fdb3df;
+  --color-pink-300: #ff61b1;
+  --color-pink-400: #ff4da6;
+  --color-pink-500: #f20779;
+  --color-pink-600: #d9066c;
+  --color-pink-700: #b8055a;
+  --color-pink-800: #97044a;
+  --color-pink-900: #76033a;
+
+  /* ── Semantic colours ── */
+  --color-bg-primary: var(--color-navy);
+  --color-bg-secondary: var(--color-fair-blue);
+  --color-bg-surface: var(--color-white);
+  --color-bg-nav: var(--color-dark-blue-700);
+  --color-bg-nav-border: var(--color-dark-blue-500);
+  --color-text-primary: var(--color-navy);
+  --color-text-on-dark: var(--color-white);
+  --color-text-on-navy-heading: var(--color-light-pink);
+  --color-text-link: var(--color-hot-pink);
+  --color-cta-bg: var(--color-hot-pink);
+  --color-cta-border: var(--color-mid-pink);
+  --color-cta-text: var(--color-white);
+  --color-graph: var(--color-mid-pink);
+  --color-icon-bg: var(--color-fair-pink);
+
+  /* ── Typography ── */
+  --font-primary: 'Poppins', Arial, sans-serif;
+  --font-accent: 'Lora', Georgia, serif;
+  --font-fallback: Arial, sans-serif;
+
+  --font-size-display: 3rem;
+  --font-size-h1: 2.5rem;
+  --font-size-h2: 2rem;
+  --font-size-h3: 1.5rem;
+  --font-size-h4: 1.25rem;
+  --font-size-body: 1rem;
+  --font-size-small: 0.875rem;
+  --font-size-caption: 0.75rem;
+  --font-size-button: 1rem;
+
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-body: 1.6;
+  --line-height-heading: 1.3;
+
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.08em;
+  --letter-spacing-tracked: 0.15em;
+
+  /* ── Spacing (Design System Foundations naming) ── */
+  --spacing-xxsm: 4px;
+  --spacing-xsm: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xlg: 32px;
+  --spacing-hg: 40px;
+  --spacing-xhg: 48px;
+  --spacing-xxlg: 64px;
+  --spacing-xxhg: 80px;
+  --spacing-xxxhg: 96px;
+  --spacing-enorm: 128px;
+
+  /* ── Layout ── */
+  --container-max: 1200px;
+  --container-padding: var(--spacing-lg);
+  --section-padding-y: var(--spacing-xxhg);
+  --grid-gap: var(--spacing-lg);
+
+  /* ── Radius ── */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 100px;
+  --radius-card: var(--radius-lg);
+
+  /* ── Depth (minimal — brand is mostly flat) ── */
+  --shadow-nav: 0 2px 6px rgba(16, 24, 40, 0.06);
+  --shadow-none: none;
+
+  /* ── Motion ── */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+/* ── Base reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  background: var(--color-bg-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-text-link);
+  font-weight: var(--font-weight-bold);
+  text-decoration: underline;
+}
+
+/* ── Type scale utilities ── */
+.pl-display {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.pl-h1 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+}
+
+.pl-h2 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+}
+
+.pl-h3 {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-heading);
+}
+
+.pl-subheading-caps {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-tracked);
+  text-transform: uppercase;
+}
+
+.pl-section-heading {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  background: var(--color-navy);
+  color: var(--color-white);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  display: inline-block;
+}
+
+.pl-body {
+  font-family: var(--font-primary);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+}
+
+.pl-quote {
+  font-family: var(--font-accent);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  font-style: italic;
+  line-height: var(--line-height-heading);
+  text-align: center;
+}
+
+.pl-mixed-heading .pl-mixed-sans {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.pl-mixed-heading .pl-mixed-serif {
+  font-family: var(--font-accent);
+  font-weight: var(--font-weight-bold);
+  font-style: italic;
+}
+
+.pl-highlighter {
+  background: var(--color-hot-pink);
+  color: var(--color-white);
+  padding: 0 var(--spacing-xsm);
+}
+
+.pl-underline-accent {
+  position: relative;
+  display: inline-block;
+}
+
+.pl-underline-accent::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 4px;
+  background: var(--color-hot-pink);
+  border-radius: 2px;
+  transform: rotate(-1deg);
+}

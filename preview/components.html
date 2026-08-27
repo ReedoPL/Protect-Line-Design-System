@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protect Line — component preview</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <link rel="stylesheet" href="../components/components.css">
+  <style>
+    body { padding: var(--spacing-xhg); }
+    .specimen { margin-bottom: var(--spacing-xxhg); }
+    .specimen__label { font-size: var(--font-size-caption); color: var(--color-dark-blue-400); text-transform: uppercase; letter-spacing: var(--letter-spacing-wide); margin-bottom: var(--spacing-md); }
+    .specimen__row { display: flex; gap: var(--spacing-md); flex-wrap: wrap; align-items: center; }
+    .dark-bg { background: var(--color-navy); padding: var(--spacing-lg); border-radius: var(--radius-md); }
+  </style>
+</head>
+<body>
+  <h1 class="pl-h1">Components</h1>
+
+  <div class="specimen">
+    <div class="specimen__label">Buttons</div>
+    <div class="specimen__row">
+      <a href="#" class="pl-btn pl-btn-primary">Get a quote</a>
+      <a href="#" class="pl-btn pl-btn-secondary">Learn more</a>
+      <a href="#" class="pl-btn pl-btn-tertiary">View details</a>
+    </div>
+    <div class="specimen__row dark-bg" style="margin-top:var(--spacing-md)">
+      <a href="#" class="pl-btn pl-btn-primary">Get a quote</a>
+      <a href="#" class="pl-btn pl-btn-secondary-light">Contact us</a>
+    </div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen__label">Header / navigation</div>
+    <header class="pl-header" id="demo-header">
+      <a href="#" class="pl-header__logo" aria-label="Protect Line home">
+        <img src="../assets/logo-white-pink.svg" alt="Protect Line" width="191" height="43">
+      </a>
+      <nav>
+        <ul class="pl-header__nav">
+          <li><a href="#">Insurance ▾</a></li>
+          <li><a href="#">About ▾</a></li>
+          <li><a href="#">Resources ▾</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+      <a href="#" class="pl-btn pl-btn-primary pl-header__cta">Get a quote</a>
+      <button class="pl-header__menu-toggle" aria-label="Open menu" onclick="document.getElementById('demo-header').classList.toggle('is-open')">☰</button>
+    </header>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen__label">Tags</div>
+    <div class="specimen__row">
+      <span class="pl-tag">Life insurance</span>
+      <span class="pl-tag">Critical illness</span>
+      <span class="pl-tag pl-tag--outline">Income protection</span>
+    </div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen__label">Cards</div>
+    <div class="pl-grid-3">
+      <div class="pl-card-product">
+        <h3 class="pl-card-product__title">Life insurance</h3>
+        <p class="pl-card-product__text">Protect your loved ones with cover that fits your life and budget.</p>
+        <a href="#" class="pl-btn pl-btn-primary">Get a quote</a>
+      </div>
+      <div class="pl-card-review">
+        <div class="pl-card-review__stars">★★★★★</div>
+        <p class="pl-card-review__quote">"Brilliant service from start to finish. They made everything so easy to understand."</p>
+        <div class="pl-card-review__author">Sarah M. — Trustpilot</div>
+      </div>
+      <div class="pl-card-expandable is-open">
+        <div class="pl-card-expandable__header">What is life insurance? ▾</div>
+        <div class="pl-card-expandable__body">Life insurance is a policy that pays out a lump sum to your beneficiaries if you pass away during the term of the policy.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen__label">FAQ accordion</div>
+    <div class="pl-accordion">
+      <div class="pl-accordion__item is-open">
+        <button class="pl-accordion__question">How much cover do I need? <span>−</span></button>
+        <div class="pl-accordion__answer">It depends on your mortgage, dependants, and lifestyle. Our advisers can help you work out the right amount.</div>
+      </div>
+      <div class="pl-accordion__item">
+        <button class="pl-accordion__question">How long does it take to get covered? <span>+</span></button>
+        <div class="pl-accordion__answer">Most applications are completed within 30 minutes over the phone.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="specimen">
+    <div class="specimen__label">Testimonial</div>
+    <div class="pl-testimonial">
+      <p class="pl-testimonial__quote">"When it comes to whole of life insurance, think of it as a lifelong companion."</p>
+      <div class="pl-testimonial__author">Protect Line customer</div>
+      <div class="pl-testimonial__role">Verified review</div>
+    </div>
+  </div>
+</body>
+</html>

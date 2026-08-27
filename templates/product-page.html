@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protect Line — product page template</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <link rel="stylesheet" href="../components/components.css">
+</head>
+<body>
+  <!-- TEMPLATE: Product page with sub-hero, content blocks, FAQ, CTA -->
+  <div style="padding:var(--spacing-md) var(--container-padding);background:var(--color-fair-blue)">
+    <header class="pl-header" id="prod-header">
+      <a href="#" class="pl-header__logo"><img src="../assets/logo-white-pink.svg" alt="Protect Line" width="191" height="43"></a>
+      <nav><ul class="pl-header__nav">
+        <li><a href="#">Insurance ▾</a></li>
+        <li><a href="#">About ▾</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul></nav>
+      <a href="#" class="pl-btn pl-btn-primary pl-header__cta">Get a quote</a>
+      <button class="pl-header__menu-toggle" onclick="document.getElementById('prod-header').classList.toggle('is-open')">☰</button>
+    </header>
+  </div>
+
+  <!-- Sub-hero (smaller than landing hero) -->
+  <section class="pl-hero pl-hero--fair-blue" style="padding:var(--spacing-xhg) var(--container-padding)">
+    <p class="pl-subheading-caps">[Product category]</p>
+    <h1 class="pl-h1" style="margin-bottom:var(--spacing-md)">[Product name in sentence case]</h1>
+    <p class="pl-body" style="max-width:640px;margin:0 auto var(--spacing-lg)">[One-line product description — explain what it does in plain English.]</p>
+    <a href="#" class="pl-btn pl-btn-primary">Get a quote</a>
+  </section>
+
+  <!-- Content block -->
+  <section class="pl-section">
+    <div class="pl-container">
+      <div class="pl-card-content">
+        <div class="pl-card-content__image">[Product image]</div>
+        <div>
+          <h2 class="pl-h2">[Feature headline]</h2>
+          <p class="pl-body">[Feature description with jargon explained once.]</p>
+          <a href="#" class="pl-link">Learn more about [term]</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pl-section pl-section--fair-blue">
+    <div class="pl-container">
+      <div style="text-align:center;margin-bottom:var(--spacing-xhg)"><span class="pl-section-heading">FAQs</span></div>
+      <div class="pl-accordion">
+        <div class="pl-accordion__item is-open">
+          <button class="pl-accordion__question" onclick="this.parentElement.classList.toggle('is-open')">[Question 1] <span>−</span></button>
+          <div class="pl-accordion__answer">[Answer with jargon explained.]</div>
+        </div>
+        <div class="pl-accordion__item">
+          <button class="pl-accordion__question" onclick="this.parentElement.classList.toggle('is-open')">[Question 2] <span>+</span></button>
+          <div class="pl-accordion__answer">[Answer]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pl-section pl-section--navy" style="text-align:center">
+    <div class="pl-container">
+      <h2 class="pl-h2" style="color:var(--color-white)">Ready to get covered?</h2>
+      <a href="#" class="pl-btn pl-btn-primary" style="margin-top:var(--spacing-lg)">Get a free quote</a>
+    </div>
+  </section>
+
+  <footer class="pl-footer">
+    <div class="pl-footer__bottom" style="border:none;padding:0">
+      <span>© 2026 Protect Line. All rights reserved.</span>
+    </div>
+  </footer>
+</body>
+</html>

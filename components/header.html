@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Header — Protect Line</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <link rel="stylesheet" href="components.css">
+  <style>body{padding:var(--spacing-xhg);background:var(--color-fair-blue)}</style>
+</head>
+<body>
+  <h1 class="pl-h2">Header / navigation</h1>
+  <p class="pl-body">Pill-shaped nav on Dark Blue 700. White bold links. Primary CTA right-aligned. Collapses to hamburger on mobile.</p>
+  <header class="pl-header" id="header">
+    <a href="#" class="pl-header__logo" aria-label="Protect Line home">
+      <img src="../assets/logo-white-pink.svg" alt="Protect Line" width="191" height="43">
+    </a>
+    <nav>
+      <ul class="pl-header__nav">
+        <li><a href="#">Insurance ▾</a></li>
+        <li><a href="#">About ▾</a></li>
+        <li><a href="#">Resources ▾</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+    <a href="#" class="pl-btn pl-btn-primary pl-header__cta">Get a quote</a>
+    <button class="pl-header__menu-toggle" aria-label="Open menu" onclick="document.getElementById('header').classList.toggle('is-open')">☰</button>
+  </header>
+</body>
+</html>

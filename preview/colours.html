@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protect Line — colour preview</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { padding: var(--spacing-xhg); }
+    h1 { margin-bottom: var(--spacing-xhg); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: var(--spacing-lg); }
+    .swatch { border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-light-blue); }
+    .swatch__color { height: 80px; }
+    .swatch__info { padding: var(--spacing-sm); font-size: var(--font-size-small); }
+    .swatch__name { font-weight: var(--font-weight-bold); }
+    .swatch__hex { color: var(--color-dark-blue-400); font-family: monospace; }
+    .group-title { grid-column: 1 / -1; font-size: var(--font-size-h3); font-weight: var(--font-weight-bold); margin-top: var(--spacing-lg); }
+  </style>
+</head>
+<body>
+  <h1 class="pl-h1">Colour palette</h1>
+  <div class="grid">
+    <div class="group-title">Primary</div>
+    <div class="swatch"><div class="swatch__color" style="background:#0C073D"></div><div class="swatch__info"><div class="swatch__name">Navy</div><div class="swatch__hex">--color-navy · #0C073D</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#FFFFFF;border-bottom:1px solid #eee"></div><div class="swatch__info"><div class="swatch__name">White</div><div class="swatch__hex">--color-white · #FFFFFF</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#F20779"></div><div class="swatch__info"><div class="swatch__name">Hot pink</div><div class="swatch__hex">--color-hot-pink · #F20779</div></div></div>
+
+    <div class="group-title">Secondary blues (backgrounds only)</div>
+    <div class="swatch"><div class="swatch__color" style="background:#A3C8F5"></div><div class="swatch__info"><div class="swatch__name">Mid blue</div><div class="swatch__hex">--color-mid-blue · #A3C8F5</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#CFDBF2"></div><div class="swatch__info"><div class="swatch__name">Light blue</div><div class="swatch__hex">--color-light-blue · #CFDBF2</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#ECF1FA"></div><div class="swatch__info"><div class="swatch__name">Fair blue</div><div class="swatch__hex">--color-fair-blue · #ECF1FA</div></div></div>
+
+    <div class="group-title">Secondary pinks</div>
+    <div class="swatch"><div class="swatch__color" style="background:#FF61B1"></div><div class="swatch__info"><div class="swatch__name">Mid pink</div><div class="swatch__hex">--color-mid-pink · #FF61B1</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#FDB3DF"></div><div class="swatch__info"><div class="swatch__name">Light pink</div><div class="swatch__hex">--color-light-pink · #FDB3DF</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#FCE6F2"></div><div class="swatch__info"><div class="swatch__name">Fair pink</div><div class="swatch__hex">--color-fair-pink · #FCE6F2</div></div></div>
+
+    <div class="group-title">Dark Blue ramp (Figma)</div>
+    <div class="swatch"><div class="swatch__color" style="background:#18124D"></div><div class="swatch__info"><div class="swatch__name">Dark Blue 700</div><div class="swatch__hex">--color-dark-blue-700 · nav bg</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#3A337D"></div><div class="swatch__info"><div class="swatch__name">Dark Blue 500</div><div class="swatch__hex">--color-dark-blue-500 · nav border</div></div></div>
+  </div>
+</body>
+</html>

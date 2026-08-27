@@ -1,0 +1,18 @@
+---
+description: Protect Line north star — always applied brand and design guardrails
+alwaysApply: true
+---
+
+# Protect Line north star
+
+You are working on the Protect Line design system. Use British English.
+
+- Canonical visual truth: `DESIGN.md` + `colors_and_type.css`
+- Do not invent brand colours, fonts, logos, or customer facts
+- Mark gaps with `[REQUIRES SOURCE]`
+- Name is two words: **Protect Line** (never "Protectline")
+- Sentence case everywhere; British spelling
+- Poppins primary, Lora Bold-Italic accent only, Arial email fallback only
+- Hot pink (`--color-hot-pink`) used sparingly for CTAs, links, Hugo
+- No generic SaaS styling (Inter, sky blue, card shadows)
+- For any visual task, read `DESIGN.md` before generating UI
