@@ -1,0 +1,228 @@
+{
+  "$description": "Protect Line foundation tokens in W3C Design Tokens (DTCG) format. A mirror of the :root block in colors_and_type.css, which stays the hand-edited source for the marketing kit. scripts/build-tokens.js --check fails if the two disagree. CSS custom property name = \"--\" + the token path joined with \"-\".",
+  "color": {
+    "navy": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.0471, 0.0275, 0.2392], "hex": "#0c073d" },
+      "$description": "Brand primary. Backgrounds, text, dominant brand colour."
+    },
+    "white": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [1, 1, 1], "hex": "#ffffff" },
+      "$description": "Backgrounds, text on dark/pink."
+    },
+    "hot-pink": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.949, 0.0275, 0.4745], "hex": "#f20779" },
+      "$description": "CTA buttons, links, icons, Hugo. Use sparingly."
+    },
+    "mid-blue": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.6392, 0.7843, 0.9608], "hex": "#a3c8f5" },
+      "$description": "Section backgrounds."
+    },
+    "light-blue": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.8118, 0.8588, 0.949], "hex": "#cfdbf2" },
+      "$description": "Section backgrounds."
+    },
+    "fair-blue": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.9255, 0.9451, 0.9804], "hex": "#ecf1fa" },
+      "$description": "Section backgrounds."
+    },
+    "mid-pink": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [1, 0.3804, 0.6941], "hex": "#ff61b1" },
+      "$description": "Graphs, CTA borders."
+    },
+    "light-pink": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.9922, 0.702, 0.8745], "hex": "#fdb3df" },
+      "$description": "Headings on navy backgrounds only."
+    },
+    "fair-pink": {
+      "$type": "color",
+      "$value": { "colorSpace": "srgb", "components": [0.9882, 0.902, 0.949], "hex": "#fce6f2" },
+      "$description": "Illustrations and icon backgrounds only."
+    },
+    "dark-blue": {
+      "50": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.9569, 0.9529, 0.9765], "hex": "#f4f3f9" }
+      },
+      "100": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.9098, 0.9059, 0.9529], "hex": "#e8e7f3" }
+      },
+      "200": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.7725, 0.7647, 0.8784], "hex": "#c5c3e0" }
+      },
+      "300": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.6235, 0.6118, 0.7961], "hex": "#9f9ccb" }
+      },
+      "400": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.4196, 0.4039, 0.6588], "hex": "#6b67a8" }
+      },
+      "500": { "$type": "color", "$value": { "colorSpace": "srgb", "components": [0.2275, 0.2, 0.4902], "hex": "#3a337d" } },
+      "600": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.1647, 0.1373, 0.4078], "hex": "#2a2368" }
+      },
+      "700": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.0941, 0.0706, 0.302], "hex": "#18124d" }
+      },
+      "800": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.0471, 0.0275, 0.2392], "hex": "#0c073d" }
+      },
+      "900": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.0314, 0.0196, 0.1804], "hex": "#08052e" }
+      }
+    },
+    "pink": {
+      "50": { "$type": "color", "$value": { "colorSpace": "srgb", "components": [0.9882, 0.902, 0.949], "hex": "#fce6f2" } },
+      "100": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.9922, 0.702, 0.8745], "hex": "#fdb3df" }
+      },
+      "200": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.9922, 0.702, 0.8745], "hex": "#fdb3df" }
+      },
+      "300": { "$type": "color", "$value": { "colorSpace": "srgb", "components": [1, 0.3804, 0.6941], "hex": "#ff61b1" } },
+      "400": { "$type": "color", "$value": { "colorSpace": "srgb", "components": [1, 0.302, 0.651], "hex": "#ff4da6" } },
+      "500": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.949, 0.0275, 0.4745], "hex": "#f20779" }
+      },
+      "600": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.851, 0.0235, 0.4235], "hex": "#d9066c" }
+      },
+      "700": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.7216, 0.0196, 0.3529], "hex": "#b8055a" }
+      },
+      "800": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.5922, 0.0157, 0.2902], "hex": "#97044a" }
+      },
+      "900": {
+        "$type": "color",
+        "$value": { "colorSpace": "srgb", "components": [0.4627, 0.0118, 0.2275], "hex": "#76033a" }
+      }
+    },
+    "bg-primary": { "$value": "{color.navy}" },
+    "bg-secondary": { "$value": "{color.fair-blue}" },
+    "bg-surface": { "$value": "{color.white}" },
+    "bg-nav": { "$value": "{color.dark-blue.700}" },
+    "bg-nav-border": { "$value": "{color.dark-blue.500}" },
+    "text-primary": { "$value": "{color.navy}" },
+    "text-on-dark": { "$value": "{color.white}" },
+    "text-on-navy-heading": { "$value": "{color.light-pink}" },
+    "text-link": { "$value": "{color.hot-pink}" },
+    "cta-bg": { "$value": "{color.hot-pink}" },
+    "cta-border": { "$value": "{color.mid-pink}" },
+    "cta-text": { "$value": "{color.white}" },
+    "graph": { "$value": "{color.mid-pink}" },
+    "icon-bg": { "$value": "{color.fair-pink}" }
+  },
+  "font": {
+    "primary": { "$type": "fontFamily", "$value": ["Poppins", "Arial", "sans-serif"] },
+    "accent": { "$type": "fontFamily", "$value": ["Lora", "Georgia", "serif"] },
+    "fallback": { "$type": "fontFamily", "$value": ["Arial", "sans-serif"] }
+  },
+  "font-size": {
+    "display": { "$type": "dimension", "$value": { "value": 3, "unit": "rem" } },
+    "h1": { "$type": "dimension", "$value": { "value": 2.5, "unit": "rem" } },
+    "h2": { "$type": "dimension", "$value": { "value": 2, "unit": "rem" } },
+    "h3": { "$type": "dimension", "$value": { "value": 1.5, "unit": "rem" } },
+    "h4": { "$type": "dimension", "$value": { "value": 1.25, "unit": "rem" } },
+    "body": { "$type": "dimension", "$value": { "value": 1, "unit": "rem" } },
+    "small": { "$type": "dimension", "$value": { "value": 0.875, "unit": "rem" } },
+    "caption": { "$type": "dimension", "$value": { "value": 0.75, "unit": "rem" } },
+    "button": { "$type": "dimension", "$value": { "value": 1, "unit": "rem" } }
+  },
+  "font-weight": {
+    "regular": { "$type": "fontWeight", "$value": 400 },
+    "semibold": { "$type": "fontWeight", "$value": 600 },
+    "bold": { "$type": "fontWeight", "$value": 700 }
+  },
+  "line-height": {
+    "tight": { "$type": "number", "$value": 1.2 },
+    "body": { "$type": "number", "$value": 1.6 },
+    "heading": { "$type": "number", "$value": 1.3 }
+  },
+  "letter-spacing": {
+    "tight": { "$type": "number", "$value": -0.01, "$extensions": { "uk.co.protectline.css-unit": "em" } },
+    "normal": { "$type": "number", "$value": 0, "$extensions": { "uk.co.protectline.css-unit": "em" } },
+    "wide": { "$type": "number", "$value": 0.08, "$extensions": { "uk.co.protectline.css-unit": "em" } },
+    "tracked": { "$type": "number", "$value": 0.15, "$extensions": { "uk.co.protectline.css-unit": "em" } }
+  },
+  "spacing": {
+    "xxsm": { "$type": "dimension", "$value": { "value": 4, "unit": "px" } },
+    "xsm": { "$type": "dimension", "$value": { "value": 8, "unit": "px" } },
+    "sm": { "$type": "dimension", "$value": { "value": 12, "unit": "px" } },
+    "md": { "$type": "dimension", "$value": { "value": 16, "unit": "px" } },
+    "lg": { "$type": "dimension", "$value": { "value": 24, "unit": "px" } },
+    "xlg": { "$type": "dimension", "$value": { "value": 32, "unit": "px" } },
+    "hg": { "$type": "dimension", "$value": { "value": 40, "unit": "px" } },
+    "xhg": { "$type": "dimension", "$value": { "value": 48, "unit": "px" } },
+    "xxlg": { "$type": "dimension", "$value": { "value": 64, "unit": "px" } },
+    "xxhg": { "$type": "dimension", "$value": { "value": 80, "unit": "px" } },
+    "xxxhg": { "$type": "dimension", "$value": { "value": 96, "unit": "px" } },
+    "enorm": { "$type": "dimension", "$value": { "value": 128, "unit": "px" } }
+  },
+  "container": {
+    "max": { "$type": "dimension", "$value": { "value": 1200, "unit": "px" } },
+    "padding": { "$value": "{spacing.lg}" }
+  },
+  "section": { "padding-y": { "$value": "{spacing.xxhg}" } },
+  "grid": { "gap": { "$value": "{spacing.lg}" } },
+  "radius": {
+    "sm": { "$type": "dimension", "$value": { "value": 8, "unit": "px" } },
+    "md": { "$type": "dimension", "$value": { "value": 12, "unit": "px" } },
+    "lg": { "$type": "dimension", "$value": { "value": 16, "unit": "px" } },
+    "pill": { "$type": "dimension", "$value": { "value": 100, "unit": "px" } },
+    "card": { "$value": "{radius.lg}" }
+  },
+  "shadow": {
+    "nav": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": { "colorSpace": "srgb", "components": [0.0627, 0.0941, 0.1569], "alpha": 0.06, "hex": "#101828" },
+          "offsetX": { "value": 0, "unit": "px" },
+          "offsetY": { "value": 2, "unit": "px" },
+          "blur": { "value": 6, "unit": "px" },
+          "spread": { "value": 0, "unit": "px" }
+        }
+      ]
+    },
+    "none": { "$type": "shadow", "$value": [] }
+  },
+  "transition": {
+    "fast": {
+      "$type": "transition",
+      "$value": {
+        "duration": { "value": 150, "unit": "ms" },
+        "delay": { "value": 0, "unit": "ms" },
+        "timingFunction": [0.25, 0.1, 0.25, 1]
+      }
+    },
+    "base": {
+      "$type": "transition",
+      "$value": {
+        "duration": { "value": 250, "unit": "ms" },
+        "delay": { "value": 0, "unit": "ms" },
+        "timingFunction": [0.25, 0.1, 0.25, 1]
+      }
+    }
+  }
+}
