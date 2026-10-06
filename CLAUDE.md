@@ -9,11 +9,12 @@ For all UI and visual design work, follow the design system in this repository.
 3. `components/` — HTML/CSS specimens for each component
 4. `kit/index.html` — finished marketing page example
 5. `brand/voice.md` — copy tone and voice rules
+6. For product UI (apps, dashboards, tables, chat): `DESIGN.md` §10 App UI, `app-tokens.css` and `components/app-components.css`
 
 ## Rules
 
 - British English, sentence case, two-word **Protect Line**
-- Use **only** colours and spacing from `colors_and_type.css` — never invent hex
+- Use **only** colours and spacing from `colors_and_type.css` (and `app-tokens.css` for product UI) — never invent hex
 - Poppins primary, Lora Bold-Italic accent, Arial email fallback only
 - Hot pink sparingly: CTAs, links, Hugo, small accents
 - No generic SaaS styling, no fear-mongering tone

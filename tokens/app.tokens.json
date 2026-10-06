@@ -141,7 +141,7 @@
         "on-light": {
           "$type": "color",
           "$value": { "colorSpace": "srgb", "components": [0.9059, 0.4431, 0.251], "hex": "#e77140" },
-          "$description": "Slot 6. 2.97:1 on white — label it."
+          "$description": "Slot 6. 3.07:1 on white — only just over 3:1, so label thin marks."
         },
         "on-dark": {
           "$type": "color",
@@ -179,7 +179,7 @@
     "mono": {
       "$type": "fontFamily",
       "$value": ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "Menlo", "Consolas", "monospace"],
-      "$description": "App layer addition (GUI2-03), not in the Figma foundations — needs brand approval. Monospace for ids, codes and aligned figures. Its x-height matches Poppins at the same size (both 55% of the em), its digit width is within 5% of Poppins, and 0/O and 1/l/I are unambiguous. Needed because the Google Fonts build of Poppins has no tabular figures: font-variant-numeric: tabular-nums does nothing to it."
+      "$description": "App layer addition (GUI2-03), not in the Figma foundations — needs brand approval. Monospace for ids, codes and aligned figures. Measured against Poppins in Chromium: the same x-height at the same size (55% of the em), caps and figures 4% taller (so figures are set at 0.96em), digits within 5% of Poppins' width, and 0/O and 1/l/I are unambiguous. Needed because the Google Fonts build of Poppins has no tabular figures: font-variant-numeric: tabular-nums does nothing to it."
     }
   },
   "font-weight": {

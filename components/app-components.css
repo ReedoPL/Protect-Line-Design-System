@@ -74,7 +74,7 @@
    tabular figures, so aligned numbers use the monospace. */
 .pl-mono {
   font-family: var(--font-mono);
-  font-size: 0.93em;
+  font-size: 0.96em;
   font-variant-numeric: tabular-nums slashed-zero;
   letter-spacing: 0;
 }
@@ -519,7 +519,7 @@
 .pl-table tbody tr[aria-selected="true"] { background: var(--app-surface-selected); }
 .pl-table tbody tr[aria-selected="true"] td:first-child { box-shadow: inset 3px 0 0 var(--app-accent-strong); }
 
-.pl-table .is-num { text-align: right; font-family: var(--font-mono); font-size: 0.93em; font-variant-numeric: tabular-nums slashed-zero; }
+.pl-table .is-num { text-align: right; font-family: var(--font-mono); font-size: 0.96em; font-variant-numeric: tabular-nums slashed-zero; }
 .pl-table th.is-num { font-family: var(--font-primary); font-size: var(--app-font-size-xs); }
 .pl-table .is-check { width: 1%; padding-right: 0; }
 .pl-table .is-muted { color: var(--app-text-muted); }

@@ -14,6 +14,8 @@ Help non-designers create on-brand Protect Line visual assets using Claude Desig
 4. Matching specimen in `components/` or `kit/index.html`
 5. `brand/voice.md` for copy tone
 
+For product UI (admin tools, dashboards, tables, chat), also read `DESIGN.md` §10 App UI and use `app-tokens.css` with `components/app-components.css`. App-layer colours are added only in `tokens/app.tokens.json`, each with its reason.
+
 ## Immutable brand guardrails
 
 - **Name:** Protect Line (two words, never "Protectline")
@@ -36,7 +38,7 @@ Then visit `http://localhost:3000/kit/` or `http://localhost:3000/preview/`.
 
 ## Do not
 
-- Invent hex values not defined in `colors_and_type.css`
+- Invent hex values not defined in `colors_and_type.css` (or, for product UI, `app-tokens.css`)
 - Use Arial for headings or creative typography
 - Use Inter, Roboto, or other sans-serif substitutes
 - Use Title Case headings

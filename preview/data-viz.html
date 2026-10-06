@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data viz — Protect Line</title>
+  <script src="app-preview.js"></script>
+  <link rel="stylesheet" href="../app-tokens.css">
+  <link rel="stylesheet" href="../components/app-components.css">
+  <link rel="stylesheet" href="app-preview.css">
+  <style>
+    /* Categorical swatches */
+    .vz-slots { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--spacing-sm); }
+    .vz-slot { display: grid; gap: var(--app-space-6); min-width: 0; }
+    .vz-slot__chip { height: 64px; border-radius: var(--radius-sm); }
+    .vz-slot__n { font-size: var(--app-font-size-xs); font-weight: var(--font-weight-semibold); }
+    .vz-slot__name { font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-muted); min-height: calc(var(--app-font-size-xs) * var(--app-line-height-xs) * 2); }
+    .vz-slot__hex { font-family: var(--font-mono); font-size: var(--app-font-size-xs); color: var(--app-text-subtle); }
+    .vz-slot .pv-ratio[data-pass="warn"]::before { background: var(--app-status-warning-solid); }
+
+    /* Colour-vision strips */
+    .vz-cvd { display: grid; gap: var(--spacing-xsm); }
+    .vz-cvd__row { display: grid; grid-template-columns: 130px minmax(0, 1fr) 72px; gap: var(--spacing-md); align-items: center; }
+    .vz-cvd__name { font-size: var(--app-font-size-sm); font-weight: var(--font-weight-medium); }
+    .vz-cvd__strip { display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; height: 32px; border-radius: var(--radius-sm); overflow: hidden; }
+    .vz-cvd__min { text-align: right; }
+    .vz-cvd__head { display: grid; grid-template-columns: 130px minmax(0, 1fr) 72px; gap: var(--spacing-md); font-size: var(--app-font-size-xs); color: var(--app-text-subtle); }
+    .vz-cvd__head span:last-child { text-align: right; }
+
+    /* Charts */
+    .vz-figure { margin: 0; padding: var(--spacing-lg); display: grid; gap: var(--spacing-md); min-width: 0; }
+    .vz-figure__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--spacing-xsm) var(--spacing-md); }
+    .vz-figure__title { margin: 0; font-size: var(--app-font-size-lg); line-height: var(--app-line-height-lg); font-weight: var(--font-weight-semibold); }
+    .vz-figure__sub { margin: 0; font-size: var(--app-font-size-sm); line-height: var(--app-line-height-sm); color: var(--app-text-muted); }
+    .vz-legend { display: flex; flex-wrap: wrap; gap: var(--app-space-6) var(--spacing-md); font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-muted); }
+    .vz-legend span { display: inline-flex; align-items: center; gap: var(--app-space-6); }
+    .vz-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+    .vz-svg { display: block; overflow: visible; }
+    .vz-grid { stroke: var(--viz-grid); stroke-width: 1; shape-rendering: crispEdges; }
+    .vz-axis { stroke: var(--viz-axis); stroke-width: 1; shape-rendering: crispEdges; }
+    .vz-tick { fill: var(--app-text-subtle); font-family: var(--font-primary); font-size: 11px; }
+    .vz-label { fill: var(--app-text); font-family: var(--font-primary); font-size: 12px; font-weight: var(--font-weight-semibold); }
+    .vz-mark { cursor: pointer; transition: opacity var(--transition-fast); }
+    .vz-mark:hover, .vz-mark:focus-visible { opacity: 0.8; outline: none; }
+    .vz-s1 { fill: var(--viz-cat-1); }
+    .vz-s2 { fill: var(--viz-cat-2); }
+
+    .vz-stack { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--spacing-sm) var(--spacing-md); align-items: center; }
+    .vz-stack__label { font-size: var(--app-font-size-sm); color: var(--app-text-muted); }
+    .vz-stack__bar { display: flex; gap: 2px; height: 24px; }
+    .vz-stack__seg { flex-basis: 0; min-width: 0; display: grid; place-items: center; font-family: var(--font-mono); font-size: 11px; font-variant-numeric: tabular-nums; cursor: pointer; }
+    .vz-stack__seg:first-child { border-radius: 4px 0 0 4px; }
+    .vz-stack__seg:last-child { border-radius: 0 4px 4px 0; }
+    .vz-stack__seg:hover, .vz-stack__seg:focus-visible { opacity: 0.85; }
+
+    .vz-heat-scroll { overflow-x: auto; }
+    .vz-heat { display: grid; gap: 2px; min-width: 560px; }
+    .vz-heat__col { font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-subtle); text-align: center; align-self: end; padding-bottom: var(--app-space-6); }
+    .vz-heat__row { font-size: var(--app-font-size-sm); color: var(--app-text-muted); align-self: center; padding-right: var(--spacing-sm); white-space: nowrap; }
+    .vz-heat__cell { height: 36px; display: grid; place-items: center; font-family: var(--font-mono); font-size: var(--app-font-size-xs); font-variant-numeric: tabular-nums; border-radius: 3px; cursor: pointer; }
+    .vz-heat__cell:hover, .vz-heat__cell:focus-visible { box-shadow: inset 0 0 0 2px var(--app-surface); }
+    .vz-scale { display: flex; flex-wrap: wrap; gap: var(--app-space-6) var(--spacing-md); font-size: var(--app-font-size-xs); color: var(--app-text-muted); }
+    .vz-scale__item { display: inline-flex; align-items: center; gap: var(--app-space-6); }
+    .vz-scale__swatch { width: 18px; height: 12px; border-radius: 2px; box-shadow: inset 0 0 0 1px var(--app-border-subtle); }
+
+    .vz-table summary { cursor: pointer; font-size: var(--app-font-size-sm); font-weight: var(--font-weight-medium); color: var(--app-text-link); }
+    .vz-table table { margin-top: var(--spacing-sm); }
+
+    /* Ramps */
+    .vz-ramps { display: grid; gap: var(--spacing-md); }
+    .vz-ramp { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--spacing-md); align-items: center; }
+    .vz-ramp__name { font-size: var(--app-font-size-sm); font-weight: var(--font-weight-medium); }
+    .vz-ramp__name small { display: block; font-weight: var(--font-weight-regular); font-size: var(--app-font-size-xs); color: var(--app-text-subtle); }
+    .vz-ramp__steps { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 2px; height: 40px; border-radius: var(--radius-sm); overflow: hidden; }
+    .vz-ramp__steps span { display: grid; place-items: end start; padding: var(--app-space-2) var(--app-space-6); font-family: var(--font-mono); font-size: 10px; }
+
+    /* Tooltip */
+    .vz-tip { position: absolute; z-index: 30; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity var(--transition-fast), transform var(--transition-fast); background: var(--app-surface-raised); border: 1px solid var(--app-border); border-radius: var(--radius-sm); box-shadow: var(--app-shadow-overlay); padding: var(--spacing-xsm) var(--spacing-sm); font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text); min-width: 140px; }
+    .vz-tip.is-on { opacity: 1; transform: none; }
+    .vz-tip__title { color: var(--app-text-subtle); margin-bottom: var(--app-space-2); }
+    .vz-tip__row { display: grid; grid-template-columns: 12px auto 1fr; align-items: center; gap: var(--app-space-6); }
+    .vz-tip__key { width: 12px; height: 3px; border-radius: 2px; }
+    .vz-tip__value { font-weight: var(--font-weight-semibold); font-family: var(--font-mono); }
+    .vz-tip__label { color: var(--app-text-muted); }
+
+    /* PDF mapping */
+    .vz-map .cw-chip { width: 22px; height: 22px; border-radius: 5px; display: inline-block; vertical-align: middle; box-shadow: inset 0 0 0 1px var(--app-border); }
+    .vz-map td { white-space: normal; padding-top: var(--spacing-xsm); padding-bottom: var(--spacing-xsm); }
+    .vz-map code { font-family: var(--font-mono); font-size: var(--app-font-size-xs); }
+
+    @media (max-width: 1023px) {
+      .vz-slots { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 767px) {
+      .vz-slots { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-md); }
+      .vz-slot__chip { height: 40px; }
+      .vz-slot__name { min-height: 0; }
+      .vz-cvd__row, .vz-cvd__head { grid-template-columns: 92px minmax(0, 1fr) 44px; gap: var(--spacing-sm); }
+      .vz-cvd__name { font-size: var(--app-font-size-xs); }
+      .vz-ramp { grid-template-columns: minmax(0, 1fr); gap: var(--app-space-6); }
+      .vz-figure { padding: var(--spacing-md); }
+      .vz-ramp__steps span { font-size: 0; }
+    }
+  </style>
+</head>
+<body class="pl-app">
+  <header class="pv-top">
+    <a class="pv-top__brand" href="../kit/index.html" aria-label="Protect Line">
+      <img class="pv-logo--light" src="../assets/logos/primary-logo-navy-pink.png" alt="Protect Line" width="191" height="43">
+      <img class="pv-logo--dark" src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+      <span>App layer</span>
+    </a>
+    <nav class="pv-top__nav" aria-label="App layer previews">
+      <a href="app-colours.html">Colours</a>
+      <a href="app-type.html">Type</a>
+      <a href="app-components.html">Components</a>
+      <a href="data-viz.html" aria-current="page">Data viz</a>
+    </nav>
+    <label class="pv-theme"><span>Dark</span><input class="pl-switch" type="checkbox" role="switch" data-theme-toggle></label>
+  </header>
+
+  <main class="pv-page">
+    <div class="pv-hero">
+      <span class="pl-text-eyebrow">App layer · data viz</span>
+      <h1>Charts that look like <em>us</em></h1>
+      <p>Eight series colours in a fixed order, led by navy and hot pink; sequential and diverging ramps from the brand ramps; and a check that every neighbouring pair stays distinct for colour-blind readers.</p>
+    </div>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Categorical, in order</h2>
+        <p>Assign slot 1, then 2, then 3 — never skip, never cycle, and keep a series' colour when a filter removes others. Past eight series, fold the tail into “Other”. Dark mode uses the same hues, stepped for navy.</p>
+      </div>
+      <div class="pl-panel pv-card">
+        <div class="vz-slots">
+          <div class="vz-slot"><span class="vz-slot__chip" style="background:var(--viz-cat-1)"></span><span class="vz-slot__n">1 · Brand ink</span><span class="vz-slot__name">Navy; pale lavender on dark</span><span class="vz-slot__hex" data-viz-hex="--viz-cat-1"></span><span class="pv-ratio" data-viz-contrast="--viz-cat-1"></span></div>
+          <div class="vz-slot"><span class="vz-slot__chip" style="background:var(--viz-cat-2)"></span><span class="vz-slot__n">2 · Hot pink</span><span class="vz-slot__name">The brand accent</span><span class="vz-slot__hex" data-viz-hex="--viz-cat-2"></span><span class="pv-ratio" data-viz-contrast="--viz-cat-2"></span></div>
+          <div class="vz-slot"><span class="vz-slot__chip" style="background:var(--viz-cat-3)"></span><span class="vz-slot__n">3 · Blue</span><span class="vz-slot__name">From the mid-blue hue</span><span class="vz-slot__hex" data-viz-hex="--viz-cat-3"></span><span class="pv-ratio" data-viz-contrast="--viz-cat-3"></span></div>
+          <div class="vz-slot"><span class="vz-slot__chip" style="background:var(--viz-cat-4)"></span><span class="vz-slot__n">4 · Amber</span><span class="vz-slot__name">Label it on white</span><span class="vz-slot__hex" data-viz-hex="--viz-cat-4"></span><span class="pv-ratio" data-viz-contrast="--viz-cat-4"></span></div>
+          <div class="vz-slot"><span class="vz-slot__chip" style="background:var(--viz-cat-5)"></span><span class="vz-slot__n">5 · Teal</span><span class="vz-slot__name">&nbsp;</span><span class="vz-slot__hex" data-viz-hex="--viz-cat-5"></span><span class="pv-ratio" data-viz-contrast="--viz-cat-5"></span></div>
+          <div class="vz-slot"><span class="vz-slot__chip" style="background:var(--viz-cat-6)"></span><span class="vz-slot__n">6 · Coral</span><span class="vz-slot__name">&nbsp;</span><span class="vz-slot__hex" data-viz-hex="--viz-cat-6"></span><span class="pv-ratio" data-viz-contrast="--viz-cat-6"></span></div>
+          <div class="vz-slot"><span class="vz-slot__chip" style="background:var(--viz-cat-7)"></span><span class="vz-slot__n">7 · Violet</span><span class="vz-slot__name">&nbsp;</span><span class="vz-slot__hex" data-viz-hex="--viz-cat-7"></span><span class="pv-ratio" data-viz-contrast="--viz-cat-7"></span></div>
+          <div class="vz-slot"><span class="vz-slot__chip" style="background:var(--viz-cat-8)"></span><span class="vz-slot__n">8 · Green</span><span class="vz-slot__name">Not the success green</span><span class="vz-slot__hex" data-viz-hex="--viz-cat-8"></span><span class="pv-ratio" data-viz-contrast="--viz-cat-8"></span></div>
+        </div>
+        <p class="pv-note">Ratios are against the chart surface. Under 3:1 (amber on white) the marks need a visible label or a table view beside them; coral is only just over. Status colours (success, warning, danger) are never series colours.</p>
+      </div>
+
+      <div class="pl-panel pv-card" style="margin-top:var(--spacing-md)">
+        <h3>As colour-blind readers see it</h3>
+        <div class="vz-cvd__head"><span></span><span>Slots 1 → 8, simulated (Machado et al. 2009, full severity)</span><span>Min ΔE00</span></div>
+        <div class="vz-cvd" id="vz-cvd"></div>
+        <p class="pv-note">Min ΔE00 is the smallest CIEDE2000 difference between neighbouring slots, recomputed here for the current theme. The gate in <code class="pv-code">scripts/cvd-report.js</code> is 10; the palette clears 20 in every simulation, light and dark. In scatter plots and maps, where any two colours can touch, stop at three series.</p>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>In use</h2>
+        <p>Thin bars with a 4px rounded end, a 2px gap between touching marks, hairline grid. Labels and values use text colours, never the series colour. Hover or tab to a mark for its values; every chart has a table view.</p>
+      </div>
+      <div class="pv-grid pv-grid--2">
+        <figure class="pl-panel vz-figure">
+          <div class="vz-figure__head">
+            <div><h3 class="vz-figure__title">Checklist pass rate</h3><p class="vz-figure__sub">Amelia Hart against the rest of Manchester sales, by week</p></div>
+            <div class="vz-legend" aria-hidden="true"><span><i style="background:var(--viz-cat-2)"></i>This agent</span><span><i style="background:var(--viz-cat-1)"></i>The rest</span></div>
+          </div>
+          <div id="vz-columns"></div>
+          <details class="vz-table">
+            <summary>Show as a table</summary>
+            <table class="pl-table">
+              <thead><tr><th>Week</th><th class="is-num">This agent</th><th class="is-num">The rest</th></tr></thead>
+              <tbody>
+                <tr><td>4 Aug</td><td class="is-num">72%</td><td class="is-num">74%</td></tr>
+                <tr><td>11 Aug</td><td class="is-num">75%</td><td class="is-num">73%</td></tr>
+                <tr><td>18 Aug</td><td class="is-num">71%</td><td class="is-num">75%</td></tr>
+                <tr><td>25 Aug</td><td class="is-num">78%</td><td class="is-num">74%</td></tr>
+                <tr><td>1 Sep</td><td class="is-num">82%</td><td class="is-num">76%</td></tr>
+                <tr><td>8 Sep</td><td class="is-num">80%</td><td class="is-num">75%</td></tr>
+                <tr><td>15 Sep</td><td class="is-num">85%</td><td class="is-num">77%</td></tr>
+                <tr><td>22 Sep</td><td class="is-num">88%</td><td class="is-num">76%</td></tr>
+              </tbody>
+            </table>
+          </details>
+        </figure>
+        <figure class="pl-panel vz-figure">
+          <div class="vz-figure__head">
+            <div><h3 class="vz-figure__title">How calls ended</h3><p class="vz-figure__sub">Share of calls by outcome, last 30 days</p></div>
+          </div>
+          <div class="vz-legend" aria-hidden="true"><span><i style="background:var(--viz-cat-1)"></i>Sale</span><span><i style="background:var(--viz-cat-2)"></i>Callback booked</span><span><i style="background:var(--viz-cat-3)"></i>Not interested</span><span><i style="background:var(--viz-cat-4)"></i>No answer</span><span><i style="background:var(--viz-other)"></i>Other</span></div>
+          <div id="vz-stack"></div>
+          <details class="vz-table">
+            <summary>Show as a table</summary>
+            <div class="pl-table-scroll">
+              <table class="pl-table">
+                <thead><tr><th>Team</th><th class="is-num">Sale</th><th class="is-num">Callback</th><th class="is-num">Not interested</th><th class="is-num">No answer</th><th class="is-num">Other</th></tr></thead>
+                <tbody>
+                  <tr><td>Manchester</td><td class="is-num">34%</td><td class="is-num">22%</td><td class="is-num">21%</td><td class="is-num">15%</td><td class="is-num">8%</td></tr>
+                  <tr><td>London</td><td class="is-num">29%</td><td class="is-num">25%</td><td class="is-num">24%</td><td class="is-num">14%</td><td class="is-num">8%</td></tr>
+                  <tr><td>Customer care</td><td class="is-num">12%</td><td class="is-num">18%</td><td class="is-num">31%</td><td class="is-num">27%</td><td class="is-num">12%</td></tr>
+                  <tr><td>Retention</td><td class="is-num">41%</td><td class="is-num">19%</td><td class="is-num">17%</td><td class="is-num">13%</td><td class="is-num">10%</td></tr>
+                  <tr><td>Partners</td><td class="is-num">24%</td><td class="is-num">30%</td><td class="is-num">20%</td><td class="is-num">16%</td><td class="is-num">10%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+        </figure>
+      </div>
+
+      <figure class="pl-panel vz-figure" style="margin-top:var(--spacing-md)">
+        <div class="vz-figure__head">
+          <div><h3 class="vz-figure__title">Checklist, against the company average</h3><p class="vz-figure__sub">Points above (pink) or below (navy) the company-wide pass rate, by team and question</p></div>
+        </div>
+        <div class="vz-scale" id="vz-heat-legend" aria-hidden="true"></div>
+        <div class="vz-heat-scroll"><div id="vz-heat"></div></div>
+        <p class="pv-note" style="margin-top:0">Values sit inside each cell, in navy or white depending on the cell — so the heatmap doubles as its own table.</p>
+      </figure>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Ramps</h2>
+        <p>Sequential ramps are one hue, light to dark; in dark mode they flip so small values sink into the navy. The diverging ramp runs navy-blue to pink through a neutral midpoint. Every step is an existing brand colour.</p>
+      </div>
+      <div class="pl-panel pv-card vz-ramps">
+        <div class="vz-ramp"><div class="vz-ramp__name">Sequential navy<small>--viz-seq-navy-1…6</small></div><div class="vz-ramp__steps"><span style="background:var(--viz-seq-navy-1)"></span><span style="background:var(--viz-seq-navy-2)"></span><span style="background:var(--viz-seq-navy-3)"></span><span style="background:var(--viz-seq-navy-4)"></span><span style="background:var(--viz-seq-navy-5)"></span><span style="background:var(--viz-seq-navy-6)"></span></div></div>
+        <div class="vz-ramp"><div class="vz-ramp__name">Sequential pink<small>--viz-seq-pink-1…6</small></div><div class="vz-ramp__steps"><span style="background:var(--viz-seq-pink-1)"></span><span style="background:var(--viz-seq-pink-2)"></span><span style="background:var(--viz-seq-pink-3)"></span><span style="background:var(--viz-seq-pink-4)"></span><span style="background:var(--viz-seq-pink-5)"></span><span style="background:var(--viz-seq-pink-6)"></span></div></div>
+        <div class="vz-ramp"><div class="vz-ramp__name">Diverging<small>--viz-div-1…7, midpoint 4</small></div><div class="vz-ramp__steps"><span style="background:var(--viz-div-1)"></span><span style="background:var(--viz-div-2)"></span><span style="background:var(--viz-div-3)"></span><span style="background:var(--viz-div-4)"></span><span style="background:var(--viz-div-5)"></span><span style="background:var(--viz-div-6)"></span><span style="background:var(--viz-div-7)"></span></div></div>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Replacing the PDF chart colours</h2>
+        <p>The charts in our PDF reports and decks use four colours that are not in the brand palette. Each now has a token. (Nothing outside this repository has been changed — this is the mapping to apply.)</p>
+      </div>
+      <div class="pl-table-frame">
+        <div class="pl-table-scroll">
+          <table class="pl-table vz-map">
+            <thead><tr><th>Today</th><th>Used for</th><th>Token</th><th>Light</th><th>Dark</th></tr></thead>
+            <tbody>
+              <tr><td><code>GREY #A6ADBF</code></td><td>“Other” series and segments</td><td><code>--viz-other</code></td><td><span class="cw-chip" style="background:var(--color-dark-blue-300)"></span> <code data-token-value="--color-dark-blue-300"></code></td><td><span class="cw-chip" style="background:var(--color-dark-blue-400)"></span> <code data-token-value="--color-dark-blue-400"></code></td></tr>
+              <tr><td><code>GREY #A6ADBF</code></td><td>Gridlines, heatmap cell edge</td><td><code>--viz-grid</code></td><td><span class="cw-chip" style="background:var(--color-dark-blue-100)"></span> <code data-token-value="--color-dark-blue-100"></code></td><td><span class="cw-chip" style="background:var(--color-dark-blue-600)"></span> <code data-token-value="--color-dark-blue-600"></code></td></tr>
+              <tr><td><code>MID #86839E</code></td><td>Third stacked segment</td><td><code>--viz-cat-3</code></td><td><span class="cw-chip" style="background:var(--color-chart-blue-on-light)"></span> <code data-token-value="--color-chart-blue-on-light"></code></td><td><span class="cw-chip" style="background:var(--color-chart-blue-on-dark)"></span> <code data-token-value="--color-chart-blue-on-dark"></code></td></tr>
+              <tr><td><code>LIGHT_PINK #FFCCE3</code></td><td>Fourth stacked segment</td><td><code>--viz-cat-4</code></td><td><span class="cw-chip" style="background:var(--color-chart-amber-on-light)"></span> <code data-token-value="--color-chart-amber-on-light"></code></td><td><span class="cw-chip" style="background:var(--color-chart-amber-on-dark)"></span> <code data-token-value="--color-chart-amber-on-dark"></code></td></tr>
+              <tr><td><code>FAIR #F4F6FB</code></td><td>Heatmap floor</td><td><code>--viz-seq-navy-1</code></td><td><span class="cw-chip" style="background:var(--color-dark-blue-50)"></span> <code data-token-value="--color-dark-blue-50"></code></td><td><span class="cw-chip" style="background:var(--color-dark-blue-700)"></span> <code data-token-value="--color-dark-blue-700"></code></td></tr>
+              <tr><td><code>FAIR #F4F6FB</code></td><td>Panel and table-cell backgrounds</td><td><code>--app-surface-sunken</code></td><td><span class="cw-chip" style="background:var(--color-dark-blue-50)"></span> <code data-token-value="--color-dark-blue-50"></code></td><td><span class="cw-chip" style="background:var(--color-dark-blue-900)"></span> <code data-token-value="--color-dark-blue-900"></code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="pv-note">Hex values are read from the tokens. Python code can take them from <code class="pv-code">tokens/app.resolved.json</code>. Also off-palette in the same code: <code class="pv-code">NAVY_LIFT #1E175C</code> (use <code class="pv-code">--app-surface-raised</code>, <code class="pv-code">#18124D</code>) and the generated heatmap steps <code class="pv-code">#BABACC #807E9C #46436C</code> (use <code class="pv-code">--viz-seq-navy-2…5</code>).</p>
+    </section>
+  </main>
+  <script src="viz.js"></script>
+</body>
+</html>

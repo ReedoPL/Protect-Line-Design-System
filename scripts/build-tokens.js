@@ -67,55 +67,76 @@ function buildCss(byPath) {
   ].join('\n');
 }
 
-// Tailwind v4: utilities read the custom properties at runtime (@theme inline),
-// so switching data-theme re-themes every utility without a rebuild.
+// Tailwind v4. Themed values (light/dark) are var() references, so switching
+// data-theme re-themes every utility at runtime (@theme inline). Mode-invariant
+// values are written as literals: the brand names (--color-navy, --radius-sm,
+// --font-mono…) are the same names Tailwind's theme uses, and a var() pointing at
+// its own name would be a cycle. Tailwind's default palette, fonts, radii and
+// shadows are cleared, so only brand values exist as utilities.
 const TW_GROUP = { surface: 'surface', text: 'fg', border: 'line', accent: 'accent' };
+const FOUNDATION_SHORTCUTS = /^color\.(bg-|text-|cta-|graph|icon-bg)/;
 function buildTailwind(byPath) {
   const lines = [];
   const seen = new Set();
   const add = (name, value) => { if (!seen.has(name)) { seen.add(name); lines.push(`  ${name}: ${value};`); } };
+  const literal = (key) => formatValue(byPath.get(key).resolved);
+  for (const ns of ['--color-*', '--font-*', '--radius-*', '--shadow-*']) add(ns, 'initial');
+  lines.push('', '  /* Brand primitives (the same in both modes) */');
+  for (const [key, entry] of byPath) {
+    if (!key.startsWith('color.') || entry.resolved.type !== 'color' || FOUNDATION_SHORTCUTS.test(key)) continue;
+    add(cssName(key), literal(key));
+  }
+  lines.push('', '  /* Semantic colours (light and dark, from app-tokens.css) */');
   for (const key of byPath.keys()) {
     const m = key.match(/^theme\.light\.(.+)$/);
-    if (!m) continue;
+    if (!m || byPath.get(key).resolved.type !== 'color') continue;
     const parts = m[1].split('.');
-    const entry = byPath.get(key);
-    if (entry.resolved.type !== 'color') continue;
     let twParts;
     if (parts[0] === 'app' && TW_GROUP[parts[1]]) twParts = [TW_GROUP[parts[1]], ...parts.slice(2)];
     else if (parts[0] === 'app' && parts[1] === 'status') twParts = parts.slice(2);
     else if (parts[0] === 'app') twParts = parts.slice(1);
     else twParts = parts; // viz.*
     if (twParts[twParts.length - 1] === 'default') twParts.pop();
-    add(`--color-${twParts.join('-')}`, `var(${cssName(key)})`);
+    let name = `--color-${twParts.join('-')}`;
+    if (name === '--color-surface-canvas') name = '--color-canvas';
+    add(name, `var(${cssName(key)})`);
   }
-  add('--font-sans', 'var(--font-primary)');
-  add('--font-serif', 'var(--font-accent)');
-  add('--font-mono', 'var(--font-mono)');
+  lines.push('', '  /* Type */');
+  add('--font-sans', literal('font.primary'));
+  add('--font-serif', literal('font.accent'));
+  add('--font-mono', literal('font.mono'));
   for (const key of byPath.keys()) {
     const m = key.match(/^app\.font-size\.(.+)$/);
     if (m) {
-      add(`--text-app-${m[1]}`, `var(${cssName(key)})`);
-      add(`--text-app-${m[1]}--line-height`, `var(--app-line-height-${m[1]})`);
+      add(`--text-app-${m[1]}`, literal(key));
+      add(`--text-app-${m[1]}--line-height`, literal(`app.line-height.${m[1]}`));
     }
   }
+  lines.push('', '  /* Shape and depth */');
   for (const key of byPath.keys()) {
-    const m = key.match(/^app\.radius\.(.+)$/);
-    if (m) add(`--radius-${m[1]}`, `var(${cssName(key)})`);
+    const m = key.match(/^(?:radius|app\.radius)\.(.+)$/);
+    if (m && byPath.get(key).resolved.type === 'dimension') add(`--radius-${m[1]}`, literal(key));
   }
   add('--shadow-overlay', 'var(--app-shadow-overlay)');
   return [
     BANNER('tokens/*.tokens.json'),
-    '/* Tailwind v4 theme. Load after tailwindcss and app-tokens.css:',
+    '/* Tailwind v4 theme for the Protect Line app layer.',
+    ' *',
     ' *   @import "tailwindcss";',
-    ' *   @import "../app-tokens.css";',
-    ' *   @import "../tokens/tailwind.css";',
-    ' * Then: bg-surface, bg-canvas… text-fg, text-fg-muted, border-line, bg-accent,',
-    ' * bg-success-bg text-success-fg, fill-viz-cat-1, text-app-sm, font-mono, rounded-control. */',
+    ' *   @import "<path>/app-tokens.css";',
+    ' *   @import "<path>/tokens/tailwind.css";',
+    ' *',
+    ' * Load the fonts with a <link> in the page head: a bundler inlines app-tokens.css,',
+    ' * and its @import url(...) for Google Fonts ends up mid-file, where browsers ignore it.',
+    ' *',
+    ' * Utilities: bg-canvas bg-surface bg-surface-raised text-fg text-fg-muted border-line',
+    ' * bg-accent text-fg-on-accent bg-success-bg text-success-fg fill-viz-cat-1 text-app-sm',
+    ' * font-mono rounded-control rounded-panel rounded-pill shadow-overlay bg-navy text-hot-pink. */',
     '@theme inline {',
     ...lines,
     '}',
     '',
-  ].join('\n').replace('--color-surface-canvas', '--color-canvas');
+  ].join('\n');
 }
 
 function buildResolved(byPath) {

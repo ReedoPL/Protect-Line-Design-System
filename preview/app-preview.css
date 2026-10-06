@@ -90,7 +90,7 @@
 .pv-ratio[data-pass="no"]::before { background: var(--app-status-danger-solid); }
 
 .pv-note { margin: var(--spacing-md) 0 0; font-size: var(--app-font-size-sm); line-height: var(--app-line-height-sm); color: var(--app-text-subtle); max-width: 80ch; }
-.pv-code { font-family: var(--font-mono); font-size: 0.93em; color: var(--app-text-muted); }
+.pv-code { font-family: var(--font-mono); font-size: 0.96em; color: var(--app-text-muted); }
 
 @media (max-width: 1023px) {
   .pv-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }

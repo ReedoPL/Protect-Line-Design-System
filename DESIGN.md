@@ -297,3 +297,292 @@ Use Poppins (or Arial fallback note), navy background, pink CTA button, Protect 
 3. Verify pink is used sparingly (CTAs, links, accents only)
 4. Check mobile layout at 375px width
 5. Run accessibility check: contrast ratios on navy/pink/white combinations
+
+---
+
+## 10. App UI
+
+Sections 1–9 are the marketing contract and still apply to anything a customer reads as a page. This section is the **app layer**: product screens such as admin tools, dashboards, data tables and chat. It adds what the marketing kit does not have — status colours, dark mode, a compact type scale, a monospace and a data-viz palette — and changes none of the marketing tokens.
+
+| File | What it is |
+|------|------------|
+| `tokens/app.tokens.json` | Source of truth for the app layer (W3C Design Tokens format). Every new value carries its reason. |
+| `tokens/foundation.tokens.json` | The marketing tokens from `colors_and_type.css`, mirrored so aliases resolve |
+| `app-tokens.css` | Generated. Every token as a CSS custom property, light and dark. Self-contained: an app can load it without `colors_and_type.css`. |
+| `components/app-components.css` | App component classes, built on the tokens only |
+| `tokens/tailwind.css` | Generated. A Tailwind v4 theme |
+| `tokens/app.resolved.json` | Generated. Every token resolved, per mode, for Python and other non-CSS code |
+| `preview/app-colours.html`, `app-type.html`, `app-components.html`, `data-viz.html` | Specimens. Add `?theme=dark` to force dark mode. |
+
+```html
+<link rel="stylesheet" href="app-tokens.css">
+<link rel="stylesheet" href="components/app-components.css">
+<body class="pl-app">
+```
+
+App component classes (`.pl-button`, `.pl-input`, `.pl-table`…) never share a name with the marketing classes (`.pl-btn`, `.pl-card`…), so both stylesheets can load on one page.
+
+### 10.1 When to use what
+
+| Use the app layer for | Keep the marketing kit for |
+|---|---|
+| Tables, filters, forms, settings | Landing and product pages |
+| Dashboards and charts | Emails, letters, customer packs |
+| Chat and assistant screens | Slides and social posts |
+| Internal and customer-facing tools | Long help articles a customer reads as a page |
+
+### 10.2 Semantic colours
+
+Build screens from these roles, never from raw hex or the ramps directly. Light is the default; dark is a mapping of the same names (see 10.5).
+
+| Token | Light | Dark | Use |
+|---|---|---|---|
+| `--app-surface-canvas` | dark-blue-50 `#F4F3F9` | dark-blue-900 `#08052E` | App background behind panels |
+| `--app-surface` | white | navy `#0C073D` | Panels, tables, the working surface |
+| `--app-surface-raised` | white | dark-blue-700 `#18124D` | Dialogs, menus, toasts |
+| `--app-surface-sunken` | dark-blue-50 | dark-blue-900 | Wells, table headers, progress tracks |
+| `--app-surface-hover` / `-pressed` | navy at 5% / 9% | dark-blue-200 at 8% / 14% | Translucent, so they work on any surface |
+| `--app-surface-selected` | fair blue `#ECF1FA` | dark-blue-600 `#2A2368` | Selected rows, with the hot-pink bar |
+| `--app-surface-inverse` | navy | dark-blue-50 | Sidebar, tooltips |
+| `--app-border-subtle` / `--app-border` | dark-blue-100 / -200 | dark-blue-600 / -500 | Row dividers / panel outlines (decorative) |
+| `--app-border-strong` | dark-blue-400 `#6B67A8` | dark-blue-400 | Form-control boundaries (≥3:1) |
+| `--app-text` | navy | dark-blue-50 | Primary text |
+| `--app-text-muted` | dark-blue-500 `#3A337D` | dark-blue-200 | Secondary text |
+| `--app-text-subtle` | dark-blue-450 `#5E599C` | dark-blue-300 | Captions, placeholders, column headers |
+| `--app-text-link` | pink-700 `#B8055A` | mid pink `#FF61B1` | Links in app text |
+| `--app-accent` | pink-600 `#D9066C` | pink-600 | Primary button, checked controls |
+| `--app-accent-strong` | hot pink `#F20779` | hot pink | Active tab, selected bar, switch, progress |
+| `--app-accent-subtle` | fair pink | pink-950 `#431A4D` | Your chat bubble, a selected chip |
+| `--app-focus-ring` | hot pink | hot pink | Focus ring, 2px, 2px offset |
+| `--app-selection-bg` | light pink | pink-800 | Text selection |
+| `--app-scrim` | navy at 48% | dark-blue-900 at 72% | Behind dialogs |
+
+**Hot pink in the app.** Hot pink on white is 4.13:1 — enough for a focus ring or an indicator bar (3:1), not enough for text at 12–14px (4.5:1), and white text on it is the same 4.13:1. So in the app:
+
+- fills under white text use **pink-600** (5.01:1);
+- pink text uses **pink-700** (6.55:1) on light, **mid pink** on dark;
+- hot pink itself is for things that are not text: the focus ring, the active-tab bar, the selected-row bar, the switch track, progress.
+
+The marketing primary button keeps hot pink. Its 16px bold label is also below 4.5:1 — worth a separate look by the brand team.
+
+**Depth.** The app is flat like the website. Panels separate by tone and a 1px border. The single shadow, `--app-shadow-overlay`, is for things that float over content — menus, popovers, toasts, dialogs — never for cards or panels.
+
+### 10.3 Status colours
+
+Every status has five roles: `bg` (tint), `border`, `fg` (text and icon), `solid` and `on-solid`. Use them as `--app-status-<status>-<role>`.
+
+| Status | Words it carries | Built from |
+|---|---|---|
+| `info` | Running, processing, tips | Fair blue, mid blue and the navy ramp — no new hex, no sky blue |
+| `attention` | Waiting for you | The brand pinks. The user has to act: it is a call to action, not an error |
+| `success` | Complete, passed, saved | New ramp, teal-leaning green |
+| `warning` | Needs review, partial | New ramp, amber; the light solid is deep ochre because bright amber is under 2:1 on white |
+| `danger` | Failed, blocked, destructive | New ramp, a true red 26° of hue away from the brand pinks (21 ΔE00 from pink-600), so an error never reads as a call to action |
+| `neutral` | Queued, draft, cancelled | The navy ramp |
+
+- Status is **never colour alone**: always a word, plus a dot or an icon.
+- Solids flip in dark mode: deep fills with white text on light, bright fills with navy text on navy. Destructive buttons are the exception: `--app-destructive` stays red-600 with white text in both modes, because a salmon pill reads too gently for something that cannot be undone.
+- Never use a status colour for a chart series, or a series colour for a status.
+
+### 10.4 New colour values (for brand approval)
+
+The app layer needed colours the marketing kit does not have. These are all of them; everything else maps onto the existing palette.
+
+| Token | Hex | Why |
+|---|---|---|
+| `--color-dark-blue-450` | `#5E599C` | Subtle text. Halfway between dark-blue-400 and -500 on the same hue: 400 is 4.49:1 on fair blue, so captions fail AA on a selected row |
+| `--color-success-50 / 200 / 600 / 700 / 900` | `#E7FBF0` `#7BCBA5` `#037D55` `#056242` `#0A384B` | Tint / border (dark: text and solid) / solid under white / text / dark tint |
+| `--color-warning-50 / 200 / 600 / 700 / 900` | `#FFF3E7` `#EDB06B` `#9C6005` `#7A4B03` `#3E303C` | As above |
+| `--color-danger-50 / 200 / 600 / 700 / 900` | `#FEF2F0` `#FEA496` `#D02E23` `#AA1811` `#532540` | As above |
+| `--color-pink-950` | `#431A4D` | Attention tint and pink wash on dark: pink-600 mixed 30% into navy |
+| `--color-chart-*-on-light` | `#5286D3` `#E5A323` `#079A94` `#E77140` `#7F4BB1` `#53933A` | Chart slots 3–8 (blue, amber, teal, coral, violet, green) |
+| `--color-chart-*-on-dark` | `#5E93E1` `#C58501` `#18A7A1` `#E16A3E` `#9763CC` `#5DA443` | The same hues stepped for navy |
+
+The 900 steps are each 600 mixed 40% into navy (in OKLab), so dark-mode tints read as navy with a cast of colour, not as black boxes. Each solid sits at a relative luminance of about 0.155: white text on it is ≥5.1:1, and it stays ≥3.3:1 against the navy page, panel and raised surfaces.
+
+### 10.5 Dark mode
+
+Dark mode is **navy, not grey or black**: surfaces step up the dark-blue ramp (canvas 900 → surface 800 → raised 700 → selected 600).
+
+- It follows the operating system by default. `data-theme="dark"` or `data-theme="light"` on `<html>` overrides it.
+- `data-theme` works on **any element**, so a panel can opt into the other mode — a navy sidebar inside a light app is `data-theme="dark"` on the sidebar.
+- Swap the logo: navy-and-pink on light, white-and-pink on dark.
+- Hugo is outlined in navy, which vanishes on navy. Put him on `--app-illustration-plate` (a light disc in both modes).
+
+### 10.6 Type and density
+
+Same typeface, a tighter scale. Classes are in `components/app-components.css`.
+
+| Style | Class | Size / line | Weight | Use |
+|---|---|---|---|---|
+| Stat | `.pl-text-stat` | 28/36 | 600 | The one figure a tile leads with |
+| Title | `.pl-text-title` | 20/28 | 700 | Page title, one per screen |
+| Section | `.pl-text-section` | 18/24 | 600 | Headings inside a page |
+| Heading | `.pl-text-heading` | 16/24 | 600 | Card and dialog titles |
+| Body large | `.pl-text-body-lg` | 16/24 | 400 | Reading text: chat replies, descriptions |
+| Body | `.pl-text-body` | 14/20 | 400 | The default for app UI |
+| Label | `.pl-text-label` | 13/18 | 500 | Form labels, tabs |
+| Table | `.pl-text-table` | 13/18 | 400 | Dense table cells |
+| Caption | `.pl-text-caption` | 12/16 | 400 | Timestamps, hints. Nothing smaller |
+| Eyebrow | `.pl-text-eyebrow` | 12/16, +0.06em, caps | 500 | One or two words only |
+| Mono | `.pl-mono` | 0.96em | 400 | Ids, codes, durations, money, scores in columns |
+
+**Monospace: JetBrains Mono.** The Google Fonts build of Poppins has proportional figures only — a “1” is about half the width of a “0” — and `font-variant-numeric: tabular-nums` does nothing to it (measured in Chromium). So figures that must line up go in the monospace. JetBrains Mono was picked over IBM Plex Mono and DM Mono because it is the closest match to Poppins: the same x-height at the same size, digits within 5% of Poppins’ width, and clear 0/O and 1/l/I. Its caps and figures are 4% taller, so `.pl-mono` sets it at 0.96em. Big standalone figures (a stat tile) stay in Poppins.
+
+**Keeping dense tables readable in Poppins.** Poppins is wide and round, so:
+
+- 13px text on 36px rows for data tables; 14px everywhere else; never below 12px;
+- leave tracking at 0 below 16px; tighten (−0.01em) only for headings 18px and up;
+- make hierarchy with weight (500 for the primary column) and ink (muted for the rest), not size;
+- right-align figures in the monospace, with the same decimal places down a column;
+- sentence-case headers at 12px in subtle ink; all-caps only for one-word labels;
+- truncate long text with an ellipsis and keep the full value in a tooltip or the detail view;
+- when it does not fit, drop a column — do not switch to a narrower font.
+
+**Density.** Controls are 32px (`--app-control-height-sm`) or 40px (`-md`), and grow to 44px under `(pointer: coarse)` to keep the §8 touch minimum. Table rows are 36px (`--app-row-height-compact`) or 44px. Spacing reuses `--spacing-*`, plus `--app-space-2` (2px) and `--app-space-6` (6px) for badges and icon gaps. Radius: controls 8px, panels 12px, dialogs 16px, buttons and pills the brand pill.
+
+### 10.7 Data visualisation
+
+**Categorical** (`--viz-cat-1` … `-8`) — assign in order, never skip or cycle, and keep a series' colour when a filter removes others. Past eight, fold the tail into `--viz-other`.
+
+| Slot | Light | Dark |
+|---|---|---|
+| 1 brand ink | navy `#0C073D` | dark-blue-200 `#C5C3E0` |
+| 2 | hot pink `#F20779` | hot pink |
+| 3 blue | `#5286D3` | `#5E93E1` |
+| 4 amber | `#E5A323` | `#C58501` |
+| 5 teal | `#079A94` | `#18A7A1` |
+| 6 coral | `#E77140` | `#E16A3E` |
+| 7 violet | `#7F4BB1` | `#9763CC` |
+| 8 green | `#53933A` | `#5DA443` |
+
+Slot 1 is deliberately outside the usual 0.43–0.77 lightness band for chart colours: it is the brand ink and plays the “main series” role, as navy does in our PDF charts. Amber is 2.19:1 on white, so amber marks need a visible label or a table view beside the chart; coral (3.07:1) is only just over 3:1.
+
+**Colour-blind check** (`node scripts/cvd-report.js`): Machado et al. 2009 simulation at full severity, CIEDE2000 between neighbouring slots. Worst neighbouring pair — light: normal 42.6, protanopia 20.3, deuteranopia 34.8, tritanopia 30.2; dark: 36.9, 24.2, 28.3, 25.6 (gate: 10). The first three slots also clear 10 for every pair, so scatter plots and maps (where any two colours can touch) should stop at three series.
+
+**Sequential** — `--viz-seq-navy-1…6` (the dark-blue ramp, low to high) and `--viz-seq-pink-1…6` (the pink ramp). In dark mode they flip so small values sink into the navy.
+
+**Diverging** — `--viz-div-1…7`: navy-blue arm (dark-blue-500, -400, mid blue), a neutral midpoint (dark-blue-50; on dark, the raised navy surface), pink arm (mid pink, pink-600, pink-900). The cool arm ends in mid blue rather than pale lavender because pale lavender and light pink look identical with protanopia (ΔE00 1.6). Every step stays ≥13.5 ΔE00 from its opposite number in all three simulations.
+
+**Chart chrome** — gridlines `--viz-grid`, axes `--viz-axis`, labels in the text tokens (never the series colour). Bars at most 24px thick with a 4px rounded end, a 2px surface gap between touching marks, and a table view for every chart.
+
+**Replacing the PDF chart colours.** The company's PDF charts use four off-palette colours. Map them as follows (nothing outside this repository has been changed):
+
+| Today | Used for | Token | Light | Dark |
+|---|---|---|---|---|
+| `GREY #A6ADBF` | “Other” series, muted text | `--viz-other` | `#9F9CCB` | `#6B67A8` |
+| `GREY #A6ADBF` | Gridlines, heatmap cell edge | `--viz-grid` | `#E8E7F3` | `#2A2368` |
+| `MID #86839E` | Third stacked segment | `--viz-cat-3` | `#5286D3` | `#5E93E1` |
+| `LIGHT_PINK #FFCCE3` | Fourth stacked segment | `--viz-cat-4` | `#E5A323` | `#C58501` |
+| `FAIR #F4F6FB` | Heatmap floor | `--viz-seq-navy-1` | `#F4F3F9` | `#18124D` |
+| `FAIR #F4F6FB` | Panel and table-cell backgrounds | `--app-surface-sunken` | `#F4F3F9` | `#08052E` |
+
+The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124D`) and generated heatmap steps `#BABACC #807E9C #46436C` (use `--viz-seq-navy-2…5`). Mapping MID and LIGHT_PINK to slots 3 and 4 changes how a stacked chart looks: blue and amber instead of grey-lavender and pale pink.
+
+### 10.8 Components
+
+| Component | Classes |
+|---|---|
+| Buttons | `.pl-button` + `--primary` / `--secondary` / `--tertiary` / `--danger`, `--sm`, `--icon`; `disabled`; `aria-busy="true"` with a `.pl-spinner` |
+| Fields | `.pl-field`, `.pl-label`, `.pl-hint`, `.pl-error`, `.pl-input`, `.pl-input-group`, `.pl-textarea`, `.pl-select` (wraps a native select) |
+| Choices | `.pl-choice` with `.pl-check`, `.pl-radio`, or `.pl-switch` (`role="switch"`) |
+| Table | `.pl-table-frame`, `.pl-table-toolbar`, `.pl-table-scroll`, `.pl-table`, `.is-num`, `.pl-sort` with `aria-sort`, `tr[aria-selected="true"]`, `.pl-table__empty`, `.pl-table-footer`, `.pl-id` |
+| Tabs | `.pl-tabs`, `.pl-tab[aria-selected]` |
+| Status | `.pl-pill` + `--info` / `--success` / `--warning` / `--danger` / `--attention`, `--solid`, `--live`; `.pl-badge` |
+| Feedback | `.pl-alert`, `.pl-toast`, `.pl-progress`, `.pl-spinner`, `.pl-skeleton`, `.pl-empty` |
+| Overlay | `.pl-scrim`, `.pl-dialog` |
+| Chat | `.pl-chat`, `.pl-msg` (`--user`), `.pl-msg-card`, `.pl-notice`, `.pl-composer` |
+
+### 10.9 Do's and don'ts for data-dense screens
+
+**Do**
+
+- Give each view one primary (pink) button; everything else is secondary or tertiary.
+- Put labels above fields, hints below, and errors in words beside an icon.
+- Show progress with real numbers when you have them (“312 of 1,284”).
+- Let a dense table scroll sideways inside its frame on a phone — never the page.
+- In chat, keep the assistant's reply on the page at 16px; put anything to approve in a card with one clear action, and say nothing runs until it is approved.
+- Use Hugo once, where a screen would otherwise be empty.
+- Write sentence case and British English — in empty states, toasts and errors too.
+
+**Don't**
+
+- Put hot pink on text, or on whole table rows and columns.
+- Use status colours for decoration, or colour alone to carry a status.
+- Add shadows to cards or panels, gradients, or glassmorphism.
+- Use Inter, Roboto or a system font to fit more in; Lora is not for product UI.
+- Go below 12px, or set dense tables in all caps.
+- Invent new colours — add a token here, with its reason, and get it approved.
+
+### 10.10 Tokens for every stack
+
+`tokens/app.tokens.json` is the source. `node scripts/build-tokens.js` regenerates `app-tokens.css`, `tokens/tailwind.css` and `tokens/app.resolved.json`; `node scripts/build-tokens.js --check` fails if any of them is stale or if `tokens/foundation.tokens.json` no longer matches `colors_and_type.css`. Run the check before committing.
+
+Naming: the CSS name is `--` plus the token path joined with `-`; a trailing `default` is dropped and the `theme.light.` / `theme.dark.` prefix is removed. `theme.light.app.surface.default` is `--app-surface`; `color.success.600` is `--color-success-600`.
+
+**Tailwind v4.** Import the generated theme after Tailwind and the tokens, and load the fonts with a `<link>` (a bundler moves the Google Fonts `@import` mid-file, where browsers ignore it):
+
+```css
+@import "tailwindcss";
+@import "./design-system/app-tokens.css";
+@import "./design-system/tokens/tailwind.css";
+```
+
+```html
+<div class="bg-surface text-fg border border-line rounded-panel p-4">
+  <span class="bg-success-bg text-success-fg rounded-pill px-2 text-app-xs">Complete</span>
+  <button class="bg-accent hover:bg-accent-hover text-fg-on-accent rounded-pill">Approve plan</button>
+</div>
+```
+
+The theme clears Tailwind's default colours, fonts, radii and shadows, so only brand values exist: `bg-sky-500` and `shadow-md` are not available. Themed utilities read the custom properties at runtime, so `data-theme="dark"` re-themes them without a rebuild.
+
+**Python** (PDF charts, decks). Read the resolved file — no alias handling needed:
+
+```python
+import json
+
+tokens = json.load(open("tokens/app.resolved.json"))
+light, dark = tokens["light"], tokens["dark"]
+SERIES = [light[f"viz.cat.{i}"] for i in range(1, 9)]   # ['#0c073d', '#f20779', '#5286d3', …]
+OTHER, GRID = light["viz.other"], light["viz.grid"]
+```
+
+Or resolve aliases from the source files directly:
+
+```python
+import json, re
+
+def load_tokens(*paths):
+    tree = {}
+    def merge(a, b):
+        for k, v in b.items():
+            if isinstance(v, dict) and isinstance(a.get(k), dict) and "$value" not in v:
+                merge(a[k], v)
+            else:
+                a[k] = v
+    for p in paths:
+        merge(tree, json.load(open(p)))
+    def value(path):
+        node = tree
+        for part in path.split("."):
+            node = node[part]
+        v = node["$value"]
+        if isinstance(v, str) and re.fullmatch(r"\{[^}]+\}", v):
+            return value(v[1:-1])
+        return v["hex"] if isinstance(v, dict) and "hex" in v else v
+    return value
+
+value = load_tokens("tokens/foundation.tokens.json", "tokens/app.tokens.json")
+value("theme.light.app.status.success.fg")   # '#056242'
+```
+
+### 10.11 Checks
+
+| Command | What it checks |
+|---|---|
+| `node scripts/build-tokens.js --check` | Generated files are current; foundation JSON matches `colors_and_type.css` |
+| `node scripts/contrast-report.js` | WCAG 2.x contrast of every text pair (≥4.5:1) and UI boundary (≥3:1) the components use, light and dark |
+| `node scripts/cvd-report.js` | Colour-blind separation of the chart palette, ramp monotonicity, diverging arms |
+
+All three are dependency-free (Node 18+) and exit non-zero on failure.

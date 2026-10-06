@@ -15,6 +15,9 @@ An agent-readable design kit for **Claude Design** and **Cursor**. Non-designers
 | [`preview/`](preview/) | Colour, typography, spacing, component, and brand preview cards |
 | [`templates/`](templates/) | Landing page, product page, and slide starters |
 | [`brand/voice.md`](brand/voice.md) | Distilled copy tone and voice rules |
+| [`app-tokens.css`](app-tokens.css) | **App layer** — semantic, status, dark-mode and data-viz tokens for product UI (generated) |
+| [`components/app-components.css`](components/app-components.css) | App components: buttons, forms, data table, tabs, dialog, toasts, chat, status pills |
+| [`tokens/`](tokens/) | Every token as W3C Design Tokens JSON, plus a Tailwind v4 theme and a resolved file for Python |
 | [`AGENTS.md`](AGENTS.md) / [`CLAUDE.md`](CLAUDE.md) | Agent bootstrap instructions |
 | [`.cursor/rules/`](.cursor/rules/) | Cursor rules (auto-loaded) |
 
@@ -54,6 +57,21 @@ Then open:
 - Component preview: `http://localhost:3000/preview/components.html`
 - Colour palette: `http://localhost:3000/preview/colours.html`
 
+## App layer — product UI
+
+For admin tools, dashboards, tables and chat (rather than marketing pages) use the app layer: status colours, a navy dark mode, a compact type scale with a monospace for figures, and a colour-blind-checked chart palette. It builds on the brand tokens and changes none of them.
+
+```html
+<link rel="stylesheet" href="app-tokens.css">
+<link rel="stylesheet" href="components/app-components.css">
+<body class="pl-app">
+```
+
+- Rules and rationale: [`DESIGN.md` §10 App UI](DESIGN.md#10-app-ui)
+- Previews (add `?theme=dark`): [colours](preview/app-colours.html) · [type](preview/app-type.html) · [components](preview/app-components.html) · [data viz](preview/data-viz.html)
+- Source of truth: [`tokens/app.tokens.json`](tokens/app.tokens.json). After editing it, run `node scripts/build-tokens.js`; `--check` fails if a generated file is stale.
+- Checks: `node scripts/contrast-report.js` (WCAG contrast, light and dark) and `node scripts/cvd-report.js` (colour-blind separation of the chart palette).
+
 ## Brand at a glance
 
 | Element | Value |
@@ -80,10 +98,11 @@ Official logos and Hugo PNGs are in [`assets/logos/`](assets/logos/) and [`asset
 
 ## Contributing
 
-1. Edit tokens in `colors_and_type.css`
-2. Update the matching section in `DESIGN.md`
-3. Update the relevant specimen in `components/`
-4. Preview in browser before committing
+1. Edit tokens in `colors_and_type.css` (marketing) or `tokens/app.tokens.json` (app layer)
+2. Keep `tokens/foundation.tokens.json` in step with `colors_and_type.css`, then run `node scripts/build-tokens.js` — `--check` fails on drift or a stale generated file
+3. Update the matching section in `DESIGN.md`
+4. Update the relevant specimen in `components/` or `preview/`
+5. Preview in browser, and run `node scripts/contrast-report.js`, before committing
 
 ## Licence
 
