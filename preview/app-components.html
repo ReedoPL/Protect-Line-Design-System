@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App components — Protect Line</title>
+  <script src="app-preview.js"></script>
+  <link rel="stylesheet" href="../app-tokens.css">
+  <link rel="stylesheet" href="../components/app-components.css">
+  <link rel="stylesheet" href="app-preview.css">
+  <style>
+    /* Specimen-only: show states a static render cannot hover into. */
+    .pl-table tbody tr.demo-hover { background: var(--app-surface-hover); }
+    .demo-under { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--app-radius-panel); overflow: hidden; }
+    .demo-scrim { position: relative; inset: auto; min-height: 380px; height: 100%; }
+    .demo-toasts { display: grid; gap: var(--spacing-sm); justify-items: start; }
+    .demo-form { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--spacing-xlg); }
+    .demo-form__fields { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); align-content: start; }
+    .demo-form__fields .is-wide { grid-column: 1 / -1; }
+    .demo-group { display: grid; gap: var(--spacing-sm); align-content: start; border: none; margin: 0; padding: 0; min-width: 0; }
+    .demo-group legend { padding: 0; margin-bottom: var(--spacing-xsm); }
+    .demo-switch { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); }
+    .demo-chat { padding: var(--spacing-lg); background: var(--app-surface-canvas); border-radius: var(--app-radius-panel); border: 1px solid var(--app-border); display: grid; gap: var(--spacing-lg); }
+    .demo-feedback { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-md); }
+    .demo-skel-row { display: grid; grid-template-columns: 32px 1fr; gap: var(--spacing-sm); align-items: center; }
+    .demo-skel-lines { display: grid; gap: var(--spacing-xsm); }
+    .demo-label { display: block; margin-bottom: var(--spacing-sm); }
+    @media (max-width: 1023px) {
+      .demo-feedback { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 767px) {
+      .demo-form { gap: var(--spacing-lg); }
+      .demo-form__fields { grid-template-columns: minmax(0, 1fr); }
+      .demo-feedback { grid-template-columns: minmax(0, 1fr); }
+      .demo-chat { padding: var(--spacing-md); }
+      .pl-table .demo-optional { display: none; }
+    }
+  </style>
+</head>
+<body class="pl-app">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-search" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="9" cy="9" r="5.5"/><path d="m13.2 13.2 3.3 3.3"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M3.5 5.5h13M6 10h8M8.5 14.5h3"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M10 4.5v11M4.5 10h11"/></symbol>
+    <symbol id="i-sort" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15V5M6 9l4-4 4 4"/></symbol>
+    <symbol id="i-close" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="m5.5 5.5 9 9M14.5 5.5l-9 9"/></symbol>
+    <symbol id="i-info" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v4.5M10 6.5v.01"/></symbol>
+    <symbol id="i-check" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.5"/><path d="m6.8 10.2 2.2 2.2 4.2-4.6"/></symbol>
+    <symbol id="i-warning" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3.2 17.5 16H2.5z"/><path d="M10 8.5v3.5M10 14v.01"/></symbol>
+    <symbol id="i-danger" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10" cy="10" r="7.5"/><path d="m7.5 7.5 5 5M12.5 7.5l-5 5"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.5"/><path d="M10 6v4.2l2.6 1.6"/></symbol>
+    <symbol id="i-send" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 16V4M5 9l5-5 5 5"/></symbol>
+    <symbol id="i-chev-left" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 5-5 5 5 5"/></symbol>
+    <symbol id="i-chev-right" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m8 5 5 5-5 5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4v8.5M6.5 9l3.5 3.5L13.5 9M4.5 15.5h11"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 6h11M8 6V4.5h4V6M6 6l.7 9.5h6.6L14 6"/></symbol>
+  </svg>
+
+  <header class="pv-top">
+    <a class="pv-top__brand" href="../kit/index.html" aria-label="Protect Line">
+      <img class="pv-logo--light" src="../assets/logos/primary-logo-navy-pink.png" alt="Protect Line" width="191" height="43">
+      <img class="pv-logo--dark" src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+      <span>App layer</span>
+    </a>
+    <nav class="pv-top__nav" aria-label="App layer previews">
+      <a href="app-colours.html">Colours</a>
+      <a href="app-type.html">Type</a>
+      <a href="app-components.html" aria-current="page">Components</a>
+      <a href="data-viz.html">Data viz</a>
+    </nav>
+    <label class="pv-theme"><span>Dark</span><input class="pl-switch" type="checkbox" role="switch" data-theme-toggle></label>
+  </header>
+
+  <main class="pv-page">
+    <div class="pv-hero">
+      <span class="pl-text-eyebrow">App layer · components</span>
+      <h1>Built for <em>busy</em> screens</h1>
+      <p>Compact, flat and keyboard-friendly. The same pink pill buttons and navy type as the website, sized for tables, forms and chat. Class names start <code class="pv-code">.pl-</code> and never clash with the marketing kit.</p>
+    </div>
+
+    <!-- Buttons -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Buttons</h2>
+        <p>One primary action per view. Secondary is the navy outline from the website; tertiary is a quiet ghost for toolbars; danger is for things that cannot be undone.</p>
+      </div>
+      <div class="pl-panel pv-card pv-stack">
+        <div>
+          <span class="pl-text-eyebrow demo-label">Medium · 40px</span>
+          <div class="pv-row">
+            <button class="pl-button pl-button--primary" type="button">Approve plan</button>
+            <button class="pl-button pl-button--secondary" type="button">Edit plan</button>
+            <button class="pl-button pl-button--tertiary" type="button"><svg aria-hidden="true"><use href="#i-download"/></svg>Export</button>
+            <button class="pl-button pl-button--danger" type="button"><svg aria-hidden="true"><use href="#i-trash"/></svg>Delete study</button>
+          </div>
+        </div>
+        <div>
+          <span class="pl-text-eyebrow demo-label">Small · 32px</span>
+          <div class="pv-row">
+            <button class="pl-button pl-button--primary pl-button--sm" type="button"><svg aria-hidden="true"><use href="#i-plus"/></svg>New study</button>
+            <button class="pl-button pl-button--secondary pl-button--sm" type="button">Cancel</button>
+            <button class="pl-button pl-button--tertiary pl-button--sm" type="button"><svg aria-hidden="true"><use href="#i-filter"/></svg>Filter</button>
+            <button class="pl-button pl-button--danger pl-button--sm" type="button">Remove</button>
+            <button class="pl-button pl-button--tertiary pl-button--sm pl-button--icon" type="button" aria-label="Search"><svg aria-hidden="true"><use href="#i-search"/></svg></button>
+          </div>
+        </div>
+        <div>
+          <span class="pl-text-eyebrow demo-label">Disabled and loading</span>
+          <div class="pv-row">
+            <button class="pl-button pl-button--primary" type="button" disabled>Approve plan</button>
+            <button class="pl-button pl-button--secondary" type="button" disabled>Edit plan</button>
+            <button class="pl-button pl-button--primary" type="button" aria-busy="true"><span class="pl-spinner" aria-hidden="true"></span>Saving…</button>
+            <button class="pl-button pl-button--secondary" type="button" aria-busy="true"><span class="pl-spinner" aria-hidden="true"></span>Exporting…</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Forms -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Form controls</h2>
+        <p>Labels above fields, hints below, errors in words. Control borders clear 3:1 against the surface so you can always see where to click.</p>
+      </div>
+      <div class="pl-panel pv-card">
+        <div class="demo-form">
+          <div class="demo-form__fields">
+            <div class="pl-field is-wide">
+              <label class="pl-label" for="f-name">Study name</label>
+              <input class="pl-input" id="f-name" type="text" value="Why customers cancel in the first month">
+            </div>
+            <div class="pl-field">
+              <label class="pl-label" for="f-team">Team</label>
+              <div class="pl-select"><select id="f-team"><option>Manchester sales</option><option>London sales</option><option>Customer care</option></select></div>
+            </div>
+            <div class="pl-field">
+              <label class="pl-label" for="f-search">Agent</label>
+              <div class="pl-input-group"><svg aria-hidden="true"><use href="#i-search"/></svg><input class="pl-input" id="f-search" type="search" placeholder="Search by name"></div>
+            </div>
+            <div class="pl-field is-wide">
+              <label class="pl-label" for="f-q">Question <span class="pl-label__optional">· optional</span></label>
+              <textarea class="pl-textarea" id="f-q" placeholder="What would you like to know about these calls?"></textarea>
+              <p class="pl-hint">Plain English is fine. You'll see a plan before anything runs.</p>
+            </div>
+            <div class="pl-field">
+              <label class="pl-label" for="f-budget">Budget</label>
+              <input class="pl-input" id="f-budget" type="text" value="£0.00" aria-invalid="true" aria-describedby="f-budget-err">
+              <p class="pl-error" id="f-budget-err"><svg aria-hidden="true"><use href="#i-danger"/></svg>Enter an amount above £0</p>
+            </div>
+            <div class="pl-field">
+              <label class="pl-label" for="f-model">Model</label>
+              <input class="pl-input" id="f-model" type="text" value="Set by your admin" disabled>
+            </div>
+          </div>
+          <div class="pv-stack">
+            <fieldset class="demo-group">
+              <legend class="pl-label">Include</legend>
+              <label class="pl-choice"><input class="pl-check" type="checkbox" checked><span>Sales calls<span class="pl-choice__hint">Inbound and outbound</span></span></label>
+              <label class="pl-choice"><input class="pl-check" type="checkbox" checked><span>Customer care</span></label>
+              <label class="pl-choice"><input class="pl-check" type="checkbox"><span>Calls under 30 seconds</span></label>
+            </fieldset>
+            <fieldset class="demo-group">
+              <legend class="pl-label">Period</legend>
+              <label class="pl-choice"><input class="pl-radio" type="radio" name="period"><span>Last 7 days</span></label>
+              <label class="pl-choice"><input class="pl-radio" type="radio" name="period" checked><span>Last 30 days</span></label>
+              <label class="pl-choice"><input class="pl-radio" type="radio" name="period" disabled><span class="pl-text-subtle">Custom range</span></label>
+            </fieldset>
+            <div class="demo-group">
+              <span class="pl-label">Notifications</span>
+              <label class="demo-switch"><span>Email me when it finishes</span><input class="pl-switch" type="checkbox" role="switch" checked></label>
+              <label class="demo-switch"><span>Share with my team</span><input class="pl-switch" type="checkbox" role="switch"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Table -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Data table</h2>
+        <p>13px Poppins on 36px rows. Figures are right-aligned in the monospace, so the columns line up — Poppins has no tabular figures. Hover tints the row; a selected row gets the fair-blue wash and a pink bar.</p>
+      </div>
+      <div class="pl-table-frame">
+        <div class="pl-table-toolbar">
+          <div class="pl-table-toolbar__title">Calls <span class="pl-badge">1,284</span></div>
+          <div class="pl-input-group" style="width:min(240px,100%)"><svg aria-hidden="true"><use href="#i-search"/></svg><input class="pl-input" type="search" placeholder="Search calls" aria-label="Search calls" style="min-height:var(--app-control-height-sm)"></div>
+          <button class="pl-button pl-button--secondary pl-button--sm" type="button"><svg aria-hidden="true"><use href="#i-filter"/></svg>Filters</button>
+        </div>
+        <div class="pl-table-scroll">
+          <table class="pl-table">
+            <thead>
+              <tr>
+                <th class="is-check"><input class="pl-check" type="checkbox" aria-label="Select all" id="sel-all"></th>
+                <th>Call</th>
+                <th><button class="pl-sort" type="button">Agent<svg aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+                <th class="demo-optional">Team</th>
+                <th class="is-num"><button class="pl-sort" type="button">Duration<svg aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+                <th class="is-num" aria-sort="descending"><button class="pl-sort" type="button">Score<svg aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+                <th>Status</th>
+                <th class="demo-optional">Scored</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="is-check"><input class="pl-check" type="checkbox" aria-label="Select call"></td><td><span class="pl-id">c_41f9a0</span></td><td class="is-primary">Amelia Hart</td><td class="is-muted demo-optional">Manchester sales</td><td class="is-num">00:14:32</td><td class="is-num">96.5</td><td><span class="pl-pill pl-pill--success">Complete</span></td><td class="is-muted demo-optional">12 min ago</td></tr>
+              <tr aria-selected="true"><td class="is-check"><input class="pl-check" type="checkbox" checked aria-label="Select call"></td><td><span class="pl-id">c_41f7c2</span></td><td class="is-primary">Daniel Okafor</td><td class="is-muted demo-optional">London sales</td><td class="is-num">00:31:08</td><td class="is-num">91.0</td><td><span class="pl-pill pl-pill--attention">Waiting for you</span></td><td class="is-muted demo-optional">40 min ago</td></tr>
+              <tr class="demo-hover"><td class="is-check"><input class="pl-check" type="checkbox" aria-label="Select call"></td><td><span class="pl-id">c_41f511</span></td><td class="is-primary">Priya Shah</td><td class="is-muted demo-optional">Customer care</td><td class="is-num">00:07:55</td><td class="is-num">88.3</td><td><span class="pl-pill pl-pill--info pl-pill--live">Running</span></td><td class="is-muted demo-optional">1 hr ago</td></tr>
+              <tr><td class="is-check"><input class="pl-check" type="checkbox" aria-label="Select call"></td><td><span class="pl-id">c_41f2be</span></td><td class="is-primary">Tom Reid</td><td class="is-muted demo-optional">Manchester sales</td><td class="is-num">00:22:41</td><td class="is-num">74.0</td><td><span class="pl-pill pl-pill--warning">Needs review</span></td><td class="is-muted demo-optional">2 hr ago</td></tr>
+              <tr><td class="is-check"><input class="pl-check" type="checkbox" aria-label="Select call"></td><td><span class="pl-id">c_41f0d7</span></td><td class="is-primary">Grace Bennett</td><td class="is-muted demo-optional">London sales</td><td class="is-num">00:01:12</td><td class="is-num">11.5</td><td><span class="pl-pill pl-pill--danger">Failed</span></td><td class="is-muted demo-optional">Yesterday</td></tr>
+              <tr><td class="is-check"><input class="pl-check" type="checkbox" aria-label="Select call"></td><td><span class="pl-id">c_41ef03</span></td><td class="is-primary">Kwame Mensah</td><td class="is-muted demo-optional">Customer care</td><td class="is-num">01:04:19</td><td class="is-num">—</td><td><span class="pl-pill">Queued</span></td><td class="is-muted demo-optional">Yesterday</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pl-table-footer">
+          <span>Showing <span class="pl-mono">1–6</span> of <span class="pl-mono">1,284</span> · 1 selected</span>
+          <div class="pv-row" style="gap:var(--app-space-2)">
+            <button class="pl-button pl-button--tertiary pl-button--sm pl-button--icon" type="button" aria-label="Previous page" disabled><svg aria-hidden="true"><use href="#i-chev-left"/></svg></button>
+            <button class="pl-button pl-button--tertiary pl-button--sm pl-button--icon" type="button" aria-label="Next page"><svg aria-hidden="true"><use href="#i-chev-right"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pl-table-frame" style="margin-top:var(--spacing-md)">
+        <div class="pl-table-scroll">
+          <table class="pl-table">
+            <thead><tr><th>Call</th><th>Agent</th><th class="is-num">Score</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr class="pl-table__empty"><td colspan="4">
+                <div class="pv-stack" style="justify-items:center;gap:var(--spacing-xsm)">
+                  <span class="pl-text-heading">No calls match these filters</span>
+                  <span class="pl-text-muted">Try a longer period, or include calls under 30 seconds.</span>
+                  <button class="pl-button pl-button--secondary pl-button--sm" type="button">Clear filters</button>
+                </div>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs, badges, pills -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Tabs, badges and status</h2>
+        <p>The active tab gets a hot-pink bar — one of the few places hot pink appears in the app. Status pills always carry a word; the dot is a second cue, not the only one.</p>
+      </div>
+      <div class="pl-panel pv-card pv-stack">
+        <div class="pl-tabs" role="tablist">
+          <button class="pl-tab" role="tab" aria-selected="true" type="button">Overview</button>
+          <button class="pl-tab" role="tab" aria-selected="false" type="button">Calls <span class="pl-badge">1,284</span></button>
+          <button class="pl-tab" role="tab" aria-selected="false" type="button">Findings <span class="pl-badge pl-badge--accent">12</span></button>
+          <button class="pl-tab" role="tab" aria-selected="false" type="button">Chat</button>
+          <button class="pl-tab" role="tab" aria-selected="false" type="button">Settings</button>
+        </div>
+        <div>
+          <span class="pl-text-eyebrow demo-label">Status pills</span>
+          <div class="pv-row">
+            <span class="pl-pill pl-pill--info pl-pill--live">Running</span>
+            <span class="pl-pill pl-pill--attention">Waiting for you</span>
+            <span class="pl-pill pl-pill--success">Complete</span>
+            <span class="pl-pill pl-pill--warning">Needs review</span>
+            <span class="pl-pill pl-pill--danger">Failed</span>
+            <span class="pl-pill">Queued</span>
+          </div>
+        </div>
+        <div>
+          <span class="pl-text-eyebrow demo-label">Solid, for emphasis</span>
+          <div class="pv-row">
+            <span class="pl-pill pl-pill--info pl-pill--solid">Running</span>
+            <span class="pl-pill pl-pill--attention pl-pill--solid">Waiting for you</span>
+            <span class="pl-pill pl-pill--success pl-pill--solid">Complete</span>
+            <span class="pl-pill pl-pill--warning pl-pill--solid">Needs review</span>
+            <span class="pl-pill pl-pill--danger pl-pill--solid">Failed</span>
+            <span class="pl-pill pl-pill--solid">Queued</span>
+          </div>
+        </div>
+        <div>
+          <span class="pl-text-eyebrow demo-label">Badges</span>
+          <div class="pv-row">
+            <span class="pl-badge">8</span>
+            <span class="pl-badge pl-badge--accent">3</span>
+            <span class="pl-badge pl-badge--solid">1,284</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dialog and toasts -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Dialog and toasts</h2>
+        <p>Floating layers are the only things with a shadow. Dialogs sit on a navy scrim; toasts name what happened and, where useful, what to do next.</p>
+      </div>
+      <div class="pv-grid pv-grid--2">
+        <div class="demo-under"><div class="pl-scrim demo-scrim">
+          <div class="pl-dialog" role="dialog" aria-modal="true" aria-labelledby="d-title">
+            <div class="pl-dialog__header">
+              <h3 class="pl-dialog__title" id="d-title">Delete this study?</h3>
+              <button class="pl-close" type="button" aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+            </div>
+            <div class="pl-dialog__body">
+              <p>“Why customers cancel in the first month” and its 412 scored calls will be removed for everyone on your team.</p>
+              <p>The calls themselves stay in the archive.</p>
+            </div>
+            <div class="pl-dialog__footer">
+              <button class="pl-button pl-button--secondary" type="button">Keep it</button>
+              <button class="pl-button pl-button--danger" type="button">Delete study</button>
+            </div>
+          </div>
+        </div></div>
+        <div class="demo-toasts">
+          <div class="pl-toast" role="status"><span class="pl-toast__icon"><svg aria-hidden="true"><use href="#i-info"/></svg></span><div><div class="pl-toast__title">Transcription started</div><div class="pl-toast__body">38 new calls. We'll score them as they land.</div></div><button class="pl-close" type="button" aria-label="Dismiss"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+          <div class="pl-toast pl-toast--attention" role="status"><span class="pl-toast__icon"><svg aria-hidden="true"><use href="#i-hand"/></svg></span><div><div class="pl-toast__title">Your plan is ready</div><div class="pl-toast__body">Approve it to start scoring. <a href="#">Review plan</a></div></div><button class="pl-close" type="button" aria-label="Dismiss"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+          <div class="pl-toast pl-toast--success" role="status"><span class="pl-toast__icon"><svg aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="pl-toast__title">Study saved</div><div class="pl-toast__body">Shared with Manchester sales.</div></div><button class="pl-close" type="button" aria-label="Dismiss"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+          <div class="pl-toast pl-toast--warning" role="status"><span class="pl-toast__icon"><svg aria-hidden="true"><use href="#i-warning"/></svg></span><div><div class="pl-toast__title">Two calls need review</div><div class="pl-toast__body">They were too short to score with confidence.</div></div><button class="pl-close" type="button" aria-label="Dismiss"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+          <div class="pl-toast pl-toast--danger" role="alert"><span class="pl-toast__icon"><svg aria-hidden="true"><use href="#i-danger"/></svg></span><div><div class="pl-toast__title">We couldn't reach the CRM</div><div class="pl-toast__body">We'll try again in a minute.</div></div><button class="pl-close" type="button" aria-label="Dismiss"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chat -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Chat</h2>
+        <p>Your messages sit in a fair-pink bubble; the assistant writes on the page, at 16px for comfortable reading. A plan arrives as a card with one clear action — nothing runs until you approve it.</p>
+      </div>
+      <div class="demo-chat">
+        <div class="pl-chat">
+          <div class="pl-notice"><span class="pl-notice__inner">Study started · 14:02</span></div>
+          <div class="pl-msg pl-msg--user">
+            <div class="pl-msg__avatar" aria-hidden="true">CF</div>
+            <div class="pl-msg__main">
+              <div class="pl-msg__meta"><span class="pl-msg__name">You</span><span>14:02</span></div>
+              <div class="pl-msg__text"><p>Why are customers cancelling in their first month? Look at Manchester and London since August.</p></div>
+            </div>
+          </div>
+          <div class="pl-msg">
+            <div class="pl-msg__avatar" aria-hidden="true"><img src="../assets/logos/Brandmark-Pink.png" alt=""></div>
+            <div class="pl-msg__main">
+              <div class="pl-msg__meta"><span class="pl-msg__name">Assistant</span><span>14:03</span></div>
+              <div class="pl-msg__text">
+                <p>Good question. I found 412 first-month cancellations across both teams. Here's how I'd look at them — have a read and approve when you're happy.</p>
+              </div>
+              <div class="pl-msg-card">
+                <div class="pl-msg-card__header">
+                  <h3 class="pl-msg-card__title">Study plan</h3>
+                  <span class="pl-pill pl-pill--attention">Waiting for you</span>
+                </div>
+                <div class="pl-msg-card__body">
+                  <ol class="pl-msg-card__steps">
+                    <li><span>Find every cancellation within 30 days of the policy starting.</span></li>
+                    <li><span>Read the last call before each one and note the reason given.</span></li>
+                    <li><span>Group the reasons and compare the two teams.</span></li>
+                  </ol>
+                  <dl class="pl-msg-card__facts">
+                    <div><dt>Calls</dt><dd class="pl-mono">412</dd></div>
+                    <div><dt>Estimated cost</dt><dd class="pl-mono">£3.20</dd></div>
+                    <div><dt>Time</dt><dd>About 6 minutes</dd></div>
+                  </dl>
+                </div>
+                <div class="pl-msg-card__footer">
+                  <button class="pl-button pl-button--primary pl-button--sm" type="button">Approve plan</button>
+                  <button class="pl-button pl-button--secondary pl-button--sm" type="button">Change something</button>
+                  <p class="pl-hint">Nothing runs until you approve.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pl-notice"><span class="pl-notice__inner"><svg aria-hidden="true"><use href="#i-check"/></svg>Plan approved by you · 14:05</span></div>
+        </div>
+        <div class="pl-composer">
+          <label for="composer" class="pv-sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Message</label>
+          <textarea id="composer" rows="1" placeholder="Ask a follow-up question"></textarea>
+          <button class="pl-button pl-button--primary pl-button--icon" type="button" aria-label="Send"><svg aria-hidden="true"><use href="#i-send"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feedback -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Progress, loading and empty states</h2>
+        <p>Show progress with real numbers when you have them. Skeletons pulse rather than shimmer — no gradients. Hugo appears once, where a screen would otherwise be blank.</p>
+      </div>
+      <div class="demo-feedback">
+        <div class="pl-panel pv-card pv-stack">
+          <h3 style="margin:0">Progress</h3>
+          <div class="pl-progress">
+            <div class="pl-progress__label"><span>Scoring calls</span><span class="pl-mono">312 / 1,284</span></div>
+            <div class="pl-progress__track" role="progressbar" aria-valuemin="0" aria-valuemax="1284" aria-valuenow="312" aria-label="Scoring calls"><div class="pl-progress__fill" style="--value:24%"></div></div>
+          </div>
+          <div class="pl-progress pl-progress--success">
+            <div class="pl-progress__label"><span>Transcribing</span><span>Done</span></div>
+            <div class="pl-progress__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="Transcribing"><div class="pl-progress__fill" style="--value:100%"></div></div>
+          </div>
+          <div class="pl-progress pl-progress--indeterminate">
+            <div class="pl-progress__label"><span>Fetching from the CRM</span><span></span></div>
+            <div class="pl-progress__track" role="progressbar" aria-label="Fetching from the CRM"><div class="pl-progress__fill"></div></div>
+          </div>
+          <div class="pv-row pl-text-muted" style="gap:var(--spacing-xsm)"><span class="pl-spinner" aria-hidden="true"></span><span>Thinking…</span></div>
+        </div>
+        <div class="pl-panel pv-card pv-stack" aria-busy="true" aria-label="Loading studies">
+          <h3 style="margin:0">Loading skeleton</h3>
+          <div class="demo-skel-row"><span class="pl-skeleton pl-skeleton--circle"></span><div class="demo-skel-lines"><span class="pl-skeleton" style="width:70%"></span><span class="pl-skeleton" style="width:40%;height:10px"></span></div></div>
+          <div class="demo-skel-row"><span class="pl-skeleton pl-skeleton--circle"></span><div class="demo-skel-lines"><span class="pl-skeleton" style="width:85%"></span><span class="pl-skeleton" style="width:55%;height:10px"></span></div></div>
+          <div class="demo-skel-row"><span class="pl-skeleton pl-skeleton--circle"></span><div class="demo-skel-lines"><span class="pl-skeleton" style="width:60%"></span><span class="pl-skeleton" style="width:35%;height:10px"></span></div></div>
+          <span class="pl-skeleton pl-skeleton--block"></span>
+        </div>
+        <div class="pl-panel">
+          <div class="pl-empty">
+            <div class="pl-empty__art"><img src="../assets/hugo/Hugo-Long-Document.png" alt="" width="1265" height="827"></div>
+            <h3 class="pl-empty__title">No studies yet</h3>
+            <p class="pl-empty__body">Ask a question about your calls and we'll draft a plan for you to approve.</p>
+            <button class="pl-button pl-button--primary" type="button"><svg aria-hidden="true"><use href="#i-plus"/></svg>Start a study</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    document.getElementById('sel-all').indeterminate = true;
+  </script>
+</body>
+</html>

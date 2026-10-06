@@ -191,6 +191,9 @@
   --app-accent-strong: var(--color-hot-pink);
   --app-accent-subtle: var(--color-fair-pink);
   --app-focus-ring: var(--color-hot-pink);
+  --app-destructive: var(--color-danger-600);
+  --app-destructive-text: var(--color-white);
+  --app-illustration-plate: var(--color-fair-blue);
   --app-selection-bg: var(--color-light-pink);
   --app-selection-text: var(--color-navy);
   --app-scrim: rgba(12, 7, 61, 0.48);
@@ -285,6 +288,9 @@
   --app-accent-strong: var(--color-hot-pink);
   --app-accent-subtle: var(--color-pink-950);
   --app-focus-ring: var(--color-hot-pink);
+  --app-destructive: var(--color-danger-600);
+  --app-destructive-text: var(--color-white);
+  --app-illustration-plate: var(--color-dark-blue-200);
   --app-selection-bg: var(--color-pink-800);
   --app-selection-text: var(--color-white);
   --app-scrim: rgba(8, 5, 46, 0.72);
@@ -379,6 +385,9 @@
     --app-accent-strong: var(--color-hot-pink);
     --app-accent-subtle: var(--color-pink-950);
     --app-focus-ring: var(--color-hot-pink);
+    --app-destructive: var(--color-danger-600);
+    --app-destructive-text: var(--color-white);
+    --app-illustration-plate: var(--color-dark-blue-200);
     --app-selection-bg: var(--color-pink-800);
     --app-selection-text: var(--color-white);
     --app-scrim: rgba(8, 5, 46, 0.72);

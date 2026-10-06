@@ -467,6 +467,13 @@
             "$description": "Focus ring. 4.13:1 on white, 4.56:1 on navy — passes 3:1 in both modes."
           }
         },
+        "destructive": {
+          "default": { "$value": "{color.danger.600}", "$description": "Destructive button fill, the same in both modes: white text on it is 5.13:1 and it stays ≥3.3:1 against every navy surface. The status solid turns light in dark mode, which reads too gentle for an action that cannot be undone." },
+          "text": { "$value": "{color.white}" }
+        },
+        "illustration": {
+          "plate": { "$value": "{color.fair-blue}", "$description": "Disc behind Hugo and other spot illustrations. Hugo is outlined in navy, so the plate stays light in both modes." }
+        },
         "selection": {
           "bg": {
             "$value": "{color.light-pink}",
@@ -645,6 +652,8 @@
           "subtle": { "$value": "{color.pink.950}" }
         },
         "focus": { "ring": { "$value": "{color.hot-pink}" } },
+        "destructive": { "default": { "$value": "{color.danger.600}" }, "text": { "$value": "{color.white}" } },
+        "illustration": { "plate": { "$value": "{color.dark-blue.200}" } },
         "selection": { "bg": { "$value": "{color.pink.800}" }, "text": { "$value": "{color.white}" } },
         "scrim": {
           "$type": "color",

@@ -43,6 +43,9 @@ function pairs() {
   text('app.text.inverse', 'app.surface.inverse', 'tooltip, sidebar');
   for (const a of ['app.accent.default', 'app.accent.hover', 'app.accent.pressed']) text('app.text.on-accent', a, 'primary button');
   text('app.selection.text', 'app.selection.bg', '::selection');
+  text('app.destructive.text', 'app.destructive.default', 'destructive button');
+  for (const s of ['app.surface.default', 'app.surface.raised', 'app.surface.sunken']) ui('app.destructive.default', s, 'destructive fill');
+  ui('color.navy', 'app.illustration.plate', 'Hugo outline on plate');
   for (const st of STATUSES) {
     const p = `app.status.${st}`;
     text(`${p}.fg`, `${p}.bg`, 'pill, alert');

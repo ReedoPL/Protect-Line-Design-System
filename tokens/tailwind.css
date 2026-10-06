@@ -34,6 +34,9 @@
   --color-accent-strong: var(--app-accent-strong);
   --color-accent-subtle: var(--app-accent-subtle);
   --color-focus-ring: var(--app-focus-ring);
+  --color-destructive: var(--app-destructive);
+  --color-destructive-text: var(--app-destructive-text);
+  --color-illustration-plate: var(--app-illustration-plate);
   --color-selection-bg: var(--app-selection-bg);
   --color-selection-text: var(--app-selection-text);
   --color-scrim: var(--app-scrim);

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App colours — Protect Line</title>
+  <script src="app-preview.js"></script>
+  <link rel="stylesheet" href="../app-tokens.css">
+  <link rel="stylesheet" href="../components/app-components.css">
+  <link rel="stylesheet" href="app-preview.css">
+  <style>
+    /* Layer diagram */
+    .cw-layers { padding: var(--spacing-lg); border-radius: var(--app-radius-panel); background: var(--app-surface-canvas); border: 1px dashed var(--app-border); display: grid; gap: var(--spacing-sm); }
+    .cw-layers__surface { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--app-radius-panel); padding: var(--spacing-md); display: grid; gap: var(--spacing-sm); }
+    .cw-layers__raised { background: var(--app-surface-raised); border: 1px solid var(--app-border); border-radius: var(--app-radius-control); box-shadow: var(--app-shadow-overlay); padding: var(--spacing-sm) var(--spacing-md); justify-self: end; width: min(260px, 100%); margin-top: calc(var(--spacing-md) * -1); position: relative; }
+    .cw-layers__row { display: flex; justify-content: space-between; align-items: center; padding: var(--spacing-xsm) var(--spacing-sm); border-radius: var(--radius-sm); font-size: var(--app-font-size-sm); }
+    .cw-layers__row--hover { background: var(--app-surface-hover); }
+    .cw-layers__row--selected { background: var(--app-surface-selected); box-shadow: inset 3px 0 0 var(--app-accent-strong); }
+    .cw-layers__sunken { background: var(--app-surface-sunken); border-radius: var(--radius-sm); padding: var(--spacing-xsm) var(--spacing-sm); font-size: var(--app-font-size-sm); color: var(--app-text-muted); }
+    .cw-tag { font-family: var(--font-mono); font-size: var(--app-font-size-xs); color: var(--app-text-subtle); }
+
+    /* Token list */
+    .cw-tokens { display: grid; }
+    .cw-token { display: grid; grid-template-columns: 36px minmax(0, 1fr) auto auto; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-xsm) 0; border-bottom: 1px solid var(--app-border-subtle); }
+    .cw-token:last-child { border-bottom: none; }
+    .cw-chip { width: 36px; height: 36px; border-radius: var(--radius-sm); border: 1px solid var(--app-border); }
+    .cw-token code { font-family: var(--font-mono); font-size: var(--app-font-size-xs); color: var(--app-text); display: block; overflow-wrap: anywhere; }
+    .cw-role { display: block; font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-subtle); }
+    .cw-val { font-family: var(--font-mono); font-size: var(--app-font-size-xs); color: var(--app-text-muted); text-align: right; }
+
+    /* Text matrix */
+    .cw-matrix { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .cw-matrix th { font-size: var(--app-font-size-xs); font-weight: var(--font-weight-medium); color: var(--app-text-subtle); text-align: left; padding: 0 var(--spacing-sm) var(--spacing-xsm); white-space: nowrap; }
+    .cw-matrix td { padding: var(--spacing-sm); border-top: 1px solid var(--app-border-subtle); vertical-align: middle; }
+    .cw-matrix td.cw-cell { text-align: left; }
+    .cw-cell__sample { display: block; font-weight: var(--font-weight-medium); margin-bottom: var(--app-space-2); white-space: nowrap; }
+    .cw-matrix-scroll { overflow-x: auto; }
+
+    /* Status rows */
+    .cw-status { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; align-items: center; gap: var(--spacing-md); padding: var(--spacing-md) 0; border-bottom: 1px solid var(--app-border-subtle); }
+    .cw-status:last-child { border-bottom: none; padding-bottom: 0; }
+    .cw-status:first-child { padding-top: 0; }
+    .cw-status__name { font-weight: var(--font-weight-semibold); }
+    .cw-status__use { display: block; font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-subtle); font-weight: var(--font-weight-regular); }
+    .cw-status__ratios { display: grid; grid-template-columns: auto auto; gap: var(--app-space-2) var(--spacing-sm); font-size: var(--app-font-size-xs); color: var(--app-text-subtle); }
+    .cw-status__ratios span:nth-child(odd) { text-align: right; }
+
+    /* Side by side themes */
+    .cw-duo { display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--app-radius-panel); overflow: hidden; border: 1px solid var(--app-border); }
+    .cw-duo > div { background: var(--app-surface-canvas); color: var(--app-text); padding: var(--spacing-lg); display: grid; gap: var(--spacing-sm); align-content: start; }
+    .cw-mini { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--app-radius-panel); padding: var(--spacing-md); display: grid; gap: var(--spacing-sm); }
+    .cw-mini__head { display: flex; justify-content: space-between; align-items: center; gap: var(--spacing-sm); flex-wrap: wrap; }
+    .cw-mini__title { font-weight: var(--font-weight-semibold); }
+
+    /* Approval table */
+    .cw-new td:first-child { width: 44px; }
+    .cw-new .cw-chip { width: 28px; height: 28px; }
+    .cw-new td.cw-why { white-space: normal; min-width: 280px; color: var(--app-text-muted); padding-top: var(--spacing-xsm); padding-bottom: var(--spacing-xsm); }
+    .cw-new code { font-family: var(--font-mono); font-size: var(--app-font-size-xs); }
+
+    @media (max-width: 767px) {
+      .cw-status { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-sm); }
+      .cw-status__ratios { grid-template-columns: auto 1fr; }
+      .cw-status__ratios span:nth-child(odd) { text-align: left; }
+      .cw-duo { grid-template-columns: 1fr; }
+      .cw-token { grid-template-columns: 32px minmax(0, 1fr) auto; }
+      .cw-token .cw-val { display: none; }
+      .cw-chip { width: 32px; height: 32px; }
+    }
+  </style>
+</head>
+<body class="pl-app">
+  <header class="pv-top">
+    <a class="pv-top__brand" href="../kit/index.html" aria-label="Protect Line">
+      <img class="pv-logo--light" src="../assets/logos/primary-logo-navy-pink.png" alt="Protect Line" width="191" height="43">
+      <img class="pv-logo--dark" src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+      <span>App layer</span>
+    </a>
+    <nav class="pv-top__nav" aria-label="App layer previews">
+      <a href="app-colours.html" aria-current="page">Colours</a>
+      <a href="app-type.html">Type</a>
+      <a href="app-components.html">Components</a>
+      <a href="data-viz.html">Data viz</a>
+    </nav>
+    <label class="pv-theme"><span>Dark</span><input class="pl-switch" type="checkbox" role="switch" data-theme-toggle></label>
+  </header>
+
+  <main class="pv-page">
+    <div class="pv-hero">
+      <span class="pl-text-eyebrow">App layer · colour</span>
+      <h1>Colours for <em>working</em> screens</h1>
+      <p>Semantic tokens for product UI, built on the brand palette. Every ratio on this page is measured live from the values your browser resolved — switch to dark mode and they update.</p>
+    </div>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Surfaces and depth</h2>
+        <p>Depth comes from tone and a hairline border, not shadow. Only floating layers (menus, toasts, dialogs) carry the one overlay shadow. Dark mode steps up the navy ramp — never grey or black.</p>
+      </div>
+      <div class="pv-grid pv-grid--2">
+        <div class="cw-layers" aria-label="How the surfaces stack">
+          <span class="cw-tag">surface-canvas</span>
+          <div class="cw-layers__surface">
+            <span class="cw-tag">surface</span>
+            <div class="cw-layers__row"><span>Weekly coaching</span><span class="pl-text-caption">Mon 07:00</span></div>
+            <div class="cw-layers__row cw-layers__row--hover"><span>Partner process review</span><span class="cw-tag">surface-hover</span></div>
+            <div class="cw-layers__row cw-layers__row--selected"><span>Cancellation reasons</span><span class="cw-tag">surface-selected</span></div>
+            <div class="cw-layers__sunken"><span class="cw-tag">surface-sunken</span> · study id <span class="pl-mono">st_8f3a21</span></div>
+            <div class="cw-layers__raised"><span class="cw-tag">surface-raised</span><div class="pl-text-label">Menu, popover, dialog</div></div>
+          </div>
+        </div>
+        <div class="pl-panel pv-card">
+          <div class="cw-tokens">
+            <div class="cw-token"><span class="cw-chip" style="background:var(--app-surface-canvas)"></span><div><code>--app-surface-canvas</code><span class="cw-role">App background behind panels</span></div><span class="cw-val" data-token-value="--app-surface-canvas"></span><span class="pv-ratio" data-contrast="--app-text on --app-surface-canvas"></span></div>
+            <div class="cw-token"><span class="cw-chip" style="background:var(--app-surface)"></span><div><code>--app-surface</code><span class="cw-role">Panels, tables, the working surface</span></div><span class="cw-val" data-token-value="--app-surface"></span><span class="pv-ratio" data-contrast="--app-text on --app-surface"></span></div>
+            <div class="cw-token"><span class="cw-chip" style="background:var(--app-surface-raised)"></span><div><code>--app-surface-raised</code><span class="cw-role">Dialogs, menus, toasts</span></div><span class="cw-val" data-token-value="--app-surface-raised"></span><span class="pv-ratio" data-contrast="--app-text on --app-surface-raised"></span></div>
+            <div class="cw-token"><span class="cw-chip" style="background:var(--app-surface-sunken)"></span><div><code>--app-surface-sunken</code><span class="cw-role">Wells, table headers, tracks</span></div><span class="cw-val" data-token-value="--app-surface-sunken"></span><span class="pv-ratio" data-contrast="--app-text on --app-surface-sunken"></span></div>
+            <div class="cw-token"><span class="cw-chip" style="background:var(--app-surface-hover)"></span><div><code>--app-surface-hover</code><span class="cw-role">Translucent, works on any surface</span></div><span class="cw-val" data-token-value="--app-surface-hover"></span><span class="pv-ratio" data-contrast="--app-text on --app-surface-hover over --app-surface"></span></div>
+            <div class="cw-token"><span class="cw-chip" style="background:var(--app-surface-selected)"></span><div><code>--app-surface-selected</code><span class="cw-role">Selected rows, with the pink bar</span></div><span class="cw-val" data-token-value="--app-surface-selected"></span><span class="pv-ratio" data-contrast="--app-text on --app-surface-selected"></span></div>
+            <div class="cw-token"><span class="cw-chip" style="background:var(--app-surface-inverse)"></span><div><code>--app-surface-inverse</code><span class="cw-role">Sidebar, tooltips</span></div><span class="cw-val" data-token-value="--app-surface-inverse"></span><span class="pv-ratio" data-contrast="--app-text-inverse on --app-surface-inverse"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Text on every surface</h2>
+        <p>Three inks, each AA (4.5:1) on every surface it can land on — including a selected row. Disabled text is exempt and shown for reference.</p>
+      </div>
+      <div class="pl-panel pv-card cw-matrix-scroll">
+        <table class="cw-matrix">
+          <thead><tr><th>Token</th><th>Canvas</th><th>Surface</th><th>Sunken</th><th>Hover</th><th>Selected</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code class="pv-code">--app-text</code><span class="cw-role">Primary text</span></td>
+              <td class="cw-cell" style="background:var(--app-surface-canvas)"><span class="cw-cell__sample" style="color:var(--app-text)">Agent scorecard</span><span class="pv-ratio" data-contrast="--app-text on --app-surface-canvas"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface)"><span class="cw-cell__sample" style="color:var(--app-text)">Agent scorecard</span><span class="pv-ratio" data-contrast="--app-text on --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-sunken)"><span class="cw-cell__sample" style="color:var(--app-text)">Agent scorecard</span><span class="pv-ratio" data-contrast="--app-text on --app-surface-sunken"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-hover)"><span class="cw-cell__sample" style="color:var(--app-text)">Agent scorecard</span><span class="pv-ratio" data-contrast="--app-text on --app-surface-hover over --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-selected)"><span class="cw-cell__sample" style="color:var(--app-text)">Agent scorecard</span><span class="pv-ratio" data-contrast="--app-text on --app-surface-selected"></span></td>
+            </tr>
+            <tr>
+              <td><code class="pv-code">--app-text-muted</code><span class="cw-role">Secondary text</span></td>
+              <td class="cw-cell" style="background:var(--app-surface-canvas)"><span class="cw-cell__sample" style="color:var(--app-text-muted)">Last scored today</span><span class="pv-ratio" data-contrast="--app-text-muted on --app-surface-canvas"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface)"><span class="cw-cell__sample" style="color:var(--app-text-muted)">Last scored today</span><span class="pv-ratio" data-contrast="--app-text-muted on --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-sunken)"><span class="cw-cell__sample" style="color:var(--app-text-muted)">Last scored today</span><span class="pv-ratio" data-contrast="--app-text-muted on --app-surface-sunken"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-hover)"><span class="cw-cell__sample" style="color:var(--app-text-muted)">Last scored today</span><span class="pv-ratio" data-contrast="--app-text-muted on --app-surface-hover over --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-selected)"><span class="cw-cell__sample" style="color:var(--app-text-muted)">Last scored today</span><span class="pv-ratio" data-contrast="--app-text-muted on --app-surface-selected"></span></td>
+            </tr>
+            <tr>
+              <td><code class="pv-code">--app-text-subtle</code><span class="cw-role">Captions, placeholders</span></td>
+              <td class="cw-cell" style="background:var(--app-surface-canvas)"><span class="cw-cell__sample" style="color:var(--app-text-subtle)">12 minutes ago</span><span class="pv-ratio" data-contrast="--app-text-subtle on --app-surface-canvas"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface)"><span class="cw-cell__sample" style="color:var(--app-text-subtle)">12 minutes ago</span><span class="pv-ratio" data-contrast="--app-text-subtle on --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-sunken)"><span class="cw-cell__sample" style="color:var(--app-text-subtle)">12 minutes ago</span><span class="pv-ratio" data-contrast="--app-text-subtle on --app-surface-sunken"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-hover)"><span class="cw-cell__sample" style="color:var(--app-text-subtle)">12 minutes ago</span><span class="pv-ratio" data-contrast="--app-text-subtle on --app-surface-hover over --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-selected)"><span class="cw-cell__sample" style="color:var(--app-text-subtle)">12 minutes ago</span><span class="pv-ratio" data-contrast="--app-text-subtle on --app-surface-selected"></span></td>
+            </tr>
+            <tr>
+              <td><code class="pv-code">--app-text-link</code><span class="cw-role">Inline links</span></td>
+              <td class="cw-cell" style="background:var(--app-surface-canvas)"><span class="cw-cell__sample" style="color:var(--app-text-link);text-decoration:underline">View transcript</span><span class="pv-ratio" data-contrast="--app-text-link on --app-surface-canvas"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface)"><span class="cw-cell__sample" style="color:var(--app-text-link);text-decoration:underline">View transcript</span><span class="pv-ratio" data-contrast="--app-text-link on --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-sunken)"><span class="cw-cell__sample" style="color:var(--app-text-link);text-decoration:underline">View transcript</span><span class="pv-ratio" data-contrast="--app-text-link on --app-surface-sunken"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-hover)"><span class="cw-cell__sample" style="color:var(--app-text-link);text-decoration:underline">View transcript</span><span class="pv-ratio" data-contrast="--app-text-link on --app-surface-hover over --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-selected)"><span class="cw-cell__sample" style="color:var(--app-text-link);text-decoration:underline">View transcript</span><span class="pv-ratio" data-contrast="--app-text-link on --app-surface-selected"></span></td>
+            </tr>
+            <tr>
+              <td><code class="pv-code">--app-text-disabled</code><span class="cw-role">Exempt</span></td>
+              <td class="cw-cell" style="background:var(--app-surface-canvas)"><span class="cw-cell__sample" style="color:var(--app-text-disabled)">Unavailable</span><span class="pv-ratio" data-min="0" data-contrast="--app-text-disabled on --app-surface-canvas"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface)"><span class="cw-cell__sample" style="color:var(--app-text-disabled)">Unavailable</span><span class="pv-ratio" data-min="0" data-contrast="--app-text-disabled on --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-sunken)"><span class="cw-cell__sample" style="color:var(--app-text-disabled)">Unavailable</span><span class="pv-ratio" data-min="0" data-contrast="--app-text-disabled on --app-surface-sunken"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-hover)"><span class="cw-cell__sample" style="color:var(--app-text-disabled)">Unavailable</span><span class="pv-ratio" data-min="0" data-contrast="--app-text-disabled on --app-surface-hover over --app-surface"></span></td>
+              <td class="cw-cell" style="background:var(--app-surface-selected)"><span class="cw-cell__sample" style="color:var(--app-text-disabled)">Unavailable</span><span class="pv-ratio" data-min="0" data-contrast="--app-text-disabled on --app-surface-selected"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Accent, focus and boundaries</h2>
+        <p>Hot pink is 4.13:1 on white — fine for a focus ring or an indicator bar (3:1), not for text at app sizes. So fills under white text use pink-600, and pink text uses pink-700.</p>
+      </div>
+      <div class="pv-grid pv-grid--3">
+        <div class="pl-panel pv-card pv-stack">
+          <h3 style="margin:0">Primary action</h3>
+          <div class="pv-row"><button class="pl-button pl-button--primary" type="button">Approve plan</button></div>
+          <div class="cw-status__ratios" style="justify-content:start">
+            <span>White on fill</span><span class="pv-ratio" data-contrast="--app-text-on-accent on --app-accent"></span>
+            <span>Fill on surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-accent on --app-surface"></span>
+          </div>
+        </div>
+        <div class="pl-panel pv-card pv-stack">
+          <h3 style="margin:0">Focus ring</h3>
+          <div class="pv-row"><button class="pl-button pl-button--secondary" type="button" style="outline:var(--app-focus-width) solid var(--app-focus-ring);outline-offset:var(--app-focus-offset)">Focused</button></div>
+          <div class="cw-status__ratios" style="justify-content:start">
+            <span>On surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-focus-ring on --app-surface"></span>
+            <span>On selected row</span><span class="pv-ratio" data-min="3" data-contrast="--app-focus-ring on --app-surface-selected"></span>
+          </div>
+        </div>
+        <div class="pl-panel pv-card pv-stack">
+          <h3 style="margin:0">Control boundary</h3>
+          <input class="pl-input" type="text" placeholder="Search calls" aria-label="Search calls">
+          <div class="cw-status__ratios" style="justify-content:start">
+            <span>Border on surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-border-strong on --app-surface"></span>
+            <span>Placeholder</span><span class="pv-ratio" data-contrast="--app-text-subtle on --app-surface"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Status</h2>
+        <p>Five states plus neutral. Each has a tint, a border, text, and a solid. Status always comes with a word and a dot or icon — never colour alone. Danger is a true red, well clear of the brand pinks, so an error never reads as a call to action.</p>
+      </div>
+      <div class="pl-panel pv-card">
+        <div class="cw-status">
+          <div class="cw-status__name">Info<span class="cw-status__use">Running, processing, tips</span></div>
+          <div class="pv-row"><span class="pl-pill pl-pill--info pl-pill--live">Running</span><span class="pl-pill pl-pill--info pl-pill--solid">Running</span></div>
+          <div class="cw-status__ratios"><span>text / tint</span><span class="pv-ratio" data-contrast="--app-status-info-fg on --app-status-info-bg"></span><span>on solid</span><span class="pv-ratio" data-contrast="--app-status-info-on-solid on --app-status-info-solid"></span><span>solid / surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-status-info-solid on --app-surface"></span></div>
+        </div>
+        <div class="cw-status">
+          <div class="cw-status__name">Attention<span class="cw-status__use">Waiting for you to act</span></div>
+          <div class="pv-row"><span class="pl-pill pl-pill--attention">Waiting for you</span><span class="pl-pill pl-pill--attention pl-pill--solid">Waiting for you</span></div>
+          <div class="cw-status__ratios"><span>text / tint</span><span class="pv-ratio" data-contrast="--app-status-attention-fg on --app-status-attention-bg"></span><span>on solid</span><span class="pv-ratio" data-contrast="--app-status-attention-on-solid on --app-status-attention-solid"></span><span>solid / surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-status-attention-solid on --app-surface"></span></div>
+        </div>
+        <div class="cw-status">
+          <div class="cw-status__name">Success<span class="cw-status__use">Complete, passed, saved</span></div>
+          <div class="pv-row"><span class="pl-pill pl-pill--success">Complete</span><span class="pl-pill pl-pill--success pl-pill--solid">Complete</span></div>
+          <div class="cw-status__ratios"><span>text / tint</span><span class="pv-ratio" data-contrast="--app-status-success-fg on --app-status-success-bg"></span><span>on solid</span><span class="pv-ratio" data-contrast="--app-status-success-on-solid on --app-status-success-solid"></span><span>solid / surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-status-success-solid on --app-surface"></span></div>
+        </div>
+        <div class="cw-status">
+          <div class="cw-status__name">Warning<span class="cw-status__use">Needs review, partial, at risk</span></div>
+          <div class="pv-row"><span class="pl-pill pl-pill--warning">Needs review</span><span class="pl-pill pl-pill--warning pl-pill--solid">Needs review</span></div>
+          <div class="cw-status__ratios"><span>text / tint</span><span class="pv-ratio" data-contrast="--app-status-warning-fg on --app-status-warning-bg"></span><span>on solid</span><span class="pv-ratio" data-contrast="--app-status-warning-on-solid on --app-status-warning-solid"></span><span>solid / surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-status-warning-solid on --app-surface"></span></div>
+        </div>
+        <div class="cw-status">
+          <div class="cw-status__name">Danger<span class="cw-status__use">Failed, destructive, blocked</span></div>
+          <div class="pv-row"><span class="pl-pill pl-pill--danger">Failed</span><span class="pl-pill pl-pill--danger pl-pill--solid">Failed</span></div>
+          <div class="cw-status__ratios"><span>text / tint</span><span class="pv-ratio" data-contrast="--app-status-danger-fg on --app-status-danger-bg"></span><span>on solid</span><span class="pv-ratio" data-contrast="--app-status-danger-on-solid on --app-status-danger-solid"></span><span>solid / surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-status-danger-solid on --app-surface"></span></div>
+        </div>
+        <div class="cw-status">
+          <div class="cw-status__name">Neutral<span class="cw-status__use">Queued, draft, cancelled</span></div>
+          <div class="pv-row"><span class="pl-pill">Queued</span><span class="pl-pill pl-pill--solid">Queued</span></div>
+          <div class="cw-status__ratios"><span>text / tint</span><span class="pv-ratio" data-contrast="--app-status-neutral-fg on --app-status-neutral-bg"></span><span>on solid</span><span class="pv-ratio" data-contrast="--app-status-neutral-on-solid on --app-status-neutral-solid"></span><span>solid / surface</span><span class="pv-ratio" data-min="3" data-contrast="--app-status-neutral-solid on --app-surface"></span></div>
+        </div>
+      </div>
+
+      <div class="pv-grid pv-grid--2" style="margin-top:var(--spacing-md)">
+        <div class="pl-alert" role="status">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v4.5M10 6.5v.01"/></svg>
+          <div class="pl-alert__title">Scores refresh overnight</div>
+          <div class="pl-alert__body">Calls scored after 22:00 appear in tomorrow's figures.</div>
+        </div>
+        <div class="pl-alert pl-alert--success" role="status">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="m6.8 10.2 2.2 2.2 4.2-4.6"/></svg>
+          <div class="pl-alert__title">Study complete</div>
+          <div class="pl-alert__body">1,284 calls scored. The summary is ready to share.</div>
+        </div>
+        <div class="pl-alert pl-alert--warning" role="status">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3.2 17.5 16H2.5z"/><path d="M10 8.5v3.5M10 14v.01"/></svg>
+          <div class="pl-alert__title">Two calls need review</div>
+          <div class="pl-alert__body">The transcript was too short to score with confidence.</div>
+        </div>
+        <div class="pl-alert pl-alert--danger" role="alert">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="m7.5 7.5 5 5M12.5 7.5l-5 5"/></svg>
+          <div class="pl-alert__title">We couldn't reach the CRM</div>
+          <div class="pl-alert__body">Agent names may be out of date. We'll try again in a minute.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Navy in the dark</h2>
+        <p>The same component, light and dark side by side. <code class="pv-code">data-theme</code> works on any element, so a panel can opt in to the other mode — useful for a navy sidebar inside a light app.</p>
+      </div>
+      <div class="cw-duo">
+        <div data-theme="light">
+          <span class="pl-text-eyebrow">Light</span>
+          <div class="cw-mini">
+            <div class="cw-mini__head"><span class="cw-mini__title">Cancellation reasons</span><span class="pl-pill pl-pill--attention">Waiting for you</span></div>
+            <span class="pl-text-caption">Plan ready · 412 calls · about £3.20</span>
+            <div class="pv-row"><button class="pl-button pl-button--primary pl-button--sm" type="button">Approve plan</button><button class="pl-button pl-button--secondary pl-button--sm" type="button">Edit</button></div>
+          </div>
+        </div>
+        <div data-theme="dark">
+          <span class="pl-text-eyebrow">Dark</span>
+          <div class="cw-mini">
+            <div class="cw-mini__head"><span class="cw-mini__title">Cancellation reasons</span><span class="pl-pill pl-pill--attention">Waiting for you</span></div>
+            <span class="pl-text-caption">Plan ready · 412 calls · about £3.20</span>
+            <div class="pv-row"><button class="pl-button pl-button--primary pl-button--sm" type="button">Approve plan</button><button class="pl-button pl-button--secondary pl-button--sm" type="button">Edit</button></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>New values for approval</h2>
+        <p>The app layer needed colours the marketing kit does not have. These are all of them. Everything else on this page maps onto the existing navy, pink and blue palettes. Full reasoning sits beside each token in <code class="pv-code">tokens/app.tokens.json</code>.</p>
+      </div>
+      <div class="pl-table-frame">
+        <div class="pl-table-scroll">
+          <table class="pl-table cw-new">
+            <thead><tr><th></th><th>Token</th><th>Hex</th><th>Role</th></tr></thead>
+            <tbody>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-dark-blue-450)"></span></td><td><code>--color-dark-blue-450</code></td><td class="pl-mono" data-token-value="--color-dark-blue-450"></td><td class="cw-why">Subtle text (light). A step between dark-blue-400 and -500: 400 fails AA on a selected row.</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-success-50)"></span></td><td><code>--color-success-50</code></td><td class="pl-mono" data-token-value="--color-success-50"></td><td class="cw-why">Success tint (light).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-success-200)"></span></td><td><code>--color-success-200</code></td><td class="pl-mono" data-token-value="--color-success-200"></td><td class="cw-why">Success border (light); text and solid (dark).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-success-600)"></span></td><td><code>--color-success-600</code></td><td class="pl-mono" data-token-value="--color-success-600"></td><td class="cw-why">Success solid under white text (light); border (dark).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-success-700)"></span></td><td><code>--color-success-700</code></td><td class="pl-mono" data-token-value="--color-success-700"></td><td class="cw-why">Success text (light).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-success-900)"></span></td><td><code>--color-success-900</code></td><td class="pl-mono" data-token-value="--color-success-900"></td><td class="cw-why">Success tint (dark): 600 mixed 40% into navy.</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-warning-50)"></span></td><td><code>--color-warning-50</code></td><td class="pl-mono" data-token-value="--color-warning-50"></td><td class="cw-why">Warning tint (light).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-warning-200)"></span></td><td><code>--color-warning-200</code></td><td class="pl-mono" data-token-value="--color-warning-200"></td><td class="cw-why">Warning border (light); text and solid (dark).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-warning-600)"></span></td><td><code>--color-warning-600</code></td><td class="pl-mono" data-token-value="--color-warning-600"></td><td class="cw-why">Warning solid (light). Deep ochre: a bright amber fill is under 2:1 on white.</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-warning-700)"></span></td><td><code>--color-warning-700</code></td><td class="pl-mono" data-token-value="--color-warning-700"></td><td class="cw-why">Warning text (light).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-warning-900)"></span></td><td><code>--color-warning-900</code></td><td class="pl-mono" data-token-value="--color-warning-900"></td><td class="cw-why">Warning tint (dark).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-danger-50)"></span></td><td><code>--color-danger-50</code></td><td class="pl-mono" data-token-value="--color-danger-50"></td><td class="cw-why">Danger tint (light).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-danger-200)"></span></td><td><code>--color-danger-200</code></td><td class="pl-mono" data-token-value="--color-danger-200"></td><td class="cw-why">Danger border (light); text and solid (dark).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-danger-600)"></span></td><td><code>--color-danger-600</code></td><td class="pl-mono" data-token-value="--color-danger-600"></td><td class="cw-why">Danger solid and destructive buttons (light). A true red, 21 ΔE00 from pink-600.</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-danger-700)"></span></td><td><code>--color-danger-700</code></td><td class="pl-mono" data-token-value="--color-danger-700"></td><td class="cw-why">Danger text (light).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-danger-900)"></span></td><td><code>--color-danger-900</code></td><td class="pl-mono" data-token-value="--color-danger-900"></td><td class="cw-why">Danger tint (dark).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-pink-950)"></span></td><td><code>--color-pink-950</code></td><td class="pl-mono" data-token-value="--color-pink-950"></td><td class="cw-why">Attention tint and accent wash (dark): pink-600 mixed 30% into navy.</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-chart-blue-on-light)"></span></td><td><code>--color-chart-*-on-light</code> ×6</td><td class="pl-mono">see Data viz</td><td class="cw-why">Chart slots 3–8 on light surfaces (slots 1–2 are navy and hot pink).</td></tr>
+              <tr><td><span class="cw-chip" style="display:block;background:var(--color-chart-blue-on-dark)"></span></td><td><code>--color-chart-*-on-dark</code> ×6</td><td class="pl-mono">see Data viz</td><td class="cw-why">The same six hues stepped for navy surfaces.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="pv-note">Info, attention and neutral need no new values: info is fair blue, mid blue and the navy ramp; attention is the brand pinks; neutral is the navy ramp.</p>
+    </section>
+  </main>
+</body>
+</html>
