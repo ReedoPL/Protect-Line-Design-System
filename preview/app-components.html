@@ -9,6 +9,27 @@
   <link rel="stylesheet" href="../components/app-components.css">
   <link rel="stylesheet" href="app-preview.css">
   <style>
+    /* App shell example */
+    .shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); border: 1px solid var(--app-border); border-radius: var(--app-radius-panel); overflow: hidden; background: var(--app-surface-canvas); }
+    .shell__side { background: var(--app-surface); padding: var(--spacing-md); display: grid; align-content: start; gap: var(--app-space-2); border-right: 1px solid var(--app-border); }
+    .shell__logo { display: block; height: 26px; width: auto; margin: var(--app-space-6) var(--spacing-xsm) var(--spacing-lg); }
+    .shell__nav { display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-xsm) var(--spacing-sm); border-radius: var(--radius-sm); font-size: var(--app-font-size-md); font-weight: var(--font-weight-medium); color: var(--app-text-muted); }
+    .shell__nav svg { width: 18px; height: 18px; flex: none; }
+    .shell__nav .pl-badge { margin-left: auto; }
+    .shell__nav { text-decoration: none; }
+    .shell__nav:hover { background: var(--app-surface-hover); color: var(--app-text); }
+    .shell__nav[aria-current="page"] { background: var(--app-surface-selected); color: var(--app-text); box-shadow: inset 3px 0 0 var(--app-accent-strong); }
+    .shell__group { margin: var(--spacing-md) var(--spacing-sm) var(--app-space-6); }
+    .shell__main { padding: var(--spacing-lg); display: grid; gap: var(--spacing-md); min-width: 0; }
+    .shell__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-sm) var(--spacing-md); }
+    .shell__title { display: grid; gap: var(--app-space-2); margin-right: auto; min-width: 0; }
+    .shell__title h3 { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-sm); }
+    .shell__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-md); }
+    .shell__stat { padding: var(--spacing-md); display: grid; gap: var(--app-space-2); }
+    .shell__delta { font-size: var(--app-font-size-xs); font-weight: var(--font-weight-medium); color: var(--app-status-success-fg); }
+    .shell__cols { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: var(--spacing-md); align-items: start; }
+    .shell__chat { padding: var(--spacing-md); display: grid; gap: var(--spacing-md); }
+    .shell__chat .pl-msg__text { font-size: var(--app-font-size-md); line-height: var(--app-line-height-md); }
     /* Specimen-only: show states a static render cannot hover into. */
     .pl-table tbody tr.demo-hover { background: var(--app-surface-hover); }
     .demo-under { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--app-radius-panel); overflow: hidden; }
@@ -26,9 +47,15 @@
     .demo-skel-lines { display: grid; gap: var(--spacing-xsm); }
     .demo-label { display: block; margin-bottom: var(--spacing-sm); }
     @media (max-width: 1023px) {
+      .shell { grid-template-columns: minmax(0, 1fr); }
+      .shell__side { display: none; }
+      .shell__cols { grid-template-columns: minmax(0, 1fr); }
       .demo-feedback { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 767px) {
+      .shell__main { padding: var(--spacing-md); }
+      .shell__stats { grid-template-columns: minmax(0, 1fr); }
+      .shell .demo-optional { display: none; }
       .demo-form { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-lg); }
       .demo-form__fields { grid-template-columns: minmax(0, 1fr); }
       .demo-feedback { grid-template-columns: minmax(0, 1fr); }
@@ -54,6 +81,11 @@
     <symbol id="i-chev-right" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m8 5 5 5-5 5"/></symbol>
     <symbol id="i-download" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4v8.5M6.5 9l3.5 3.5L13.5 9M4.5 15.5h11"/></symbol>
     <symbol id="i-trash" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 6h11M8 6V4.5h4V6M6 6l.7 9.5h6.6L14 6"/></symbol>
+    <symbol id="i-home" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9 10 3.5 16.5 9v7.5h-4.5v-4.5h-4v4.5H3.5z"/></symbol>
+    <symbol id="i-study" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h7l3 3v10H5z"/><path d="M8 10h4.5M8 13h4.5M8 7h2"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h2.5l1.2 3.4-1.8 1.2a9 9 0 0 0 4 4l1.2-1.8 3.4 1.2V14a2 2 0 0 1-2 2A12 12 0 0 1 4 5.5a2 2 0 0 1 2-2z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 16.5V10M8.5 16.5V5M13 16.5v-8M17 16.5H3"/></symbol>
+    <symbol id="i-cog" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="2.5"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2M5 5l1.4 1.4M13.6 13.6 15 15M5 15l1.4-1.4M13.6 6.4 15 5"/></symbol>
   </svg>
 
   <header class="pv-top">
@@ -77,6 +109,70 @@
       <h1>Built for <em>busy</em> screens</h1>
       <p>Compact, flat and keyboard-friendly. The same pink pill buttons and navy type as the website, sized for tables, forms and chat. Class names start <code class="pv-code">.pl-</code> and never clash with the marketing kit.</p>
     </div>
+
+    <!-- Together -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Together</h2>
+        <p>A study screen built only from the pieces below. The sidebar is a <code class="pv-code">data-theme="dark"</code> panel — navy in either mode.</p>
+      </div>
+      <div class="shell">
+        <aside class="shell__side" data-theme="dark" aria-label="Main navigation">
+          <img class="shell__logo" src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+          <a class="shell__nav" href="#"><svg aria-hidden="true"><use href="#i-home"/></svg>Home</a>
+          <a class="shell__nav" href="#" aria-current="page"><svg aria-hidden="true"><use href="#i-study"/></svg>Studies<span class="pl-badge pl-badge--accent">1</span></a>
+          <a class="shell__nav" href="#"><svg aria-hidden="true"><use href="#i-phone"/></svg>Calls</a>
+          <a class="shell__nav" href="#"><svg aria-hidden="true"><use href="#i-chart"/></svg>Reports</a>
+          <span class="pl-text-eyebrow shell__group">Admin</span>
+          <a class="shell__nav" href="#"><svg aria-hidden="true"><use href="#i-cog"/></svg>Settings</a>
+        </aside>
+        <div class="shell__main">
+          <div class="shell__head">
+            <div class="shell__title">
+              <span class="pl-text-caption">Studies / Manchester and London</span>
+              <h3 class="pl-text-title">Why customers cancel early <span class="pl-pill pl-pill--attention">Waiting for you</span></h3>
+            </div>
+            <button class="pl-button pl-button--secondary pl-button--sm" type="button"><svg aria-hidden="true"><use href="#i-download"/></svg>Export</button>
+            <button class="pl-button pl-button--primary pl-button--sm" type="button">Approve plan</button>
+          </div>
+          <div class="pl-tabs" role="tablist">
+            <button class="pl-tab" role="tab" aria-selected="true" type="button">Overview</button>
+            <button class="pl-tab" role="tab" aria-selected="false" type="button">Calls <span class="pl-badge">412</span></button>
+            <button class="pl-tab" role="tab" aria-selected="false" type="button">Findings</button>
+          </div>
+          <div class="shell__stats">
+            <div class="pl-panel shell__stat"><span class="pl-text-caption">First-month cancellations</span><span class="pl-text-stat">412</span><span class="shell__delta">Down 8% on July</span></div>
+            <div class="pl-panel shell__stat"><span class="pl-text-caption">Calls scored</span><span class="pl-text-stat">312</span><div class="pl-progress"><div class="pl-progress__track" role="progressbar" aria-valuemin="0" aria-valuemax="412" aria-valuenow="312" aria-label="Calls scored"><div class="pl-progress__fill" style="--value:76%"></div></div></div></div>
+            <div class="pl-panel shell__stat"><span class="pl-text-caption">Estimated cost</span><span class="pl-text-stat">£3.20</span><span class="pl-text-caption">Budget £10.00</span></div>
+          </div>
+          <div class="shell__cols">
+            <div class="pl-table-frame">
+              <div class="pl-table-scroll">
+                <table class="pl-table">
+                  <thead><tr><th>Agent</th><th class="demo-optional">Team</th><th class="is-num" aria-sort="descending"><button class="pl-sort" type="button">Cancellations<svg aria-hidden="true"><use href="#i-sort"/></svg></button></th><th>Status</th></tr></thead>
+                  <tbody>
+                    <tr><td class="is-primary">Tom Reid</td><td class="is-muted demo-optional">Manchester</td><td class="is-num">31</td><td><span class="pl-pill pl-pill--warning">Needs review</span></td></tr>
+                    <tr aria-selected="true"><td class="is-primary">Daniel Okafor</td><td class="is-muted demo-optional">London</td><td class="is-num">24</td><td><span class="pl-pill pl-pill--info pl-pill--live">Running</span></td></tr>
+                    <tr><td class="is-primary">Amelia Hart</td><td class="is-muted demo-optional">Manchester</td><td class="is-num">17</td><td><span class="pl-pill pl-pill--success">Complete</span></td></tr>
+                    <tr><td class="is-primary">Grace Bennett</td><td class="is-muted demo-optional">London</td><td class="is-num">9</td><td><span class="pl-pill pl-pill--success">Complete</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="pl-panel shell__chat">
+              <div class="pl-msg">
+                <div class="pl-msg__avatar" aria-hidden="true"><img src="../assets/logos/Brandmark-Pink.png" alt=""></div>
+                <div class="pl-msg__main">
+                  <div class="pl-msg__meta"><span class="pl-msg__name">Assistant</span><span>14:03</span></div>
+                  <div class="pl-msg__text"><p>Price came up in 41% of these calls — twice as often in London. Want me to compare how each team explains the cover?</p></div>
+                </div>
+              </div>
+              <div class="pl-composer"><label for="shell-composer" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Message</label><textarea id="shell-composer" rows="1" placeholder="Reply"></textarea><button class="pl-button pl-button--primary pl-button--icon pl-button--sm" type="button" aria-label="Send"><svg aria-hidden="true"><use href="#i-send"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Buttons -->
     <section class="pv-section">

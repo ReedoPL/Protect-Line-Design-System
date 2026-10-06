@@ -43,7 +43,8 @@
   outline-offset: var(--app-focus-offset);
 }
 
-.pl-app a {
+/* Inline links: bare <a> only. Anchors with a class (nav items, .pl-button) style themselves. */
+.pl-app a:not([class]) {
   color: var(--app-text-link);
   font-weight: var(--font-weight-semibold);
   text-decoration: underline;
@@ -51,7 +52,7 @@
   text-decoration-thickness: 1px;
 }
 
-.pl-app a:hover {
+.pl-app a:not([class]):hover {
   color: var(--app-text-link-hover);
   text-decoration-thickness: 2px;
 }
@@ -150,7 +151,6 @@
 
 .pl-button--icon { --_px: 0; width: var(--_h); }
 
-.pl-app a.pl-button { font-weight: var(--font-weight-semibold); text-decoration: none; }
 
 .pl-button:disabled,
 .pl-button[aria-disabled="true"] {
