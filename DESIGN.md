@@ -491,7 +491,7 @@ The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124
 | Status | `.pl-pill` + `--info` / `--success` / `--warning` / `--danger` / `--attention`, `--solid`, `--live`; `.pl-badge` |
 | Feedback | `.pl-alert`, `.pl-toast`, `.pl-progress`, `.pl-spinner`, `.pl-skeleton`, `.pl-empty` |
 | Overlay | `.pl-scrim`, `.pl-dialog` |
-| Chat | `.pl-chat`, `.pl-msg` (`--user`), `.pl-msg-card`, `.pl-notice`, `.pl-composer` |
+| Chat | `.pl-chat`, `.pl-msg` (`--user`), `.pl-msg-card`, `.pl-notice`, `.pl-composer`; `.pl-msg__text` styles the Markdown a reply carries (lists, headings, tables, quotes, code, rules), so a CSS reset never strips it |
 
 ### 10.9 Do's and don'ts for data-dense screens
 

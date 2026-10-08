@@ -688,6 +688,41 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 .pl-msg__text { font-size: var(--app-font-size-lg); line-height: var(--app-line-height-lg); }
 .pl-msg__text p { margin: 0 0 var(--spacing-xsm); }
 .pl-msg__text p:last-child { margin-bottom: 0; }
+/* The Markdown a reply carries. An app's CSS reset (Tailwind's preflight, say) strips
+   lists of their bullets and headings of their size, so a reply's list runs together
+   with the text around it. Learned in gui2 (GUI2-34). */
+.pl-msg__text ul,
+.pl-msg__text ol { margin: 0 0 var(--spacing-xsm); padding-left: 1.25em; }
+.pl-msg__text ul { list-style: disc; }
+.pl-msg__text ol { list-style: decimal; }
+.pl-msg__text li ul { list-style: circle; }
+.pl-msg__text li > ul,
+.pl-msg__text li > ol { margin: var(--app-space-2) 0 0; }
+.pl-msg__text li + li { margin-top: var(--app-space-2); }
+.pl-msg__text li > p { margin: 0; }
+.pl-msg__text h1,
+.pl-msg__text h2,
+.pl-msg__text h3,
+.pl-msg__text h4 { font-weight: var(--font-weight-semibold); margin: 12px 0 4px; }
+.pl-msg__text h1,
+.pl-msg__text h2 { font-size: var(--app-font-size-xl); line-height: var(--app-line-height-xl); }
+.pl-msg__text h3,
+.pl-msg__text h4 { font-size: var(--app-font-size-lg); line-height: var(--app-line-height-lg); }
+.pl-msg__text strong { font-weight: var(--font-weight-semibold); }
+.pl-msg__text a { color: var(--app-text-link); }
+.pl-msg__text blockquote { margin: 0 0 var(--spacing-xsm); padding-left: 12px; border-left: 3px solid var(--app-border); color: var(--app-text-muted); }
+.pl-msg__text code { font-family: var(--font-mono); font-size: 0.875em; padding: 1px 4px; border-radius: 4px; background: var(--app-surface-sunken); }
+/* A long line scrolls inside the block, and never widens the column. */
+.pl-msg__text pre { margin: 0 0 var(--spacing-xsm); padding: var(--spacing-xsm) 12px; overflow-x: auto; border-radius: var(--radius-sm); background: var(--app-surface-sunken); }
+.pl-msg__text pre code { padding: 0; background: none; }
+.pl-msg__text hr { margin: 12px 0; border: 0; border-top: 1px solid var(--app-border-subtle); }
+/* A wide table scrolls inside its own frame, and never pushes the message wider. */
+.pl-msg__text table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 0 0 var(--spacing-xsm); font-size: var(--app-font-size-sm); line-height: var(--app-line-height-sm); }
+.pl-msg__text th,
+.pl-msg__text td { text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--app-border-subtle); }
+.pl-msg__text th { font-weight: var(--font-weight-semibold); background: var(--app-surface-sunken); }
+.pl-msg__text > :first-child { margin-top: 0; }
+.pl-msg__text > :last-child { margin-bottom: 0; }
 
 .pl-msg--user { align-self: flex-end; flex-direction: row-reverse; }
 .pl-msg--user .pl-msg__main { justify-items: end; }
