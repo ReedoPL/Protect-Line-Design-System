@@ -313,7 +313,7 @@ Sections 1–9 are the marketing contract and still apply to anything a customer
 | `components/app-components.css` | App component classes, built on the tokens only |
 | `tokens/tailwind.css` | Generated. A Tailwind v4 theme |
 | `tokens/app.resolved.json` | Generated. Every token resolved, per mode, for Python and other non-CSS code |
-| `preview/app-colours.html`, `app-type.html`, `app-components.html`, `data-viz.html` | Specimens. Add `?theme=dark` to force dark mode. |
+| `preview/app-colours.html`, `app-type.html`, `app-components.html`, `app-layout.html`, `data-viz.html` | Specimens. Add `?theme=dark` to force dark mode. |
 
 ```html
 <link rel="stylesheet" href="app-fonts.css">
@@ -497,6 +497,7 @@ The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124
 | Feedback | `.pl-alert`, `.pl-toast`, `.pl-progress`, `.pl-spinner`, `.pl-skeleton`, `.pl-empty` |
 | Overlay | `.pl-scrim`, `.pl-dialog` (480px) + `--lg` (720px) / `--xl` (880px). A dialog taller than the window keeps its title and buttons in view and scrolls its body |
 | People | `.pl-avatar`: initials or a photo in a fair-pink circle, the same wherever the person appears |
+| Page | `.pl-page`, `.pl-page-header`, `.pl-page-tabs`, `.pl-two-col` (10.12) |
 | Chat | `.pl-chat`, `.pl-msg` (`--user`), `.pl-msg-card`, `.pl-notice`, `.pl-composer`; `.pl-msg__text` styles the Markdown a reply carries (lists, headings, tables, quotes, code, rules), so a CSS reset never strips it. A reply's table has a full grid in the strong border: with no frame and no row hover, the lines are all that keeps a cell with its column |
 
 ### 10.9 Do's and don'ts for data-dense screens
@@ -596,3 +597,50 @@ value("theme.light.app.status.success.fg")   # '#056242'
 | `node scripts/cvd-report.js` | Colour-blind separation of the chart palette, ramp monotonicity, diverging arms |
 
 All three are dependency-free (Node 18+) and exit non-zero on failure.
+
+### 10.12 Page layout
+
+One frame for every page: a navy sidebar, a page with one title, and a side column that arrives at 1200px. Specimens are in `preview/app-layout.html`.
+
+**The shell** is the app's own, so it has no classes here, only measurements:
+
+| Part | Rule |
+|---|---|
+| Sidebar | 248px wide, full height, `data-theme="dark"` so it is navy in either mode. The current page has the selected surface and the hot-pink bar |
+| Main | Everything else. It holds one `.pl-page` |
+| On a phone (under 768px) | The sidebar becomes a drawer, at most 280px wide, opened from a navy bar that stays at the top of the window |
+
+**The page**
+
+| Class | What it is |
+|---|---|
+| `.pl-page` | The page. It owns the padding (16px by 20px on a phone, 32px from 768px), so a band can run edge to edge by undoing exactly that much |
+| `.pl-page__content` | Content that stops growing at 1200px (`--app-width-content`) and stays on the left, under its title |
+| `.pl-page-header` | The header band of a record's page, on the surface tone |
+| `.pl-page-header__row` | The title on the left, wrapping in its own column; `.pl-page-header__actions` on the right, level with the title's first line. On a phone the actions are a row under the title |
+| `.pl-page-header__facts` | A `<dl>` of labelled facts under the title: a wrapped row, or a two-column grid on a phone |
+| `.pl-page-tabs` | The page's own tab row under the band. From 768px it sticks to the top of the window, and whatever sticks beneath it clears it |
+| `.pl-two-col` | `__main` and a 340px `__side` (`--app-width-side`) beside it from 1200px. Below that the side column follows the main one at full width. `--sticky-side` makes the whole side column follow the reader, and scroll itself when it is taller than the window |
+
+Rules that came from use:
+
+- **A page that is not a record has no band**: its name in `.pl-text-page-title`, then its content. The band is for a record, whose name can be long, has a state, and has things you can do to it.
+- **One group of actions, top right, with one pink button in it.** Everything else in the group is secondary, and several downloads are one Download menu, not a row of buttons.
+- **The side column never wraps to a width of its own.** Between 768px and 1200px it sits under the main column at full width. A narrow side column beside a squeezed main one is the layout nobody can read.
+- **Offsets come from one value.** Everything that sticks under the tab row reads the row's height from the page (`--pl-page-sticky-top`), so they cannot drift apart.
+
+**Fixed numbers.** Two breakpoints and a few widths; everything else is fluid.
+
+| Token | Value | Use |
+|---|---|---|
+| `--app-breakpoint-md` | 768px | Below it, the phone layout. A media query cannot read a custom property, so stylesheets write the value out; the token is the record of it |
+| `--app-breakpoint-wide` | 1200px | From here a side column sits beside the main one. A 248px sidebar, 64px of padding and a 340px side column leave the main column about 520px, the narrowest a table or a paragraph reads well |
+| `--app-width-content` | 1200px | The widest a page's content runs |
+| `--app-width-side` | 340px | The side column |
+| `--app-width-dialog`, `-lg`, `-xl` | 480 / 720 / 880px | A confirm or short form; two columns of fields; a table to check before acting |
+| `--app-layer-sticky` | 10 | A row that sticks inside the page |
+| `--app-layer-popover` | 20 | A menu opened from a control in the page; a page's sticky tab row |
+| `--app-layer-bar` | 40 | The app's bar on a phone |
+| `--app-layer-overlay` | 50 | Scrims, dialogs, drawers, toasts |
+
+Four layers, and never a value between them. A component that seems to need one has usually been put in the wrong layer.

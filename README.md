@@ -69,7 +69,7 @@ For admin tools, dashboards, tables and chat (rather than marketing pages) use t
 ```
 
 - Rules and rationale: [`DESIGN.md` §10 App UI](DESIGN.md#10-app-ui)
-- Previews (add `?theme=dark`): [colours](preview/app-colours.html) · [type](preview/app-type.html) · [components](preview/app-components.html) · [data viz](preview/data-viz.html)
+- Previews (add `?theme=dark`): [colours](preview/app-colours.html) · [type](preview/app-type.html) · [components](preview/app-components.html) · [layout](preview/app-layout.html) · [data viz](preview/data-viz.html)
 - Source of truth: [`tokens/app.tokens.json`](tokens/app.tokens.json). After editing it, run `node scripts/build-tokens.js`; `--check` fails if a generated file is stale.
 - Checks: `node scripts/contrast-report.js` (WCAG contrast, light and dark) and `node scripts/cvd-report.js` (colour-blind separation of the chart palette).
 

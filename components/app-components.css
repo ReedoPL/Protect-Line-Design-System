@@ -1001,6 +1001,84 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 .pl-empty__title { margin: 0; font-size: var(--app-font-size-lg); line-height: var(--app-line-height-lg); font-weight: var(--font-weight-semibold); }
 .pl-empty__body { margin: 0 0 var(--spacing-xsm); max-width: 42ch; color: var(--app-text-muted); }
 
+/* ── Page layout (DESIGN.md §10.12) ───────────────────────────────────── */
+/* The page inside the app shell's <main>. It owns the padding, so a header band and a
+   tab row can run edge to edge by undoing exactly that much.
+   768px and 1200px are --app-breakpoint-md and --app-breakpoint-wide: a media query
+   cannot read a custom property, so they are written out. */
+.pl-page {
+  --pl-page-pad-x: var(--spacing-md);
+  --pl-page-pad-y: 20px;
+  --pl-page-sticky-top: 0px;
+  min-width: 0;
+  padding: var(--pl-page-pad-y) var(--pl-page-pad-x);
+}
+/* Lines stop growing at 1200px; the page keeps its place on the left, under its title. */
+.pl-page__content { max-width: var(--app-width-content); }
+
+/* The header band: the title and what you can do to the whole page, on the surface tone. */
+.pl-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin: calc(-1 * var(--pl-page-pad-y)) calc(-1 * var(--pl-page-pad-x)) var(--pl-page-pad-y);
+  padding: var(--spacing-sm) var(--pl-page-pad-x);
+  background: var(--app-surface);
+  border-bottom: 1px solid var(--app-border-subtle);
+}
+/* Title on the left, wrapping in its own column; the one group of actions on the right,
+   level with the title's first line. On a phone the actions are a row under the title. */
+.pl-page-header__row { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--spacing-xsm) var(--spacing-lg); }
+.pl-page-header__row > :first-child { min-width: 0; overflow-wrap: anywhere; }
+.pl-page-header__row h1 { margin: 0; }
+.pl-page-header__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-xsm); }
+/* What a record is, as labelled facts under its title: a caption above each value. */
+.pl-page-header__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-sm) var(--spacing-md); margin: 0; }
+.pl-page-header__facts > div { display: grid; gap: var(--app-space-2); min-width: 0; }
+.pl-page-header__facts dt { font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-subtle); }
+.pl-page-header__facts dd { margin: 0; font-size: var(--app-font-size-sm); line-height: var(--app-line-height-sm); overflow-wrap: anywhere; }
+
+/* The page's own tab row, under the band. From 768px it stays at the top of the window
+   once the band has scrolled away, and everything that sticks beneath it clears it. */
+.pl-page-tabs {
+  margin: 0 calc(-1 * var(--pl-page-pad-x)) var(--pl-page-pad-y);
+  padding: 0 var(--pl-page-pad-x);
+  background: var(--app-surface);
+  border-bottom: 1px solid var(--app-border-subtle);
+}
+.pl-page-tabs .pl-tabs { border-bottom: 0; }
+.pl-page-header:has(+ .pl-page-tabs) { margin-bottom: 0; border-bottom: 0; }
+
+/* A main column with a fixed side column beside it from 1200px. Below that the side
+   column follows the main one at full width: it never wraps to a width of its own. */
+.pl-two-col { display: flex; flex-direction: column; gap: var(--spacing-xlg); }
+.pl-two-col__main,
+.pl-two-col__side { display: flex; flex-direction: column; min-width: 0; }
+.pl-two-col__side { gap: var(--spacing-md); }
+
+@media (min-width: 768px) {
+  .pl-page { --pl-page-pad-x: var(--spacing-xlg); --pl-page-pad-y: var(--spacing-xlg); }
+  /* The tab row's height: a .pl-tab is 12px + a 20px line + 12px, and the row's 1px rule. */
+  .pl-page:has(> .pl-page-tabs) { --pl-page-sticky-top: 45px; }
+  .pl-page-header { gap: var(--spacing-md); padding-top: 20px; padding-bottom: var(--spacing-md); }
+  .pl-page-header__row { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+  .pl-page-header__facts { display: flex; flex-wrap: wrap; gap: var(--spacing-sm) var(--spacing-xlg); }
+  .pl-page-tabs { position: sticky; top: 0; z-index: var(--app-layer-popover); }
+}
+
+@media (min-width: 1200px) {
+  .pl-two-col { display: grid; grid-template-columns: minmax(0, 1fr) var(--app-width-side); }
+  /* The whole side column follows the reader, and scrolls itself when it is taller than
+     the window: 24px of air above and below. */
+  .pl-two-col--sticky-side > .pl-two-col__side {
+    position: sticky;
+    top: calc(var(--pl-page-sticky-top) + var(--spacing-lg));
+    align-self: start;
+    max-height: calc(100svh - var(--pl-page-sticky-top) - 2 * var(--spacing-lg));
+    overflow-y: auto;
+  }
+}
+
 /* ── Touch screens: controls grow to the 44px minimum (DESIGN.md §8) ─── */
 @media (pointer: coarse) {
   .pl-button,
