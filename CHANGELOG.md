@@ -24,7 +24,8 @@ platform's admin app, with what a few months of use there showed was missing or 
 
 ### Added after use in gui2
 
-- **Page layout** (§10.12): `.pl-page`, `.pl-page-header`, `.pl-page-tabs`, `.pl-two-col`,
+- **Page layout** (§10.12): `.pl-page`, `.pl-page-bleed`, `.pl-page-header`, `.pl-page-tabs`,
+  `.pl-page-body`, `.pl-two-col`,
   with tokens for the two breakpoints, the content, side-column and dialog widths, and four
   stacking layers. `preview/app-layout.html`.
 - **`.pl-segmented`**: a segmented control. gui2 had built two that had drifted apart.

@@ -499,7 +499,7 @@ The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124
 | Feedback | `.pl-alert`, `.pl-toast`, `.pl-progress`, `.pl-spinner`, `.pl-skeleton`, `.pl-empty` |
 | Overlay | `.pl-scrim`, `.pl-dialog` (480px) + `--lg` (720px) / `--xl` (880px). A dialog taller than the window keeps its title and buttons in view and scrolls its body |
 | People | `.pl-avatar`: initials or a photo in a fair-pink circle, the same wherever the person appears |
-| Page | `.pl-page`, `.pl-page-header`, `.pl-page-tabs`, `.pl-two-col` (10.12) |
+| Page | `.pl-page`, `.pl-page-bleed`, `.pl-page-header`, `.pl-page-tabs`, `.pl-page-body`, `.pl-two-col` (10.12) |
 | Chat | `.pl-chat`, `.pl-msg` (`--user`), `.pl-msg-card`, `.pl-notice`, `.pl-composer`; `.pl-msg__text` styles the Markdown a reply carries (lists, headings, tables, quotes, code, rules), so a CSS reset never strips it. A reply's table has a full grid in the strong border: with no frame and no row hover, the lines are all that keeps a cell with its column |
 
 ### 10.9 Do's and don'ts for data-dense screens
@@ -629,20 +629,34 @@ One frame for every page: a navy sidebar, a page with one title, and a side colu
 
 | Class | What it is |
 |---|---|
-| `.pl-page` | The page. It owns the padding (16px by 20px on a phone, 32px from 768px), so a band can run edge to edge by undoing exactly that much |
+| `.pl-page` | The page. It owns the padding (16px by 20px on a phone, 32px from 768px). A plain page needs nothing else |
+| `.pl-page-bleed` | Wraps a page that has a header band. It undoes the page's side and top padding once, so the regions inside reach the edges |
+| `.pl-page-body` | A region inside the bleed that adds the padding back (16px on a phone, 32px from 768px) |
 | `.pl-page__content` | Content that stops growing at 1200px (`--app-width-content`) and stays on the left, under its title |
-| `.pl-page-header` | The header band of a record's page, on the surface tone |
+| `.pl-page-header` | The header band of a record's page, on the surface tone. It pads itself, level with the body |
 | `.pl-page-header__row` | The title on the left, wrapping in its own column; `.pl-page-header__actions` on the right, level with the title's first line. On a phone the actions are a row under the title |
 | `.pl-page-header__facts` | A `<dl>` of labelled facts under the title: a wrapped row, or a two-column grid on a phone |
-| `.pl-page-tabs` | The page's own tab row under the band. From 768px it sticks to the top of the window, and whatever sticks beneath it clears it |
+| `.pl-page-tabs` | The page's own tab row under the band, padding itself the same way. From 768px it sticks to the top of the window, and whatever sticks beneath it clears it |
 | `.pl-two-col` | `__main` and a 340px `__side` (`--app-width-side`) beside it from 1200px. Below that the side column follows the main one at full width. `--sticky-side` makes the whole side column follow the reader, and scroll itself when it is taller than the window |
 
+```html
+<main class="pl-page">
+  <div class="pl-page-bleed">
+    <header class="pl-page-header">…</header>
+    <div class="pl-page-tabs"><div class="pl-tabs" role="tablist">…</div></div>
+    <div class="pl-page-body">…</div>
+  </div>
+</main>
+```
+
 Rules that came from use:
+
+- **The page undoes its padding once, and each region adds its own back.** The other way round, with every edge-to-edge region undoing the padding for itself, looks simpler and is not: a band, a sticky tab row and a bar pinned to the bottom each need the same sum, and each gets it slightly wrong. Here a region that must reach the edges does nothing, and one that must not uses `.pl-page-body`. A band inside a tab works the same way: put a `.pl-page-bleed` inside the `.pl-page-body`, and it undoes exactly that body's padding.
 
 - **A page that is not a record has no band**: its name in `.pl-text-page-title`, then its content. The band is for a record, whose name can be long, has a state, and has things you can do to it.
 - **One group of actions, top right, with one pink button in it.** Everything else in the group is secondary, and several downloads are one Download menu, not a row of buttons.
 - **The side column never wraps to a width of its own.** Between 768px and 1200px it sits under the main column at full width. A narrow side column beside a squeezed main one is the layout nobody can read.
-- **Offsets come from one value.** Everything that sticks under the tab row reads the row's height from the page (`--pl-page-sticky-top`), so they cannot drift apart.
+- **Offsets come from one value.** Everything that sticks under the tab row reads the row's height from the page (`--pl-page-sticky-top`), so they cannot drift apart. Outside a page it reads as nothing, so the two-column frame works anywhere.
 
 **Fixed numbers.** Two breakpoints and a few widths; everything else is fluid.
 

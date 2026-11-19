@@ -1002,8 +1002,13 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 .pl-empty__body { margin: 0 0 var(--spacing-xsm); max-width: 42ch; color: var(--app-text-muted); }
 
 /* ── Page layout (DESIGN.md §10.12) ───────────────────────────────────── */
-/* The page inside the app shell's <main>. It owns the padding, so a header band and a
-   tab row can run edge to edge by undoing exactly that much.
+/* The page inside the app shell's <main>. It owns the padding, and that is all a plain
+   page needs. A page with a header band wraps everything in .pl-page-bleed, which undoes
+   that padding once; each region inside (the band, the tab row, the body) then adds its
+   own back. A region that must run edge to edge, such as a band, a sticky tab row or a
+   bar pinned to the bottom, just leaves the side padding to its own content. This is how
+   gui2's pages are built, and why: the regions are independent, so one can stick or
+   scroll without the others knowing.
    768px and 1200px are --app-breakpoint-md and --app-breakpoint-wide: a media query
    cannot read a custom property, so they are written out. */
 .pl-page {
@@ -1016,12 +1021,29 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 /* Lines stop growing at 1200px; the page keeps its place on the left, under its title. */
 .pl-page__content { max-width: var(--app-width-content); }
 
-/* The header band: the title and what you can do to the whole page, on the surface tone. */
+/* Undo the padding of whatever holds it: the page's, or a .pl-page-body's when a band
+   sits inside a tab. Sides and top only: the bottom keeps its space. */
+.pl-page-bleed {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  margin: calc(-1 * var(--pl-page-pad-y)) calc(-1 * var(--pl-page-pad-x)) 0;
+}
+
+/* A region that adds the padding back: 16px on a phone, 32px from 768px. It sets the
+   padding variables to its own, so a .pl-page-bleed inside it undoes exactly this much. */
+.pl-page-body {
+  --pl-page-pad-y: var(--spacing-md);
+  min-width: 0;
+  padding: var(--pl-page-pad-y) var(--pl-page-pad-x);
+}
+
+/* The header band: the title and what you can do to the whole page, on the surface tone.
+   It pads itself, level with the page's content. */
 .pl-page-header {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  margin: calc(-1 * var(--pl-page-pad-y)) calc(-1 * var(--pl-page-pad-x)) var(--pl-page-pad-y);
   padding: var(--spacing-sm) var(--pl-page-pad-x);
   background: var(--app-surface);
   border-bottom: 1px solid var(--app-border-subtle);
@@ -1041,13 +1063,12 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 /* The page's own tab row, under the band. From 768px it stays at the top of the window
    once the band has scrolled away, and everything that sticks beneath it clears it. */
 .pl-page-tabs {
-  margin: 0 calc(-1 * var(--pl-page-pad-x)) var(--pl-page-pad-y);
   padding: 0 var(--pl-page-pad-x);
   background: var(--app-surface);
   border-bottom: 1px solid var(--app-border-subtle);
 }
 .pl-page-tabs .pl-tabs { border-bottom: 0; }
-.pl-page-header:has(+ .pl-page-tabs) { margin-bottom: 0; border-bottom: 0; }
+.pl-page-header:has(+ .pl-page-tabs) { border-bottom: 0; }
 
 /* A main column with a fixed side column beside it from 1200px. Below that the side
    column follows the main one at full width: it never wraps to a width of its own. */
@@ -1058,8 +1079,9 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 
 @media (min-width: 768px) {
   .pl-page { --pl-page-pad-x: var(--spacing-xlg); --pl-page-pad-y: var(--spacing-xlg); }
+  .pl-page-body { --pl-page-pad-y: var(--spacing-xlg); }
   /* The tab row's height: a .pl-tab is 12px + a 20px line + 12px, and the row's 1px rule. */
-  .pl-page:has(> .pl-page-tabs) { --pl-page-sticky-top: 45px; }
+  .pl-page-bleed:has(> .pl-page-tabs) { --pl-page-sticky-top: 45px; }
   .pl-page-header { gap: var(--spacing-md); padding-top: 20px; padding-bottom: var(--spacing-md); }
   .pl-page-header__row { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
   .pl-page-header__facts { display: flex; flex-wrap: wrap; gap: var(--spacing-sm) var(--spacing-xlg); }
@@ -1069,12 +1091,13 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 @media (min-width: 1200px) {
   .pl-two-col { display: grid; grid-template-columns: minmax(0, 1fr) var(--app-width-side); }
   /* The whole side column follows the reader, and scrolls itself when it is taller than
-     the window: 24px of air above and below. */
+     the window: 24px of air above and below. The offset is the page's sticky tab row,
+     or nothing where the frame is used outside a .pl-page. */
   .pl-two-col--sticky-side > .pl-two-col__side {
     position: sticky;
-    top: calc(var(--pl-page-sticky-top) + var(--spacing-lg));
+    top: calc(var(--pl-page-sticky-top, 0px) + var(--spacing-lg));
     align-self: start;
-    max-height: calc(100svh - var(--pl-page-sticky-top) - 2 * var(--spacing-lg));
+    max-height: calc(100svh - var(--pl-page-sticky-top, 0px) - 2 * var(--spacing-lg));
     overflow-y: auto;
   }
 }

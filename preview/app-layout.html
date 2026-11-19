@@ -12,7 +12,7 @@
   <style>
     /* Specimen framing only: a window with the app shell in it. The shell is described
        in DESIGN.md §10.12 as measurements; the classes under test are .pl-page,
-       .pl-page-header, .pl-page-tabs and .pl-two-col. */
+       .pl-page-bleed, .pl-page-header, .pl-page-tabs, .pl-page-body and .pl-two-col. */
     .lay-window { display: grid; grid-template-columns: 248px minmax(0, 1fr); border: 1px solid var(--app-border); border-radius: var(--app-radius-panel); overflow: hidden; background: var(--app-surface-canvas); }
     .lay-side { display: grid; align-content: start; gap: var(--app-space-2); padding: var(--spacing-lg) var(--spacing-md); background: var(--app-surface); border-right: 1px solid var(--app-border-subtle); }
     .lay-side img { display: block; height: 26px; width: auto; margin: 0 var(--spacing-xsm) var(--spacing-lg); }
@@ -80,7 +80,7 @@
     <section class="pv-section">
       <div class="pv-section__head">
         <h2>A record's page</h2>
-        <p>The header band carries the record's name, its state and the one group of actions. The tab row sits under it and stays at the top of the window as the page scrolls. From 1200px a 340px side column sits beside the main one; below that it follows it.</p>
+        <p>The header band carries the record's name, its state and the one group of actions. The tab row sits under it and stays at the top of the window as the page scrolls. From 1200px a 340px side column sits beside the main one; below that it follows it. The page undoes its padding once, and the band, the tab row and the body each add their own back.</p>
       </div>
       <div class="lay-window">
         <aside class="lay-side" data-theme="dark" aria-label="Main navigation">
@@ -96,6 +96,7 @@
             <button class="pl-button pl-button--tertiary pl-button--icon" type="button" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
           </div>
           <div class="pl-page">
+           <div class="pl-page-bleed">
             <header class="pl-page-header">
               <a class="pl-text-caption lay-back" href="#"><svg aria-hidden="true"><use href="#i-chev-left"/></svg>Studies</a>
               <div class="pl-page-header__row">
@@ -122,6 +123,7 @@
                 <button class="pl-tab" role="tab" aria-selected="false" type="button">Calls <span class="pl-badge">412</span></button>
               </div>
             </div>
+            <div class="pl-page-body">
             <div class="pl-two-col pl-two-col--sticky-side">
               <section class="pl-two-col__main" aria-label="Report">
                 <div class="pl-panel lay-box">
@@ -142,6 +144,8 @@
                 </div>
               </aside>
             </div>
+            </div>
+           </div>
           </div>
         </div>
       </div>
@@ -212,7 +216,7 @@
               <tr><td>Content stops growing</td><td><span class="pl-mono">1200px</span></td><td><span class="pl-id">--app-width-content</span></td><td>Past it, lines get too long to read and a table's columns drift apart.</td></tr>
               <tr><td>Side column</td><td><span class="pl-mono">340px</span></td><td><span class="pl-id">--app-width-side</span></td><td>Wide enough for a short form or a list of facts.</td></tr>
               <tr><td>Dialog</td><td><span class="pl-mono">480 · 720 · 880px</span></td><td><span class="pl-id">--app-width-dialog</span> <span class="pl-id">-lg</span> <span class="pl-id">-xl</span></td><td>A confirm; a two-column form; a table to check before acting.</td></tr>
-              <tr><td>Page padding</td><td><span class="pl-mono">16 / 20px</span>, then <span class="pl-mono">32px</span></td><td><span class="pl-id">.pl-page</span></td><td>Phone, then from 768px.</td></tr>
+              <tr><td>Page padding</td><td><span class="pl-mono">16 / 20px</span>, then <span class="pl-mono">32px</span></td><td><span class="pl-id">.pl-page</span> <span class="pl-id">.pl-page-body</span></td><td>Phone, then from 768px. A body region is 16px all round on a phone.</td></tr>
               <tr><td>Layers</td><td><span class="pl-mono">10 · 20 · 40 · 50</span></td><td><span class="pl-id">--app-layer-sticky</span> <span class="pl-id">-popover</span> <span class="pl-id">-bar</span> <span class="pl-id">-overlay</span></td><td>Four steps of stacking order, and never one between them.</td></tr>
             </tbody>
           </table>
