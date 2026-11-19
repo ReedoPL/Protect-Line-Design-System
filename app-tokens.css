@@ -160,6 +160,17 @@
   --app-radius-pill: var(--radius-pill);
   --app-focus-width: 2px;
   --app-focus-offset: 2px;
+  --app-width-content: 1200px;
+  --app-width-side: 340px;
+  --app-width-dialog: 480px;
+  --app-width-dialog-lg: 720px;
+  --app-width-dialog-xl: 880px;
+  --app-breakpoint-md: 768px;
+  --app-breakpoint-wide: 1200px;
+  --app-layer-sticky: 10;
+  --app-layer-popover: 20;
+  --app-layer-bar: 40;
+  --app-layer-overlay: 50;
 }
 
 /* Light (default). [data-theme="light"] also forces light on a subtree. */

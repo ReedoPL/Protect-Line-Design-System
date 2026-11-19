@@ -349,6 +349,70 @@
         "$value": { "value": 2, "unit": "px" },
         "$description": "Focus ring offset from the control."
       }
+    },
+    "width": {
+      "$description": "The few fixed widths a page is built from. Everything else is fluid.",
+      "content": {
+        "$type": "dimension",
+        "$value": { "value": 1200, "unit": "px" },
+        "$description": "The widest a page's content runs. Past it the page keeps its margins and the lines stop growing."
+      },
+      "side": {
+        "$type": "dimension",
+        "$value": { "value": 340, "unit": "px" },
+        "$description": "The side column of a two-column page, from the wide breakpoint."
+      },
+      "dialog": {
+        "$type": "dimension",
+        "$value": { "value": 480, "unit": "px" },
+        "$description": "A confirm or a short form."
+      },
+      "dialog-lg": {
+        "$type": "dimension",
+        "$value": { "value": 720, "unit": "px" },
+        "$description": "A form with two columns of fields, or a longer editor."
+      },
+      "dialog-xl": {
+        "$type": "dimension",
+        "$value": { "value": 880, "unit": "px" },
+        "$description": "A table to check before acting: a dry run, a list of who is affected."
+      }
+    },
+    "breakpoint": {
+      "$description": "The two widths at which the app's layout changes.",
+      "md": {
+        "$type": "dimension",
+        "$value": { "value": 768, "unit": "px" },
+        "$description": "Below it the phone layout: one column, the sidebar a drawer, controls at the touch height. A media query cannot read a custom property, so the stylesheets write this value out; the token is the record of it."
+      },
+      "wide": {
+        "$type": "dimension",
+        "$value": { "value": 1200, "unit": "px" },
+        "$description": "From here a page's side column sits beside its main one. Below it the side column follows the main one."
+      }
+    },
+    "layer": {
+      "$description": "Stacking order (z-index). Four steps; a component never invents one between them.",
+      "sticky": {
+        "$type": "number",
+        "$value": 10,
+        "$description": "A row that sticks inside the page: a tab row, a composer, a table header."
+      },
+      "popover": {
+        "$type": "number",
+        "$value": 20,
+        "$description": "A menu or suggestion list opened from a control in the page, and a page's own sticky tab row, which those rows pass under."
+      },
+      "bar": {
+        "$type": "number",
+        "$value": 40,
+        "$description": "The app's own bar on a phone."
+      },
+      "overlay": {
+        "$type": "number",
+        "$value": 50,
+        "$description": "Scrims, dialogs, drawers, menus in a portal, toasts."
+      }
     }
   },
   "theme": {

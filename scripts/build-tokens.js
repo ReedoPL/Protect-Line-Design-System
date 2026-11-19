@@ -118,6 +118,11 @@ function buildTailwind(byPath) {
     if (m && byPath.get(key).resolved.type === 'dimension') add(`--radius-${m[1]}`, literal(key));
   }
   add('--shadow-overlay', 'var(--app-shadow-overlay)');
+  lines.push('', "  /* Layout: wide:… applies from 1200px (md is Tailwind's own 768px); max-w-content */");
+  const px = (key) => byPath.get(key).resolved.value.value;
+  if (px('app.breakpoint.md') !== 768) throw new Error("app.breakpoint.md must stay 768px: it is Tailwind's md, and the media queries in app-components.css");
+  add('--breakpoint-wide', `${px('app.breakpoint.wide') / 16}rem`);
+  add('--container-content', literal('app.width.content'));
   return [
     BANNER('tokens/*.tokens.json'),
     '/* Tailwind v4 theme for the Protect Line app layer.',
@@ -131,7 +136,8 @@ function buildTailwind(byPath) {
     ' *',
     ' * Utilities: bg-canvas bg-surface bg-surface-raised text-fg text-fg-muted border-line',
     ' * bg-accent text-fg-on-accent bg-success-bg text-success-fg fill-viz-cat-1 text-app-sm',
-    ' * font-mono rounded-control rounded-panel rounded-pill shadow-overlay bg-navy text-hot-pink. */',
+    ' * font-mono rounded-control rounded-panel rounded-pill shadow-overlay bg-navy text-hot-pink',
+    ' * wide:grid max-w-content z-(--app-layer-sticky). */',
     '@theme inline {',
     ...lines,
     '}',

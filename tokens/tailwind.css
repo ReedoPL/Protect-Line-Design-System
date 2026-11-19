@@ -13,7 +13,8 @@
  *
  * Utilities: bg-canvas bg-surface bg-surface-raised text-fg text-fg-muted border-line
  * bg-accent text-fg-on-accent bg-success-bg text-success-fg fill-viz-cat-1 text-app-sm
- * font-mono rounded-control rounded-panel rounded-pill shadow-overlay bg-navy text-hot-pink. */
+ * font-mono rounded-control rounded-panel rounded-pill shadow-overlay bg-navy text-hot-pink
+ * wide:grid max-w-content z-(--app-layer-sticky). */
 @theme inline {
   --color-*: initial;
   --font-*: initial;
@@ -202,4 +203,8 @@
   --radius-panel: 12px;
   --radius-dialog: 16px;
   --shadow-overlay: var(--app-shadow-overlay);
+
+  /* Layout: wide:… applies from 1200px (md is Tailwind's own 768px); max-w-content */
+  --breakpoint-wide: 75rem;
+  --container-content: 1200px;
 }

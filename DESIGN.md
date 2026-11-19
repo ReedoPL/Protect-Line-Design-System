@@ -537,6 +537,8 @@ Naming: the CSS name is `--` plus the token path joined with `-`; a trailing `de
 
 The theme clears Tailwind's default colours, fonts, radii and shadows, so only brand values exist: `bg-sky-500` and `shadow-md` are not available. Themed utilities read the custom properties at runtime, so `data-theme="dark"` re-themes them without a rebuild.
 
+Layout utilities from the theme: `wide:` applies from 1200px (`md:` is Tailwind's own 768px), `max-w-content` is the 1200px content width, and the layers are read as `z-(--app-layer-sticky)`.
+
 **Python** (PDF charts, decks). Read the resolved file — no alias handling needed:
 
 ```python
