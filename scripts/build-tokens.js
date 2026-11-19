@@ -4,8 +4,10 @@
  *
  *   node scripts/build-tokens.js          write the generated files
  *   node scripts/build-tokens.js --check  write nothing; exit 1 if any generated file is
- *                                         stale, or if tokens/foundation.tokens.json no
- *                                         longer matches colors_and_type.css
+ *                                         stale, if tokens/foundation.tokens.json no
+ *                                         longer matches colors_and_type.css, or if a
+ *                                         hand-written stylesheet reads a custom property
+ *                                         that is not a token
  *
  * Source:    tokens/foundation.tokens.json, tokens/app.tokens.json
  * Generated: app-tokens.css           custom properties for any web app (light + dark)
@@ -199,6 +201,29 @@ function foundationDrift(byPath) {
   return problems;
 }
 
+/**
+ * Every var(--name) the hand-written stylesheets read must be a token, or be set in the
+ * same file (a component's own --_h, the page's --pl-page-pad-x). A misspelt or renamed
+ * token does not error in CSS: the declaration is dropped and the browser's default
+ * shows. That fails quietly, so it is checked here. A var() with a fallback is left
+ * alone: that is a value the page passes in (the progress bar's --value).
+ */
+const HAND_WRITTEN = ['components/app-components.css', 'tokens/shadcn.css', 'preview/app-preview.css'];
+function unknownVars(tokensCss) {
+  const defined = (css) => new Set([...css.matchAll(/(--[a-zA-Z0-9_-]+)\s*:/g)].map((m) => m[1]));
+  const tokens = defined(tokensCss);
+  const problems = [];
+  for (const rel of HAND_WRITTEN) {
+    const file = path.join(ROOT, rel);
+    if (!fs.existsSync(file)) { problems.push(`${rel} is missing`); continue; }
+    const css = fs.readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+    const own = defined(css);
+    const unknown = new Set([...css.matchAll(/var\(\s*(--[a-zA-Z0-9_-]+)\s*\)/g)].map((m) => m[1]).filter((n) => !tokens.has(n) && !own.has(n)));
+    for (const name of unknown) problems.push(`${rel} reads ${name}, which is not a token and is not set in that file`);
+  }
+  return problems;
+}
+
 function main() {
   const check = process.argv.includes('--check');
   let byPath;
@@ -215,6 +240,7 @@ function main() {
     'tokens/app.resolved.json': buildResolved(byPath),
   };
   const drift = foundationDrift(byPath);
+  const unknown = unknownVars(outputs['app-tokens.css']);
   if (check) {
     let failed = false;
     for (const [rel, content] of Object.entries(outputs)) {
@@ -233,6 +259,13 @@ function main() {
       for (const p of drift) console.error(`       ${p}`);
     } else {
       console.log('ok     tokens/foundation.tokens.json matches colors_and_type.css');
+    }
+    if (unknown.length) {
+      failed = true;
+      console.error('UNKNOWN custom properties:');
+      for (const p of unknown) console.error(`       ${p}`);
+    } else {
+      console.log(`ok     every var() in ${HAND_WRITTEN.join(', ')} is defined`);
     }
     process.exit(failed ? 1 : 0);
   }

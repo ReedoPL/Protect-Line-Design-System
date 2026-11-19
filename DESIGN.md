@@ -312,6 +312,7 @@ Sections 1–9 are the marketing contract and still apply to anything a customer
 | `app-fonts.css` | Generated. The Google Fonts import, on its own. Link it, or leave it out and host Poppins, Lora and JetBrains Mono in the app. |
 | `components/app-components.css` | App component classes, built on the tokens only |
 | `tokens/tailwind.css` | Generated. A Tailwind v4 theme |
+| `tokens/shadcn.css` | Optional. shadcn/ui's variable names mapped onto the app layer, for an app that keeps Radix-based components (10.10) |
 | `tokens/app.resolved.json` | Generated. Every token resolved, per mode, for Python and other non-CSS code |
 | `preview/app-colours.html`, `app-type.html`, `app-components.html`, `app-layout.html`, `data-viz.html` | Specimens. Add `?theme=dark` to force dark mode. |
 
@@ -546,7 +547,11 @@ Naming: the CSS name is `--` plus the token path joined with `-`; a trailing `de
 
 The theme clears Tailwind's default colours, fonts, radii and shadows, so only brand values exist: `bg-sky-500` and `shadow-md` are not available. Themed utilities read the custom properties at runtime, so `data-theme="dark"` re-themes them without a rebuild.
 
+A class Tailwind does not know produces no CSS and no error, so a misspelt `text-app-base` or `pl-link` fails silently. An app should check the classes it uses against the ones that exist; gui2 found two of its own this way.
+
 Layout utilities from the theme: `wide:` applies from 1200px (`md:` is Tailwind's own 768px), `max-w-content` is the 1200px content width, and the layers are read as `z-(--app-layer-sticky)`.
+
+**shadcn/ui and Radix.** An app that keeps Radix-based components for their behaviour (menus, popovers, sliders) imports `tokens/shadcn.css` after the theme. It maps shadcn's variable names onto the app layer, and carries three things learned in use: `--primary` is pink-600, never hot pink (10.2); the variables are declared on every `[data-theme]` element, because a custom property inherits as its computed value and a dark sidebar would otherwise get the page's light colours; and `--accent` means the brand accent, not shadcn's hover tint.
 
 **Python** (PDF charts, decks). Read the resolved file — no alias handling needed:
 
@@ -592,7 +597,7 @@ value("theme.light.app.status.success.fg")   # '#056242'
 
 | Command | What it checks |
 |---|---|
-| `node scripts/build-tokens.js --check` | Generated files are current; foundation JSON matches `colors_and_type.css` |
+| `node scripts/build-tokens.js --check` | Generated files are current; foundation JSON matches `colors_and_type.css`; every custom property the component CSS reads is a token |
 | `node scripts/contrast-report.js` | WCAG 2.x contrast of every text pair (≥4.5:1) and UI boundary (≥3:1) the components use, light and dark |
 | `node scripts/cvd-report.js` | Colour-blind separation of the chart palette, ramp monotonicity, diverging arms |
 
