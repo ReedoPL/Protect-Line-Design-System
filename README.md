@@ -62,6 +62,7 @@ Then open:
 For admin tools, dashboards, tables and chat (rather than marketing pages) use the app layer: status colours, a navy dark mode, a compact type scale with a monospace for figures, and a colour-blind-checked chart palette. It builds on the brand tokens and changes none of them.
 
 ```html
+<link rel="stylesheet" href="app-fonts.css">
 <link rel="stylesheet" href="app-tokens.css">
 <link rel="stylesheet" href="components/app-components.css">
 <body class="pl-app">

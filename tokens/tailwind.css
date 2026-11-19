@@ -8,8 +8,9 @@
  *   @import "<path>/app-tokens.css";
  *   @import "<path>/tokens/tailwind.css";
  *
- * Load the fonts with a <link> in the page head: a bundler inlines app-tokens.css,
- * and its @import url(...) for Google Fonts ends up mid-file, where browsers ignore it.
+ * Fonts: link app-fonts.css from the page head, or host Poppins, Lora and JetBrains
+ * Mono in the app. Do not @import app-fonts.css here: a bundler would inline it mid-file,
+ * where browsers ignore an @import url(...).
  *
  * Utilities: bg-canvas bg-surface bg-surface-raised text-fg text-fg-muted border-line
  * bg-accent text-fg-on-accent bg-success-bg text-success-fg fill-viz-cat-1 text-app-sm

@@ -309,12 +309,14 @@ Sections 1–9 are the marketing contract and still apply to anything a customer
 | `tokens/app.tokens.json` | Source of truth for the app layer (W3C Design Tokens format). Every new value carries its reason. |
 | `tokens/foundation.tokens.json` | The marketing tokens from `colors_and_type.css`, mirrored so aliases resolve |
 | `app-tokens.css` | Generated. Every token as a CSS custom property, light and dark. Self-contained: an app can load it without `colors_and_type.css`. |
+| `app-fonts.css` | Generated. The Google Fonts import, on its own. Link it, or leave it out and host Poppins, Lora and JetBrains Mono in the app. |
 | `components/app-components.css` | App component classes, built on the tokens only |
 | `tokens/tailwind.css` | Generated. A Tailwind v4 theme |
 | `tokens/app.resolved.json` | Generated. Every token resolved, per mode, for Python and other non-CSS code |
 | `preview/app-colours.html`, `app-type.html`, `app-components.html`, `data-viz.html` | Specimens. Add `?theme=dark` to force dark mode. |
 
 ```html
+<link rel="stylesheet" href="app-fonts.css">
 <link rel="stylesheet" href="app-tokens.css">
 <link rel="stylesheet" href="components/app-components.css">
 <body class="pl-app">
@@ -516,11 +518,13 @@ The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124
 
 ### 10.10 Tokens for every stack
 
-`tokens/app.tokens.json` is the source. `node scripts/build-tokens.js` regenerates `app-tokens.css`, `tokens/tailwind.css` and `tokens/app.resolved.json`; `node scripts/build-tokens.js --check` fails if any of them is stale or if `tokens/foundation.tokens.json` no longer matches `colors_and_type.css`. Run the check before committing.
+`tokens/app.tokens.json` is the source. `node scripts/build-tokens.js` regenerates `app-tokens.css`, `app-fonts.css`, `tokens/tailwind.css` and `tokens/app.resolved.json`; `node scripts/build-tokens.js --check` fails if any of them is stale or if `tokens/foundation.tokens.json` no longer matches `colors_and_type.css`. Run the check before committing.
 
 Naming: the CSS name is `--` plus the token path joined with `-`; a trailing `default` is dropped and the `theme.light.` / `theme.dark.` prefix is removed. `theme.light.app.surface.default` is `--app-surface`; `color.success.600` is `--color-success-600`.
 
-**Tailwind v4.** Import the generated theme after Tailwind and the tokens, and load the fonts with a `<link>` (a bundler moves the Google Fonts `@import` mid-file, where browsers ignore it):
+**Fonts.** `app-tokens.css` loads no fonts. Link `app-fonts.css` from the page head, or host the three families in the app and leave the file out. Do not `@import` it from a bundled stylesheet: a bundler inlines it mid-file, where browsers ignore an `@import url(...)`.
+
+**Tailwind v4.** Import the generated theme after Tailwind and the tokens:
 
 ```css
 @import "tailwindcss";

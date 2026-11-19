@@ -4,6 +4,7 @@
  * For product UI — admin tools, dashboards, chat — not marketing pages.
  * Load after app-tokens.css. Every value is a token: no hex in this file.
  *
+ *   <link rel="stylesheet" href="app-fonts.css">   (or host the fonts yourself)
  *   <link rel="stylesheet" href="app-tokens.css">
  *   <link rel="stylesheet" href="components/app-components.css">
  *   <body class="pl-app">
