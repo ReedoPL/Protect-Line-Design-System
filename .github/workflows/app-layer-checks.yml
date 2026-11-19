@@ -1,0 +1,26 @@
+# The app layer's three checks (DESIGN.md §10.11). Dependency-free: nothing to install.
+name: App layer checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Generated files are current, and every custom property read is a token
+        run: node scripts/build-tokens.js --check
+      - name: Contrast, light and dark
+        run: node scripts/contrast-report.js
+      - name: Colour-blind separation of the chart palette
+        run: node scripts/cvd-report.js

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App layout — Protect Line</title>
+  <script src="app-preview.js"></script>
+  <link rel="stylesheet" href="../app-fonts.css">
+  <link rel="stylesheet" href="../app-tokens.css">
+  <link rel="stylesheet" href="../components/app-components.css">
+  <link rel="stylesheet" href="app-preview.css">
+  <style>
+    /* Specimen framing only: a window with the app shell in it. The shell is described
+       in DESIGN.md §10.12 as measurements; the classes under test are .pl-page,
+       .pl-page-bleed, .pl-page-header, .pl-page-tabs, .pl-page-body and .pl-two-col. */
+    .lay-window { display: grid; grid-template-columns: 248px minmax(0, 1fr); border: 1px solid var(--app-border); border-radius: var(--app-radius-panel); overflow: hidden; background: var(--app-surface-canvas); }
+    .lay-side { display: grid; align-content: start; gap: var(--app-space-2); padding: var(--spacing-lg) var(--spacing-md); background: var(--app-surface); border-right: 1px solid var(--app-border-subtle); }
+    .lay-side img { display: block; height: 26px; width: auto; margin: 0 var(--spacing-xsm) var(--spacing-lg); }
+    .lay-nav { display: flex; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-xsm) var(--spacing-sm); border-radius: var(--radius-sm); font-weight: var(--font-weight-medium); color: var(--app-text-muted); text-decoration: none; }
+    .lay-nav svg { width: 16px; height: 16px; flex: none; }
+    .lay-nav[aria-current="page"] { background: var(--app-surface-selected); color: var(--app-text); box-shadow: inset 3px 0 0 var(--app-accent-strong); }
+    .lay-bar { display: none; align-items: center; gap: var(--spacing-sm); padding: var(--spacing-sm) var(--spacing-md); background: var(--app-surface); }
+    .lay-bar img { display: block; height: 22px; width: auto; }
+    .lay-bar .pl-button { margin-left: auto; }
+    /* In the specimen the tab row cannot stick to the window, so it stays in the flow. */
+    .lay-window .pl-page-tabs { position: static; }
+    .lay-back { display: inline-flex; align-items: center; gap: var(--app-space-2); }
+    .lay-back svg { width: 14px; height: 14px; }
+    .lay-title { min-width: 0; }
+    .lay-title h1 { display: inline; margin-right: var(--spacing-sm); }
+    .lay-title .pl-pill { vertical-align: middle; }
+    .lay-box { display: grid; gap: var(--spacing-sm); padding: 20px; }
+    .lay-box h2 { margin: 0; }
+    .lay-box p { margin: 0; color: var(--app-text-muted); }
+    .lay-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-sm); margin: var(--spacing-md) 0; }
+    .lay-measure td:first-child { font-weight: var(--font-weight-medium); }
+    .lay-measure .pl-table td:last-child { white-space: normal; min-width: 320px; padding-top: var(--spacing-xsm); padding-bottom: var(--spacing-xsm); }
+    @media (max-width: 767px) {
+      .lay-window { grid-template-columns: minmax(0, 1fr); }
+      .lay-side { display: none; }
+      .lay-bar { display: flex; }
+    }
+  </style>
+</head>
+<body class="pl-app">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-home" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9 10 3.5 16.5 9v7.5h-4.5v-4.5h-4v4.5H3.5z"/></symbol>
+    <symbol id="i-study" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5h7l3 3v10H5z"/><path d="M8 10h4.5M8 13h4.5M8 7h2"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h2.5l1.2 3.4-1.8 1.2a9 9 0 0 0 4 4l1.2-1.8 3.4 1.2V14a2 2 0 0 1-2 2A12 12 0 0 1 4 5.5a2 2 0 0 1 2-2z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 16.5V10M8.5 16.5V5M13 16.5v-8M17 16.5H3"/></symbol>
+    <symbol id="i-chev-left" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 5-5 5 5 5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4v8.5M6.5 9l3.5 3.5L13.5 9M4.5 15.5h11"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M3.5 6h13M3.5 10h13M3.5 14h13"/></symbol>
+  </svg>
+
+  <header class="pv-top">
+    <a class="pv-top__brand" href="../kit/index.html" aria-label="Protect Line">
+      <img class="pv-logo--light" src="../assets/logos/primary-logo-navy-pink.png" alt="Protect Line" width="191" height="43">
+      <img class="pv-logo--dark" src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+      <span>App layer</span>
+    </a>
+    <nav class="pv-top__nav" aria-label="App layer previews">
+      <a href="app-colours.html">Colours</a>
+      <a href="app-type.html">Type</a>
+      <a href="app-components.html">Components</a>
+      <a href="app-layout.html" aria-current="page">Layout</a>
+      <a href="data-viz.html">Data viz</a>
+    </nav>
+    <label class="pv-theme"><span>Dark</span><input class="pl-switch" type="checkbox" role="switch" data-theme-toggle></label>
+  </header>
+
+  <main class="pv-page">
+    <div class="pv-hero">
+      <span class="pl-text-eyebrow">App layer · layout</span>
+      <h1>One frame, <em>every</em> page</h1>
+      <p>A navy sidebar, a page with one title, and a side column that arrives at 1200px. Two breakpoints and a handful of fixed widths; everything else is fluid.</p>
+    </div>
+
+    <!-- A record's page -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>A record's page</h2>
+        <p>The header band carries the record's name, its state and the one group of actions. The tab row sits under it and stays at the top of the window as the page scrolls. From 1200px a 340px side column sits beside the main one; below that it follows it. The page undoes its padding once, and the band, the tab row and the body each add their own back.</p>
+      </div>
+      <div class="lay-window">
+        <aside class="lay-side" data-theme="dark" aria-label="Main navigation">
+          <img src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+          <a class="lay-nav" href="#"><svg aria-hidden="true"><use href="#i-home"/></svg>Today</a>
+          <a class="lay-nav" href="#" aria-current="page"><svg aria-hidden="true"><use href="#i-study"/></svg>Studies</a>
+          <a class="lay-nav" href="#"><svg aria-hidden="true"><use href="#i-phone"/></svg>Calls</a>
+          <a class="lay-nav" href="#"><svg aria-hidden="true"><use href="#i-chart"/></svg>Reports</a>
+        </aside>
+        <div>
+          <div class="lay-bar" data-theme="dark">
+            <img src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+            <button class="pl-button pl-button--tertiary pl-button--icon" type="button" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+          <div class="pl-page">
+           <div class="pl-page-bleed">
+            <header class="pl-page-header">
+              <a class="pl-text-caption lay-back" href="#"><svg aria-hidden="true"><use href="#i-chev-left"/></svg>Studies</a>
+              <div class="pl-page-header__row">
+                <div class="lay-title">
+                  <h1 class="pl-text-title">Why customers cancel in the first month</h1>
+                  <span class="pl-pill pl-pill--success">Complete</span>
+                </div>
+                <div class="pl-page-header__actions">
+                  <button class="pl-button pl-button--secondary" type="button">Share</button>
+                  <button class="pl-button pl-button--primary" type="button"><svg aria-hidden="true"><use href="#i-download"/></svg>Download</button>
+                </div>
+              </div>
+              <dl class="pl-page-header__facts">
+                <div><dt>Calls</dt><dd class="pl-mono">412</dd></div>
+                <div><dt>Teams</dt><dd>Manchester, London</dd></div>
+                <div><dt>Period</dt><dd>1 Aug – 31 Oct</dd></div>
+                <div><dt>Finished</dt><dd>Tuesday, 14:05</dd></div>
+              </dl>
+            </header>
+            <div class="pl-page-tabs">
+              <div class="pl-tabs" role="tablist" aria-label="The study">
+                <button class="pl-tab" role="tab" aria-selected="false" type="button">Conversation</button>
+                <button class="pl-tab" role="tab" aria-selected="true" type="button">Report</button>
+                <button class="pl-tab" role="tab" aria-selected="false" type="button">Calls <span class="pl-badge">412</span></button>
+              </div>
+            </div>
+            <div class="pl-page-body">
+            <div class="pl-two-col pl-two-col--sticky-side">
+              <section class="pl-two-col__main" aria-label="Report">
+                <div class="pl-panel lay-box">
+                  <h2 class="pl-text-section">Price is the first reason, but not the main one</h2>
+                  <p>In 38% of Manchester's cancellations the customer said the policy cost too much. In two thirds of those calls they had also not been told when the first payment would leave their account.</p>
+                  <p>London's customers gave price as the reason less often, and were told the payment date in nine calls out of ten.</p>
+                </div>
+              </section>
+              <aside class="pl-two-col__side" aria-label="About this study">
+                <div class="pl-panel lay-box">
+                  <h2 class="pl-text-label">On this page</h2>
+                  <p>Price and the first payment</p>
+                  <p>What the two teams do differently</p>
+                </div>
+                <div class="pl-panel lay-box">
+                  <h2 class="pl-text-label">Shared with</h2>
+                  <p>Manchester sales</p>
+                </div>
+              </aside>
+            </div>
+            </div>
+           </div>
+          </div>
+        </div>
+      </div>
+      <p class="pv-note">One pink button per view: here it is Download, and Share is secondary. On a phone the sidebar becomes a drawer behind a navy bar, the actions drop to a row under the title, and the facts make a two-column grid.</p>
+    </section>
+
+    <!-- A list page -->
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>A page of its own</h2>
+        <p>A page that is not a record has no band: its name at 28px, the largest text on the screen, then its content, which stops growing at 1200px.</p>
+      </div>
+      <div class="lay-window">
+        <aside class="lay-side" data-theme="dark" aria-label="Main navigation">
+          <img src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+          <a class="lay-nav" href="#"><svg aria-hidden="true"><use href="#i-home"/></svg>Today</a>
+          <a class="lay-nav" href="#"><svg aria-hidden="true"><use href="#i-study"/></svg>Studies</a>
+          <a class="lay-nav" href="#" aria-current="page"><svg aria-hidden="true"><use href="#i-phone"/></svg>Calls</a>
+          <a class="lay-nav" href="#"><svg aria-hidden="true"><use href="#i-chart"/></svg>Reports</a>
+        </aside>
+        <div>
+          <div class="lay-bar" data-theme="dark">
+            <img src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+            <button class="pl-button pl-button--tertiary pl-button--icon" type="button" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+          </div>
+          <div class="pl-page">
+            <div class="pl-page__content">
+              <h1 class="pl-text-page-title" style="margin:0">Calls</h1>
+              <div class="lay-filters">
+                <div class="pl-segmented" role="group" aria-label="Period">
+                  <button type="button" aria-pressed="true">Today</button>
+                  <button type="button" aria-pressed="false">This week</button>
+                  <button type="button" aria-pressed="false">This month</button>
+                </div>
+                <span class="pl-text-muted"><span class="pl-mono">1,284</span> calls · <button class="pl-link" type="button">Clear filters</button></span>
+              </div>
+              <div class="pl-table-frame">
+                <div class="pl-table-scroll">
+                  <table class="pl-table">
+                    <thead><tr><th>Call</th><th>Agent</th><th class="is-num">Length</th><th>Status</th></tr></thead>
+                    <tbody>
+                      <tr><td><span class="pl-id">c_41f9a0</span></td><td>Amelia Hart</td><td class="is-num"><span class="pl-mono">12:41</span></td><td><span class="pl-pill pl-pill--success">Scored</span></td></tr>
+                      <tr><td><span class="pl-id">c_41f7c2</span></td><td>Daniel Okafor</td><td class="is-num"><span class="pl-mono">08:03</span></td><td><span class="pl-pill pl-pill--info pl-pill--live">Scoring</span></td></tr>
+                      <tr><td><span class="pl-id">c_41f511</span></td><td>Priya Shah</td><td class="is-num"><span class="pl-mono">21:17</span></td><td><span class="pl-pill pl-pill--success">Scored</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Measurements -->
+    <section class="pv-section lay-measure">
+      <div class="pv-section__head">
+        <h2>The fixed numbers</h2>
+        <p>Every one is a token. A page that needs another width has usually found a new pattern: add it here before using it.</p>
+      </div>
+      <div class="pl-table-frame">
+        <div class="pl-table-scroll">
+          <table class="pl-table">
+            <thead><tr><th>What</th><th>Value</th><th>Token</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td>Phone layout ends</td><td><span class="pl-mono">768px</span></td><td><span class="pl-id">--app-breakpoint-md</span></td><td>Below it: one column, the sidebar a drawer, 44px controls.</td></tr>
+              <tr><td>Side column arrives</td><td><span class="pl-mono">1200px</span></td><td><span class="pl-id">--app-breakpoint-wide</span></td><td>A 248px sidebar, 64px of padding and a 340px side column leave the main column about 520px: the narrowest a table or a paragraph reads well.</td></tr>
+              <tr><td>Content stops growing</td><td><span class="pl-mono">1200px</span></td><td><span class="pl-id">--app-width-content</span></td><td>Past it, lines get too long to read and a table's columns drift apart.</td></tr>
+              <tr><td>Side column</td><td><span class="pl-mono">340px</span></td><td><span class="pl-id">--app-width-side</span></td><td>Wide enough for a short form or a list of facts.</td></tr>
+              <tr><td>Dialog</td><td><span class="pl-mono">480 · 720 · 880px</span></td><td><span class="pl-id">--app-width-dialog</span> <span class="pl-id">-lg</span> <span class="pl-id">-xl</span></td><td>A confirm; a two-column form; a table to check before acting.</td></tr>
+              <tr><td>Page padding</td><td><span class="pl-mono">16 / 20px</span>, then <span class="pl-mono">32px</span></td><td><span class="pl-id">.pl-page</span> <span class="pl-id">.pl-page-body</span></td><td>Phone, then from 768px. A body region is 16px all round on a phone.</td></tr>
+              <tr><td>Layers</td><td><span class="pl-mono">10 · 20 · 40 · 50</span></td><td><span class="pl-id">--app-layer-sticky</span> <span class="pl-id">-popover</span> <span class="pl-id">-bar</span> <span class="pl-id">-overlay</span></td><td>Four steps of stacking order, and never one between them.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="pv-note">Check a screen at three sizes: 375px (a phone), 1280×720 (a laptop at 150% zoom, and a wall screen), and 1440px.</p>
+    </section>
+  </main>
+</body>
+</html>

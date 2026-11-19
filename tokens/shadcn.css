@@ -1,0 +1,69 @@
+/**
+ * shadcn/ui's variable names, mapped onto the Protect Line app layer.
+ *
+ * Optional, and hand-written. For an app that keeps shadcn/ui or other Radix-based
+ * components for their behaviour (menus, popovers, sliders) and wants them in the
+ * brand's colours without restyling each one. Import it after tokens/tailwind.css:
+ *
+ *   @import "tailwindcss";
+ *   @import "<path>/app-tokens.css";
+ *   @import "<path>/tokens/tailwind.css";
+ *   @import "<path>/tokens/shadcn.css";
+ *
+ * Three things here were learned in use (gui2), and are the reason to take the file
+ * and not write the mapping again:
+ *
+ * 1. --primary is --app-accent (pink-600), never hot pink. White on hot pink is
+ *    4.13:1, under the 4.5:1 a button label needs (DESIGN.md §10.2).
+ * 2. The variables are declared on every [data-theme] element, not only :root. A custom
+ *    property inherits as its computed value, so one declared on :root alone carries
+ *    the page's light colours into a data-theme="dark" sidebar.
+ * 3. --accent and --destructive mean what the app layer's bg-accent and bg-destructive
+ *    already mean, so the two sets of names never disagree. shadcn's own "accent" is a
+ *    quiet hover tint: use hover:bg-surface-hover for that.
+ */
+:root,
+[data-theme] {
+  --background: var(--app-surface-canvas);
+  --foreground: var(--app-text);
+  --card: var(--app-surface);
+  --card-foreground: var(--app-text);
+  --popover: var(--app-surface-raised);
+  --popover-foreground: var(--app-text);
+  --primary: var(--app-accent);
+  --primary-foreground: var(--app-text-on-accent);
+  --secondary: var(--app-surface-sunken);
+  --secondary-foreground: var(--app-text);
+  --muted: var(--app-surface-sunken);
+  --muted-foreground: var(--app-text-muted);
+  --accent: var(--app-accent);
+  --accent-foreground: var(--app-text-on-accent);
+  --destructive: var(--app-destructive);
+  --destructive-foreground: var(--app-destructive-text);
+  --border: var(--app-border);
+  --input: var(--app-border-strong);
+  --ring: var(--app-focus-ring);
+}
+
+/* tokens/tailwind.css cleared Tailwind's own colour names; these put shadcn's back. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}

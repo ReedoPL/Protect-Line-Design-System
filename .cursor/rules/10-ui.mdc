@@ -13,6 +13,8 @@ Before generating any visual component or page:
 3. Reuse patterns from `components/` and `kit/index.html`
 4. Follow `brand/voice.md` for copy tone
 
+For product UI (apps, dashboards, tables, chat) use `app-tokens.css` and `components/app-components.css` instead — see `DESIGN.md` §10. App components are `.pl-button`, `.pl-input`, `.pl-table`…, not the marketing `.pl-btn`.
+
 ## Token rules
 
 - Colours: `var(--color-*)` only — never hardcode hex

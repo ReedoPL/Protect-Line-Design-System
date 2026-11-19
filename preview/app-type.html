@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App type — Protect Line</title>
+  <script src="app-preview.js"></script>
+  <link rel="stylesheet" href="../app-fonts.css">
+  <link rel="stylesheet" href="../app-tokens.css">
+  <link rel="stylesheet" href="../components/app-components.css">
+  <link rel="stylesheet" href="app-preview.css">
+  <style>
+    .ty-scale { display: grid; }
+    .ty-row { display: grid; grid-template-columns: minmax(0, 1fr) 220px 240px; gap: var(--spacing-lg); align-items: baseline; padding: var(--spacing-md) 0; border-bottom: 1px solid var(--app-border-subtle); }
+    .ty-row:first-child { padding-top: 0; }
+    .ty-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .ty-sample { min-width: 0; overflow-wrap: anywhere; }
+    .ty-spec { font-family: var(--font-mono); font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-muted); }
+    .ty-spec b { display: block; font-family: var(--font-primary); font-weight: var(--font-weight-semibold); color: var(--app-text); font-size: var(--app-font-size-sm); margin-bottom: var(--app-space-2); }
+    .ty-use { font-size: var(--app-font-size-sm); line-height: var(--app-line-height-sm); color: var(--app-text-subtle); }
+
+    .ty-figs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--spacing-md); }
+    .ty-figs__col { padding: var(--spacing-md) var(--spacing-lg); }
+    .ty-figs__col h3 { margin: 0 0 var(--app-space-2); font-size: var(--app-font-size-md); font-weight: var(--font-weight-semibold); }
+    .ty-figs__col p { margin: 0 0 var(--spacing-md); font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-subtle); }
+    .ty-figs__nums { display: grid; justify-items: end; gap: var(--app-space-2); font-size: var(--app-font-size-lg); padding: var(--spacing-sm) var(--spacing-md); background: var(--app-surface-sunken); border-radius: var(--radius-sm); }
+    .ty-dp { box-shadow: -1.5px 0 0 var(--app-accent-strong); }
+    .ty-poppins { font-family: var(--font-primary); }
+    .ty-poppins-tnum { font-family: var(--font-primary); font-variant-numeric: tabular-nums; }
+    .ty-mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums slashed-zero; font-size: 0.96em; }
+
+    .ty-do { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-md); }
+    .ty-do ul { margin: 0; padding-left: 1.1em; display: grid; gap: var(--spacing-xsm); color: var(--app-text-muted); }
+    .ty-do li::marker { color: var(--app-accent-strong); }
+    .ty-do .is-dont li::marker { color: var(--app-status-danger-fg); }
+    .ty-do strong { color: var(--app-text); font-weight: var(--font-weight-semibold); }
+
+    .ty-density { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--spacing-md); }
+    .ty-bars { display: grid; gap: var(--spacing-sm); }
+    .ty-bar { display: flex; align-items: center; gap: var(--spacing-md); }
+    .ty-bar__box { flex: none; width: 120px; border: 1px dashed var(--app-border-strong); border-radius: var(--radius-sm); background: var(--app-surface-sunken); display: grid; place-items: center; font-family: var(--font-mono); font-size: var(--app-font-size-xs); color: var(--app-text-muted); }
+    .ty-bar__text { font-size: var(--app-font-size-sm); line-height: var(--app-line-height-sm); color: var(--app-text-muted); }
+    .ty-bar__text code { font-family: var(--font-mono); font-size: var(--app-font-size-xs); color: var(--app-text); }
+    .ty-radii { display: flex; flex-wrap: wrap; gap: var(--spacing-md); }
+    .ty-radius { display: grid; gap: var(--app-space-6); justify-items: center; font-size: var(--app-font-size-xs); color: var(--app-text-muted); }
+    .ty-radius span:first-child { width: 72px; height: 48px; border: 1.5px solid var(--app-text); background: var(--app-surface); }
+
+    @media (max-width: 1023px) {
+      .ty-row { grid-template-columns: minmax(0, 1fr) 200px; }
+      .ty-use { grid-column: 1 / -1; }
+      .ty-figs { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 767px) {
+      .ty-row { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-xsm); }
+      .ty-do,
+      .ty-density { grid-template-columns: minmax(0, 1fr); }
+      .ty-figs__col { padding: var(--spacing-md); }
+    }
+  </style>
+</head>
+<body class="pl-app">
+  <header class="pv-top">
+    <a class="pv-top__brand" href="../kit/index.html" aria-label="Protect Line">
+      <img class="pv-logo--light" src="../assets/logos/primary-logo-navy-pink.png" alt="Protect Line" width="191" height="43">
+      <img class="pv-logo--dark" src="../assets/logos/primary-logo-white-pink.png" alt="Protect Line" width="191" height="43">
+      <span>App layer</span>
+    </a>
+    <nav class="pv-top__nav" aria-label="App layer previews">
+      <a href="app-colours.html">Colours</a>
+      <a href="app-type.html" aria-current="page">Type</a>
+      <a href="app-components.html">Components</a>
+      <a href="app-layout.html">Layout</a>
+      <a href="data-viz.html">Data viz</a>
+    </nav>
+    <label class="pv-theme"><span>Dark</span><input class="pl-switch" type="checkbox" role="switch" data-theme-toggle></label>
+  </header>
+
+  <main class="pv-page">
+    <div class="pv-hero">
+      <span class="pl-text-eyebrow">App layer · type and density</span>
+      <h1>Small type, still <em>Poppins</em></h1>
+      <p>The website reads at 16px with generous line spacing. Screens full of calls, scores and filters need a tighter scale. Same typeface, smaller steps, shorter lines — and a monospace for anything that has to line up.</p>
+    </div>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>The app scale</h2>
+        <p>Use it for product UI. Keep the marketing scale (16px body, 1.6 line height) for anything a customer reads as a page: emails, the website, letters, long help articles.</p>
+      </div>
+      <div class="pl-panel pv-card ty-scale">
+        <div class="ty-row"><div class="ty-sample pl-text-stat">1,284 calls</div><div class="ty-spec"><b>Stat</b>.pl-text-stat · 28/36 · 600</div><div class="ty-use">The one figure a dashboard tile leads with. Proportional figures.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-page-title">Team coaching</div><div class="ty-spec"><b>Page title</b>.pl-text-page-title · 28/36 · 700</div><div class="ty-use">The page's own name. One per screen, and nothing larger.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-title">Why customers cancel early</div><div class="ty-spec"><b>Title</b>.pl-text-title · 20/28 · 700</div><div class="ty-use">A page titled with a record's or a person's name.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-section">Findings by team</div><div class="ty-spec"><b>Section</b>.pl-text-section · 18/24 · 600</div><div class="ty-use">Headings inside a page.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-heading">Study plan</div><div class="ty-spec"><b>Heading</b>.pl-text-heading · 16/24 · 600</div><div class="ty-use">Card and dialog titles.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-body-lg">I found 412 first-month cancellations across both teams.</div><div class="ty-spec"><b>Body large</b>.pl-text-body-lg · 16/24 · 400</div><div class="ty-use">Reading text: chat replies, long descriptions.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-body">Calls scored after 22:00 appear in tomorrow's figures.</div><div class="ty-spec"><b>Body</b>.pl-text-body · 14/20 · 400</div><div class="ty-use">The default for app UI: forms, buttons, menus.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-label">Study name</div><div class="ty-spec"><b>Label</b>.pl-text-label · 13/18 · 500</div><div class="ty-use">Form labels, table headers you want to read, tabs.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-table">Amelia Hart · Manchester sales</div><div class="ty-spec"><b>Table</b>.pl-text-table · 13/18 · 400</div><div class="ty-use">Dense table cells and secondary UI.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-caption">Updated 12 minutes ago</div><div class="ty-spec"><b>Caption</b>.pl-text-caption · 12/16 · 400</div><div class="ty-use">Timestamps, hints, metadata. Nothing smaller than 12px.</div></div>
+        <div class="ty-row"><div class="ty-sample pl-text-eyebrow">Weekly coaching</div><div class="ty-spec"><b>Eyebrow</b>.pl-text-eyebrow · 12/16 · 500 · +0.06em</div><div class="ty-use">Short all-caps labels only. Never a sentence.</div></div>
+        <div class="ty-row"><div class="ty-sample"><span class="pl-mono">c_41f7c2 · 00:31:08 · £3.20</span></div><div class="ty-spec"><b>Mono</b>.pl-mono · JetBrains Mono · 0.96em</div><div class="ty-use">Ids, codes, durations, money and scores in columns.</div></div>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Why figures use a monospace</h2>
+        <p>Poppins, as Google Fonts serves it, has proportional figures only: a “1” is about half the width of a “0”. Measured in Chromium, <code class="pv-code">font-variant-numeric: tabular-nums</code> changes nothing. Right-aligning is not enough — the decimal points still wander. JetBrains Mono matches Poppins’ x-height at the same size and keeps every digit the same width.</p>
+      </div>
+      <div class="ty-figs">
+        <div class="pl-panel ty-figs__col">
+          <h3>Poppins</h3>
+          <p>Right-aligned. Decimal points drift.</p>
+          <div class="ty-figs__nums ty-poppins"><span>1,111<span class="ty-dp">.11</span></span><span>88<span class="ty-dp">.25</span></span><span>4,071<span class="ty-dp">.90</span></span><span>11<span class="ty-dp">.10</span></span><span>£908<span class="ty-dp">.00</span></span></div>
+        </div>
+        <div class="pl-panel ty-figs__col">
+          <h3>Poppins + tabular-nums</h3>
+          <p>No effect: the feature is not in the font.</p>
+          <div class="ty-figs__nums ty-poppins-tnum"><span>1,111<span class="ty-dp">.11</span></span><span>88<span class="ty-dp">.25</span></span><span>4,071<span class="ty-dp">.90</span></span><span>11<span class="ty-dp">.10</span></span><span>£908<span class="ty-dp">.00</span></span></div>
+        </div>
+        <div class="pl-panel ty-figs__col">
+          <h3>JetBrains Mono</h3>
+          <p>Every digit the same width. Columns line up.</p>
+          <div class="ty-figs__nums ty-mono"><span>1,111<span class="ty-dp">.11</span></span><span>88<span class="ty-dp">.25</span></span><span>4,071<span class="ty-dp">.90</span></span><span>11<span class="ty-dp">.10</span></span><span>£908<span class="ty-dp">.00</span></span></div>
+        </div>
+      </div>
+      <p class="pv-note">Each pink tick marks a decimal point: they stagger in Poppins and stack in the monospace. A big standalone figure (a stat tile, a hero number) stays in Poppins — tabular spacing makes large numbers look loose.</p>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Keeping dense tables readable</h2>
+        <p>Poppins is a wide, round face. At 13px it stays clear, but it uses more width per word than a condensed sans, so dense screens need a few habits.</p>
+      </div>
+      <div class="ty-do">
+        <div class="pl-panel pv-card">
+          <h3>Do</h3>
+          <ul>
+            <li><strong>13px, 36px rows</strong> for data tables; 14px everywhere else.</li>
+            <li><strong>Leave tracking at 0</strong> below 16px. Tighten (−0.01em) only for headings 18px and up.</li>
+            <li><strong>Weight, not size, for hierarchy:</strong> 500 for the primary column, 400 and muted ink for the rest.</li>
+            <li><strong>Figures in the monospace,</strong> right-aligned, with the same decimal places down a column.</li>
+            <li><strong>Sentence-case headers</strong> at 12px, in subtle ink, so the data is the loudest thing.</li>
+            <li><strong>Truncate long text</strong> with an ellipsis and keep the full value in a tooltip or the detail view.</li>
+          </ul>
+        </div>
+        <div class="pl-panel pv-card is-dont">
+          <h3>Don't</h3>
+          <ul>
+            <li><strong>Go below 12px,</strong> even for footnotes.</li>
+            <li><strong>Set whole columns in bold</strong> or in pink. Pink in a table is for one thing: the selected row's bar.</li>
+            <li><strong>Use all-caps headers</strong> longer than a word or two; they widen fast in Poppins.</li>
+            <li><strong>Use Lora</strong> in product UI. It is for quotes and expressive headings on marketing pages.</li>
+            <li><strong>Squeeze line height</strong> under 1.33 — Poppins’ tall x-height needs the room.</li>
+            <li><strong>Reach for Inter or a system font</strong> to fit more in. Drop a column instead.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="pv-section">
+      <div class="pv-section__head">
+        <h2>Density</h2>
+        <p>Two control heights on desktop, one floor on touch screens. Spacing reuses the foundation scale, with two small additions for tight UI.</p>
+      </div>
+      <div class="ty-density">
+        <div class="pl-panel pv-card">
+          <h3>Heights</h3>
+          <div class="ty-bars">
+            <div class="ty-bar"><span class="ty-bar__box" style="height:var(--app-control-height-sm)">32</span><span class="ty-bar__text"><code>--app-control-height-sm</code> · toolbars, table actions</span></div>
+            <div class="ty-bar"><span class="ty-bar__box" style="height:var(--app-control-height-md)">40</span><span class="ty-bar__text"><code>--app-control-height-md</code> · default buttons and inputs</span></div>
+            <div class="ty-bar"><span class="ty-bar__box" style="height:var(--app-control-height-touch)">44</span><span class="ty-bar__text"><code>--app-control-height-touch</code> · every control on a touch screen</span></div>
+            <div class="ty-bar"><span class="ty-bar__box" style="height:var(--app-row-height-compact)">36</span><span class="ty-bar__text"><code>--app-row-height-compact</code> · data-table rows</span></div>
+          </div>
+        </div>
+        <div class="pl-panel pv-card pv-stack">
+          <h3 style="margin:0">Radius</h3>
+          <div class="ty-radii">
+            <div class="ty-radius"><span style="border-radius:var(--app-radius-control)"></span>control · 8</div>
+            <div class="ty-radius"><span style="border-radius:var(--app-radius-panel)"></span>panel · 12</div>
+            <div class="ty-radius"><span style="border-radius:var(--app-radius-dialog)"></span>dialog · 16</div>
+            <div class="ty-radius"><span style="border-radius:var(--app-radius-pill)"></span>pill</div>
+          </div>
+          <h3 style="margin:var(--spacing-sm) 0 0">Spacing additions</h3>
+          <p class="ty-bar__text" style="margin:0"><code>--app-space-2</code> (2px) and <code>--app-space-6</code> (6px) for badges and icon gaps. Everything else uses <code>--spacing-*</code> — 4, 8, 12, 16, 24, 32…</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
