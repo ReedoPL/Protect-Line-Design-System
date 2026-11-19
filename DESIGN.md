@@ -492,8 +492,8 @@ The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124
 | Tabs | `.pl-tabs`, `.pl-tab[aria-selected]` |
 | Status | `.pl-pill` + `--info` / `--success` / `--warning` / `--danger` / `--attention`, `--solid`, `--live`; `.pl-badge` |
 | Feedback | `.pl-alert`, `.pl-toast`, `.pl-progress`, `.pl-spinner`, `.pl-skeleton`, `.pl-empty` |
-| Overlay | `.pl-scrim`, `.pl-dialog` |
-| Chat | `.pl-chat`, `.pl-msg` (`--user`), `.pl-msg-card`, `.pl-notice`, `.pl-composer`; `.pl-msg__text` styles the Markdown a reply carries (lists, headings, tables, quotes, code, rules), so a CSS reset never strips it |
+| Overlay | `.pl-scrim`, `.pl-dialog` (480px) + `--lg` (720px) / `--xl` (880px). A dialog taller than the window keeps its title and buttons in view and scrolls its body |
+| Chat | `.pl-chat`, `.pl-msg` (`--user`), `.pl-msg-card`, `.pl-notice`, `.pl-composer`; `.pl-msg__text` styles the Markdown a reply carries (lists, headings, tables, quotes, code, rules), so a CSS reset never strips it. A reply's table has a full grid in the strong border: with no frame and no row hover, the lines are all that keeps a cell with its column |
 
 ### 10.9 Do's and don'ts for data-dense screens
 

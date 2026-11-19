@@ -592,19 +592,30 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
   place-items: center;
   padding: var(--spacing-md);
   background: var(--app-scrim);
+  z-index: var(--app-layer-overlay);
 }
 
+/* A dialog taller than the window keeps its title and buttons in view and scrolls its
+   body: without the cap a long form was cut off top and bottom (gui2, GUI2-57). */
 .pl-dialog {
-  width: min(480px, 100%);
+  display: flex;
+  flex-direction: column;
+  width: min(var(--app-width-dialog), 100%);
+  max-height: calc(100dvh - 2 * var(--spacing-md));
   background: var(--app-surface-raised);
   border: 1px solid var(--app-border);
   border-radius: var(--app-radius-dialog);
   box-shadow: var(--app-shadow-overlay);
   color: var(--app-text);
 }
+/* Three widths, by what the dialog holds. Not a free-for-all: pick one of these. */
+.pl-dialog--lg { width: min(var(--app-width-dialog-lg), 100%); }
+.pl-dialog--xl { width: min(var(--app-width-dialog-xl), 100%); }
+.pl-dialog__header,
+.pl-dialog__footer { flex: none; }
 .pl-dialog__header { display: flex; align-items: flex-start; gap: var(--spacing-md); padding: var(--spacing-lg) var(--spacing-lg) 0; }
 .pl-dialog__title { margin: 0; flex: 1; font-size: var(--app-font-size-xl); line-height: var(--app-line-height-xl); font-weight: var(--font-weight-semibold); letter-spacing: var(--app-tracking-tight); }
-.pl-dialog__body { padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg); color: var(--app-text-muted); }
+.pl-dialog__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-lg); color: var(--app-text-muted); }
 .pl-dialog__body p { margin: 0 0 var(--spacing-sm); }
 .pl-dialog__footer {
   display: flex;
@@ -683,7 +694,9 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
   font-weight: var(--font-weight-semibold);
 }
 .pl-msg__avatar img { width: 22px; height: 22px; }
-.pl-msg__main { min-width: 0; display: grid; gap: var(--app-space-6); }
+/* One column that may shrink: with the default (auto) track a wide table in a reply set the
+   column's width, and the whole message ran off the side of a phone. */
+.pl-msg__main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--app-space-6); }
 .pl-msg__meta { display: flex; align-items: baseline; gap: var(--spacing-xsm); font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-subtle); }
 .pl-msg__name { font-weight: var(--font-weight-semibold); color: var(--app-text); }
 .pl-msg__text { font-size: var(--app-font-size-lg); line-height: var(--app-line-height-lg); }
@@ -719,9 +732,14 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 .pl-msg__text hr { margin: 12px 0; border: 0; border-top: 1px solid var(--app-border-subtle); }
 /* A wide table scrolls inside its own frame, and never pushes the message wider. */
 .pl-msg__text table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 0 0 var(--spacing-xsm); font-size: var(--app-font-size-sm); line-height: var(--app-line-height-sm); }
+/* The grid is information here, not decoration: a reply's table has no frame around it
+   and no row hover, so the lines are all that keeps a cell with its column. They take the
+   strong border (3:1 or better in both modes); the subtle one is 1.2:1 and the grid
+   vanished (gui2, GUI2-50). The header keeps the sunken tone, as .pl-table's does: on
+   the selected tone the same line is 2.68:1 in dark mode. */
 .pl-msg__text th,
-.pl-msg__text td { text-align: left; vertical-align: top; padding: 6px 10px; border-bottom: 1px solid var(--app-border-subtle); }
-.pl-msg__text th { font-weight: var(--font-weight-semibold); background: var(--app-surface-sunken); }
+.pl-msg__text td { text-align: left; vertical-align: top; padding: 6px 10px; border: 1px solid var(--app-border-strong); }
+.pl-msg__text th { font-weight: var(--font-weight-semibold); background: var(--app-surface-sunken); border-bottom-width: 2px; }
 .pl-msg__text > :first-child { margin-top: 0; }
 .pl-msg__text > :last-child { margin-bottom: 0; }
 

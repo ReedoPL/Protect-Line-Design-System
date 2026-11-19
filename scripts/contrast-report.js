@@ -61,6 +61,7 @@ function pairs() {
   }
   for (const s of ['app.surface.default', 'app.surface.canvas', 'app.surface.raised']) ui('app.border.strong', s, 'input, checkbox, radio');
   ui('app.border.strong', 'app.surface.hover over app.surface.default', 'checkbox in hovered row');
+  ui('app.border.strong', 'app.surface.sunken', 'segmented chip edge on the well; reply-table grid beside a header cell');
   for (const s of ['app.surface.default', 'app.surface.canvas', 'app.surface.raised', 'app.surface.selected', 'app.surface.sunken']) ui('app.focus.ring', s, 'focus ring');
   for (const s of ['app.surface.default', 'app.surface.canvas', 'app.surface.raised']) ui('app.accent.default', s, 'primary fill, checked box');
   ui('app.accent.strong', 'app.surface.selected', 'selected-row bar');

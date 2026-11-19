@@ -34,7 +34,14 @@
     /* Specimen-only: show states a static render cannot hover into. */
     .pl-table tbody tr.demo-hover { background: var(--app-surface-hover); }
     .demo-under { background: var(--app-surface); border: 1px solid var(--app-border); border-radius: var(--app-radius-panel); overflow: hidden; }
-    .demo-scrim { position: relative; inset: auto; min-height: 380px; height: 100%; }
+    .demo-scrim { position: relative; inset: auto; z-index: auto; min-height: 380px; height: 100%; }
+    /* A short window, so the tall dialog shows its cap: the specimen stands in for the viewport. */
+    .demo-scrim--short { height: 420px; min-height: 0; }
+    .demo-scrim--short .pl-dialog { max-height: calc(420px - 2 * var(--spacing-md)); }
+    .demo-scrim--wide { min-height: 0; align-content: start; justify-items: center; gap: var(--spacing-md); }
+    .demo-widths { display: grid; gap: var(--spacing-xsm); width: 100%; justify-items: center; }
+    .demo-widths .pl-dialog { box-shadow: none; }
+    .demo-widths .pl-dialog__header { padding-bottom: var(--spacing-md); }
     .demo-toasts { display: grid; gap: var(--spacing-sm); justify-items: start; }
     .demo-form { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--spacing-xlg); }
     .demo-form__fields { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); align-content: start; }
@@ -413,6 +420,39 @@
           <div class="pl-toast pl-toast--danger" role="alert"><span class="pl-toast__icon"><svg aria-hidden="true"><use href="#i-danger"/></svg></span><div><div class="pl-toast__title">We couldn't reach the CRM</div><div class="pl-toast__body">We'll try again in a minute.</div></div><button class="pl-close" type="button" aria-label="Dismiss"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
         </div>
       </div>
+      <div class="demo-under" style="margin-top:var(--spacing-md)"><div class="pl-scrim demo-scrim demo-scrim--short">
+        <div class="pl-dialog pl-dialog--lg" role="dialog" aria-modal="true" aria-labelledby="d2-title">
+          <div class="pl-dialog__header">
+            <h3 class="pl-dialog__title" id="d2-title">Add a person</h3>
+            <button class="pl-close" type="button" aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+          </div>
+          <div class="pl-dialog__body">
+            <div class="demo-form__fields">
+              <div class="pl-field"><label class="pl-label" for="d2-first">First name</label><input class="pl-input" id="d2-first" value="Amelia"></div>
+              <div class="pl-field"><label class="pl-label" for="d2-last">Last name</label><input class="pl-input" id="d2-last" value="Hart"></div>
+              <div class="pl-field is-wide"><label class="pl-label" for="d2-email">Work email</label><input class="pl-input" id="d2-email" value="amelia.hart@protectline.example"></div>
+              <div class="pl-field"><label class="pl-label" for="d2-team">Team</label><span class="pl-select"><select id="d2-team"><option>Manchester sales</option></select></span></div>
+              <div class="pl-field"><label class="pl-label" for="d2-role">Role</label><span class="pl-select"><select id="d2-role"><option>Team leader</option></select></span></div>
+              <div class="pl-field is-wide"><label class="pl-label" for="d2-note">Note <span class="pl-label__optional">(optional)</span></label><textarea class="pl-textarea" id="d2-note" rows="3">Starts on Monday.</textarea></div>
+              <label class="pl-choice"><input class="pl-check" type="checkbox" checked><span>Can see their team's calls</span></label>
+              <label class="pl-choice"><input class="pl-check" type="checkbox"><span>Can run studies</span></label>
+            </div>
+          </div>
+          <div class="pl-dialog__footer">
+            <button class="pl-button pl-button--secondary" type="button">Cancel</button>
+            <button class="pl-button pl-button--primary" type="button">Add person</button>
+          </div>
+        </div>
+      </div></div>
+      <p class="pv-note">A dialog taller than the window keeps its title and buttons in view and scrolls its body. This one is the middle width, in a window 420px tall.</p>
+      <div class="demo-under" style="margin-top:var(--spacing-md)"><div class="pl-scrim demo-scrim demo-scrim--wide">
+        <div class="demo-widths">
+          <div class="pl-dialog"><div class="pl-dialog__header"><h3 class="pl-dialog__title">A confirm or a short form</h3><span class="pl-id">.pl-dialog · 480</span></div></div>
+          <div class="pl-dialog pl-dialog--lg"><div class="pl-dialog__header"><h3 class="pl-dialog__title">Two columns of fields</h3><span class="pl-id">--lg · 720</span></div></div>
+          <div class="pl-dialog pl-dialog--xl"><div class="pl-dialog__header"><h3 class="pl-dialog__title">A table to check before acting</h3><span class="pl-id">--xl · 880</span></div></div>
+        </div>
+      </div></div>
+      <p class="pv-note">The three widths. Pick one by what the dialog holds; never set a width of your own. On a phone all three fill the screen.</p>
     </section>
 
     <!-- Chat -->
@@ -441,6 +481,13 @@
                   <li>Manchester: 251</li>
                   <li>London: 161</li>
                 </ul>
+                <table>
+                  <thead><tr><th>Team</th><th>Cancelled</th><th>Said “too expensive”</th></tr></thead>
+                  <tbody>
+                    <tr><td>Manchester</td><td>251</td><td>38%</td></tr>
+                    <tr><td>London</td><td>161</td><td>24%</td></tr>
+                  </tbody>
+                </table>
                 <p>Here's how I'd look at them — have a read and approve when you're happy.</p>
               </div>
               <div class="pl-msg-card">
