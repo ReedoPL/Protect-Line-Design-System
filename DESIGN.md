@@ -315,6 +315,7 @@ Sections 1–9 are the marketing contract and still apply to anything a customer
 | `tokens/shadcn.css` | Optional. shadcn/ui's variable names mapped onto the app layer, for an app that keeps Radix-based components (10.10) |
 | `tokens/app.resolved.json` | Generated. Every token resolved, per mode, for Python and other non-CSS code |
 | `preview/app-colours.html`, `app-type.html`, `app-components.html`, `app-layout.html`, `data-viz.html` | Specimens. Add `?theme=dark` to force dark mode. |
+| `CHANGELOG.md` | What changed in the app layer, release by release (10.14) |
 
 ```html
 <link rel="stylesheet" href="app-fonts.css">
@@ -511,6 +512,7 @@ The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124
 - Let a dense table scroll sideways inside its frame on a phone — never the page.
 - In chat, keep the assistant's reply on the page at 16px; put anything to approve in a card with one clear action, and say nothing runs until it is approved.
 - Use Hugo once, where a screen would otherwise be empty.
+- Look at every screen at 375px, at 1280×720 and at 1440px (10.11).
 - Write sentence case and British English — in empty states, toasts and errors too.
 
 **Don't**
@@ -601,7 +603,15 @@ value("theme.light.app.status.success.fg")   # '#056242'
 | `node scripts/contrast-report.js` | WCAG 2.x contrast of every text pair (≥4.5:1) and UI boundary (≥3:1) the components use, light and dark |
 | `node scripts/cvd-report.js` | Colour-blind separation of the chart palette, ramp monotonicity, diverging arms |
 
-All three are dependency-free (Node 18+) and exit non-zero on failure.
+All three are dependency-free (Node 18+) and exit non-zero on failure. `.github/workflows/app-layer-checks.yml` runs them on every pull request.
+
+**By eye, at three sizes.** The scripts cannot see a layout. Before a change to a component or a screen goes in, look at it in light and dark at:
+
+| Size | Why |
+|---|---|
+| 375px wide | A phone (§8) |
+| 1280×720 | A laptop at 150% zoom, which is how many people read a dense screen, and a wall screen |
+| 1440px wide | A desktop |
 
 ### 10.12 Page layout
 
@@ -649,3 +659,37 @@ Rules that came from use:
 | `--app-layer-overlay` | 50 | Scrims, dialogs, drawers, toasts |
 
 Four layers, and never a value between them. A component that seems to need one has usually been put in the wrong layer.
+
+### 10.13 Icons
+
+Sections 1–9 say where icons go on the website but name no set. In the app, use **[Lucide](https://lucide.dev)** (ISC licence): one outline family, drawn on a 24px grid with a 2px stroke and round caps, which sits well beside Poppins. It is what gui2 uses throughout.
+
+| Size | Where |
+|---|---|
+| 12px | A chevron or a mark inside caption text |
+| 14px | Beside 12–13px text: table cells, captions, compact controls |
+| 16px | Beside 14px text: buttons, menus, tabs. The default |
+| 18px | The sidebar's navigation, at a 1.8px stroke so it does not outweigh its label |
+
+- An icon takes its colour from the text beside it (`currentColor`), never a colour of its own. Status icons take the status's `fg`.
+- Keep Lucide's own stroke everywhere else. Do not mix in filled icons, a second set, or emoji.
+- An icon beside a word is decoration: `aria-hidden="true"`. An icon on its own is a button with an `aria-label` that says what it does (“Close”, “Download”), not what it shows.
+- No icon for its own sake. A label reads faster than an icon nobody has learned.
+
+The specimens in `preview/` draw their few icons inline, so the pages open from a folder with nothing to install.
+
+### 10.14 Changes and ownership
+
+**Who decides what.** The app layer has two kinds of content, and they are approved differently.
+
+| Change | Who approves | Why |
+|---|---|---|
+| A new colour, a changed colour, a typeface (10.4) | The brand owner | It is the brand. Each one is listed in 10.4 with its reason |
+| Component CSS, layout, tokens that are not colours, the scripts | The team that builds the apps | It is engineering: it has to work in the screens that use it |
+| Anything in sections 1–9, `colors_and_type.css`, `components/components.css`, `assets/` | The brand owner | The marketing kit. The app layer does not change it |
+
+**Versions.** An app copies the app layer at a commit and records which (gui2 does, in its `src/design/SOURCE.md`). Other code reads the token values too: at the time of writing, a Power BI theme and a wall-screen theme are pinned to the chart palette by tests. So a changed token is a change in several places.
+
+- Every change to the app layer adds a line to `CHANGELOG.md`, under the next version.
+- A release is a tag, `app-layer-vMAJOR.MINOR.PATCH`. A renamed or removed token or class, or a colour that changes what people see, is a major version. A new token, class or component is a minor one.
+- An app moves from one tag to the next by reading the changelog between them.

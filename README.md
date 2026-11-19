@@ -71,7 +71,10 @@ For admin tools, dashboards, tables and chat (rather than marketing pages) use t
 - Rules and rationale: [`DESIGN.md` §10 App UI](DESIGN.md#10-app-ui)
 - Previews (add `?theme=dark`): [colours](preview/app-colours.html) · [type](preview/app-type.html) · [components](preview/app-components.html) · [layout](preview/app-layout.html) · [data viz](preview/data-viz.html)
 - Source of truth: [`tokens/app.tokens.json`](tokens/app.tokens.json). After editing it, run `node scripts/build-tokens.js`; `--check` fails if a generated file is stale.
-- Checks: `node scripts/contrast-report.js` (WCAG contrast, light and dark) and `node scripts/cvd-report.js` (colour-blind separation of the chart palette).
+- Checks: `node scripts/contrast-report.js` (WCAG contrast, light and dark) and `node scripts/cvd-report.js` (colour-blind separation of the chart palette). All three run on every pull request.
+- Fonts: `app-fonts.css` loads them from Google Fonts. An app that hosts its own fonts leaves that file out.
+- Changes: [`CHANGELOG.md`](CHANGELOG.md). Apps copy the app layer at a tagged version (`app-layer-v1.0.0`) and move up by reading the changelog.
+- Who approves what: a new or changed **colour or typeface** needs the brand owner. Component CSS, layout and the scripts are approved by the team that builds the apps. The app layer never changes the marketing kit. See [`DESIGN.md` §10.14](DESIGN.md#1014-changes-and-ownership).
 
 ## Brand at a glance
 
