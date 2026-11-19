@@ -418,7 +418,8 @@ Same typeface, a tighter scale. Classes are in `components/app-components.css`.
 | Style | Class | Size / line | Weight | Use |
 |---|---|---|---|---|
 | Stat | `.pl-text-stat` | 28/36 | 600 | The one figure a tile leads with |
-| Title | `.pl-text-title` | 20/28 | 700 | Page title, one per screen |
+| Page title | `.pl-text-page-title` | 28/36 | 700 | The page's own name (“Calls”, “Team coaching”). One per screen, and nothing larger |
+| Title | `.pl-text-title` | 20/28 | 700 | A page titled with a record's or a person's name, which can run long and wrap |
 | Section | `.pl-text-section` | 18/24 | 600 | Headings inside a page |
 | Heading | `.pl-text-heading` | 16/24 | 600 | Card and dialog titles |
 | Body large | `.pl-text-body-lg` | 16/24 | 400 | Reading text: chat replies, descriptions |
@@ -486,6 +487,8 @@ The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124
 | Component | Classes |
 |---|---|
 | Buttons | `.pl-button` + `--primary` / `--secondary` / `--tertiary` / `--danger`, `--sm`, `--icon`; `disabled`; `aria-busy="true"` with a `.pl-spinner` |
+| Link button | `.pl-link`: a button that reads as a link (“Show more”, “Clear filters”). It does something on this page; a link that goes somewhere stays a bare `<a>` |
+| Segmented control | `.pl-segmented` (`--sm`) around buttons with `aria-pressed`, or `role="radio"` with `aria-checked`. Two to five choices of one thing, all in view; past five, a select |
 | Fields | `.pl-field`, `.pl-label`, `.pl-hint`, `.pl-error`, `.pl-input`, `.pl-input-group`, `.pl-textarea`, `.pl-select` (wraps a native select) |
 | Choices | `.pl-choice` with `.pl-check`, `.pl-radio`, or `.pl-switch` (`role="switch"`) |
 | Table | `.pl-table-frame`, `.pl-table-toolbar`, `.pl-table-scroll`, `.pl-table`, `.is-num`, `.pl-sort` with `aria-sort`, `tr[aria-selected="true"]`, `.pl-table__empty`, `.pl-table-footer`, `.pl-id` |
@@ -493,6 +496,7 @@ The same code also uses `NAVY_LIFT #1E175C` (use `--app-surface-raised`, `#18124
 | Status | `.pl-pill` + `--info` / `--success` / `--warning` / `--danger` / `--attention`, `--solid`, `--live`; `.pl-badge` |
 | Feedback | `.pl-alert`, `.pl-toast`, `.pl-progress`, `.pl-spinner`, `.pl-skeleton`, `.pl-empty` |
 | Overlay | `.pl-scrim`, `.pl-dialog` (480px) + `--lg` (720px) / `--xl` (880px). A dialog taller than the window keeps its title and buttons in view and scrolls its body |
+| People | `.pl-avatar`: initials or a photo in a fair-pink circle, the same wherever the person appears |
 | Chat | `.pl-chat`, `.pl-msg` (`--user`), `.pl-msg-card`, `.pl-notice`, `.pl-composer`; `.pl-msg__text` styles the Markdown a reply carries (lists, headings, tables, quotes, code, rules), so a CSS reset never strips it. A reply's table has a full grid in the strong border: with no frame and no row hover, the lines are all that keeps a cell with its column |
 
 ### 10.9 Do's and don'ts for data-dense screens

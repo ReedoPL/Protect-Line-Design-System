@@ -58,6 +58,27 @@
   text-decoration-thickness: 2px;
 }
 
+/* A button that reads as a link: "Show more", "Clear filters" in a sentence. Also for an
+   anchor that carries a class of its own. It does something on this page; a link that
+   goes somewhere stays a bare <a>. */
+.pl-link {
+  display: inline;
+  padding: 0;
+  border: 0;
+  border-radius: var(--app-space-2);
+  background: none;
+  font: inherit;
+  font-weight: var(--font-weight-semibold);
+  color: var(--app-text-link);
+  text-align: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  cursor: pointer;
+}
+.pl-link:hover { color: var(--app-text-link-hover); text-decoration-thickness: 2px; }
+.pl-link:disabled { color: var(--app-text-disabled); text-decoration: none; cursor: not-allowed; }
+
 /* ── Type ─────────────────────────────────────────────────────────────── */
 .pl-text-caption { font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); color: var(--app-text-subtle); }
 .pl-text-table { font-size: var(--app-font-size-sm); line-height: var(--app-line-height-sm); }
@@ -67,6 +88,9 @@
 .pl-text-heading { font-size: var(--app-font-size-lg); line-height: var(--app-line-height-lg); font-weight: var(--font-weight-semibold); }
 .pl-text-section { font-size: var(--app-font-size-xl); line-height: var(--app-line-height-xl); font-weight: var(--font-weight-semibold); letter-spacing: var(--app-tracking-tight); }
 .pl-text-title { font-size: var(--app-font-size-2xl); line-height: var(--app-line-height-2xl); font-weight: var(--font-weight-bold); letter-spacing: var(--app-tracking-tight); }
+/* The page's own name ("Calls", "Team coaching"): the largest text on the screen, once.
+   .pl-text-title is for a title that names a record or a person ("Amelia Hart"). */
+.pl-text-page-title { font-size: var(--app-font-size-3xl); line-height: var(--app-line-height-3xl); font-weight: var(--font-weight-bold); letter-spacing: var(--app-tracking-tight); }
 .pl-text-stat { font-size: var(--app-font-size-3xl); line-height: var(--app-line-height-3xl); font-weight: var(--font-weight-semibold); letter-spacing: var(--app-tracking-tight); }
 .pl-text-eyebrow { font-size: var(--app-font-size-xs); line-height: var(--app-line-height-xs); font-weight: var(--font-weight-medium); letter-spacing: var(--app-tracking-caps); text-transform: uppercase; color: var(--app-text-subtle); }
 .pl-text-muted { color: var(--app-text-muted); }
@@ -422,6 +446,52 @@
 .pl-pill--live::before { animation: pl-breathe 1.6s ease-in-out infinite; }
 @keyframes pl-breathe { 50% { opacity: 0.35; transform: scale(0.75); } }
 
+/* ── Segmented control ────────────────────────────────────────────────── */
+/* Two to five choices of one thing, all in view: a period (Today, This week, Month), a
+   chart's unit (Count, Share). Buttons with aria-pressed, or role="radio" with
+   aria-checked inside a role="radiogroup". Tabs change what the page shows; this changes
+   how the same thing is shown. Past five choices, use a select. */
+.pl-segmented {
+  --_h: var(--app-control-height-md);
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--app-space-2);
+  padding: 3px;
+  border: 1px solid var(--app-border);
+  border-radius: calc(var(--_h) / 2);
+  background: var(--app-surface-sunken);
+}
+.pl-segmented > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--app-space-6);
+  min-height: calc(var(--_h) - 8px);
+  padding: 0 var(--spacing-md);
+  border: 0;
+  border-radius: var(--app-radius-pill);
+  background: none;
+  font-family: var(--font-primary);
+  font-size: var(--app-font-size-sm);
+  line-height: 1;
+  font-weight: var(--font-weight-medium);
+  color: var(--app-text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.pl-segmented > button:hover { color: var(--app-text); }
+/* The chosen one is a raised chip with an edge: weight and the edge carry it, not colour alone. */
+.pl-segmented > button[aria-pressed="true"],
+.pl-segmented > button[aria-checked="true"] {
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: 0 0 0 1px var(--app-border-strong);
+}
+.pl-segmented > button:disabled { color: var(--app-text-disabled); cursor: not-allowed; }
+.pl-segmented--sm { --_h: var(--app-control-height-sm); }
+.pl-segmented--sm > button { padding: 0 var(--spacing-sm); font-size: var(--app-font-size-xs); }
+
 /* ── Tabs ─────────────────────────────────────────────────────────────── */
 .pl-tabs {
   display: flex;
@@ -676,6 +746,25 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 .pl-close:hover { background: var(--app-surface-hover); color: var(--app-text); }
 .pl-close svg { width: 16px; height: 16px; }
 
+/* ── Avatar ───────────────────────────────────────────────────────────── */
+/* A person's circle: their initials, or their photo. The name is always beside it, so
+   the circle itself is aria-hidden. */
+.pl-avatar {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--app-accent-subtle);
+  color: var(--app-text);
+  font-size: var(--app-font-size-xs);
+  line-height: 1;
+  font-weight: var(--font-weight-semibold);
+}
+.pl-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
 /* ── Chat ─────────────────────────────────────────────────────────────── */
 .pl-chat { display: flex; flex-direction: column; gap: var(--spacing-lg); }
 
@@ -750,7 +839,9 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-lg) var(--radius-lg) var(--app-space-6) var(--radius-lg);
 }
-.pl-msg--user .pl-msg__avatar { background: var(--app-status-info-bg); color: var(--app-status-info-fg); box-shadow: inset 0 0 0 1px var(--app-status-info-border); }
+/* A person is the same circle wherever they appear (.pl-avatar). Not a status colour:
+   info blue said "running", and a person is not a status. */
+.pl-msg--user .pl-msg__avatar { background: var(--app-accent-subtle); color: var(--app-text); }
 
 .pl-notice {
   display: flex;
@@ -913,7 +1004,9 @@ th[aria-sort="descending"] .pl-sort svg { transform: rotate(180deg); }
 /* ── Touch screens: controls grow to the 44px minimum (DESIGN.md §8) ─── */
 @media (pointer: coarse) {
   .pl-button,
-  .pl-button--sm { --_h: var(--app-control-height-touch); }
+  .pl-button--sm,
+  .pl-segmented,
+  .pl-segmented--sm { --_h: var(--app-control-height-touch); }
   .pl-input,
   .pl-select select { min-height: var(--app-control-height-touch); }
   .pl-table th,
